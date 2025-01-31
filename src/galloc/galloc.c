@@ -54,7 +54,7 @@ void	gfree(void *ptr, t_sh *sh)
 	t_galloc	*mem_node;
 	t_galloc	*prev_node;
 
-	mem_node = sh->l_galloc;
+	mem_node = sh->l_galloc->start;
 	prev_node = NULL;
 	while (mem_node)
 	{
@@ -66,6 +66,7 @@ void	gfree(void *ptr, t_sh *sh)
 			if (prev_node)
 				prev_node->next = mem_node->next;
 			free(mem_node);
+			return ;
 		}
 		prev_node = mem_node;
 		mem_node = mem_node->next;

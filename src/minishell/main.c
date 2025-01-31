@@ -63,6 +63,7 @@ int	main(int argc, char **argv, char **env)
 		sh->line = input;
 		if (input[0] != '\0')
 			parser(ft_split(input, ' '), sh);
+		gfree(input, sh);
 	}
 	terminate (sh);
 	return (0);

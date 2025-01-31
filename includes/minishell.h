@@ -77,6 +77,7 @@ int		ft_lentoc(const char *str, char c);
 char	*linejoin(char *user, char *path, t_sh *sh);
 char	*userjoin(char *user, char *pc, t_sh *sh);
 //galloc.c
+void	gfree(void *ptr, t_sh *sh);
 void	terminate(t_sh *sh);
 void	free_galloc(t_sh *sh);
 void	*add_galloc(void *mem, t_sh *sh);
