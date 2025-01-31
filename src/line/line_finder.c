@@ -28,7 +28,7 @@ char	*user_finder(char *user, char *pc, t_sh *sh)
 char	*path_finder(t_sh *sh)
 {
 	char	*line_path;
-	int		home_size;
+	int		home_len;
 	char	cwd[4096];
 
 	getcwd(cwd, sizeof(cwd));
@@ -38,8 +38,8 @@ char	*path_finder(t_sh *sh)
 
 	if (ft_strncmp(getenv("HOME"), line_path, ft_strlen(getenv("HOME"))) == 0)
 	{
-		home_size = ft_strlen(getenv("HOME"));
-		line_path = ft_substr(cwd, home_size - 1, ft_strlen(cwd) - home_size + 1);
+		home_len = ft_strlen(getenv("HOME"));
+		line_path = ft_substr(cwd, home_len - 1, ft_strlen(cwd) - home_len + 1);
 		line_path[0] = '~';
 		add_galloc(line_path, sh);
 	}

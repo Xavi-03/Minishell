@@ -37,7 +37,7 @@ t_cmd	*fork_create(t_sh *sh)
 {
 	t_cmd	*cmd_node;
 
-	sh->cmd_list = sh->cmd_list->start; // I hope this doesnt break
+	sh->cmd_list = sh->cmd_list->start;
 	cmd_node = sh->cmd_list->start;
 	while (cmd_node)
 	{
