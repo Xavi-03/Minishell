@@ -53,8 +53,8 @@ int	main(int argc, char **argv, char **env)
 	while(i < 5) // tmp debugger
 	{
 		//sh->cmd_list = NULL;
-		if (env == NULL)
-			line = "minishell\n> ";
+		if (env != NULL)
+			line = "minishell> ";
 		else
 			line = line_finder(sh);
 		input = readline(line);
@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **env)
 			add_history(input);
 		add_galloc(input, sh);
 		if (input[0] != '\0')
-			parser(ft_split(input, ' '), sh);
+			parser(ft_split(input_cleaner(input, sh), ' '), sh);
 		//free(input);
 		i++; // debugger
 	}

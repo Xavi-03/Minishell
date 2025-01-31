@@ -116,16 +116,14 @@ int	cmd_cmp(char *input, t_sh *sh)
 
 void	find_cmd(char **input_arr, t_sh *sh)
 {
-	static int	i = -1;
+	int	i = -1;
 	char	**value_var;
 
 	//i = -1;
 	add_galloc(input_arr, sh);
-	// si se ejecuta "./minishell cat Hola" hace free a los args del main y da error
 	while (input_arr[++i])
 	{
 		add_galloc(input_arr[i], sh);
-		// si se ejecuta "./minishell cat Hola" hace free a los args del main y da error
 		if (ft_strchr(input_arr[i], '$'))
 		{
 			value_var = found_var(input_arr[i], sh);
@@ -153,6 +151,44 @@ void	pipe_cleaner(t_sh *sh)
 		}
 		cmd_node = cmd_node->next;
 	}
+}
+
+char *input_cleaner(char *input, t_sh *sh)
+{
+	char	*input_clean;
+	int		i;
+	int		need_space;
+	int 	j;
+
+	need_space = 0;
+	i = -1;
+	j = 0;
+	while(input[++i])
+	{
+		if (input[i] == '<' || input[i] == '>' || input[i] == '|')
+		{
+			if (i > 0 && input[i - 1] != ' ' && input[i - 1] != input[i])
+				need_space += 1;
+			if (input[i + 1] && input[i + 1] != ' ' && input[i + 1] != input[i])
+				need_space += 1;
+		}
+	}
+	input_clean = galloc((i + need_space + 1) * sizeof(char), sh);
+	i = -1;
+	while(input[++i])
+	{
+		if (input[i] == '<' || input[i] == '>' || input[i] == '|')
+		{
+			if (i > 0 && input[i - 1] != ' ' && input[i - 1] != input[i])
+				input_clean[j] = ' ';
+			if (input[i + 1] && input[i + 1] != ' ' && input[i + 1] != input[i])
+				input_clean[j] = ' ';
+		}
+		input_clean[j++] = input[i];
+	}
+	input_clean[j] = '\0';
+	printf("%s\n");
+	return (input);
 }
 
 void	parser(char **input_arr, t_sh *sh)
