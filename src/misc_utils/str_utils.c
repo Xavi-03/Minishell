@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:04:34 by pohernan          #+#    #+#             */
-/*   Updated: 2025/01/31 18:58:33 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/01/31 22:10:52 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*extract_between_chars(char *str, char c)
 	if (!ptr_first_c)
 		return (NULL);
 	ptr_first_c++;
-	if (ft_strlen(ptr_first_c) < 3)
+	if (ft_strlen(ptr_first_c) < 2)
 		return (NULL);
 	ptr_second_c = ft_strchr(ptr_first_c, c);
 	if (!ptr_second_c)
@@ -36,12 +36,166 @@ char	*extract_between_chars(char *str, char c)
 	ft_strlcpy(substr, ptr_first_c, substr_len);
 	return (substr);
 }
-/*
-int	main(void)
-{
-	char	*str = "\"Hola que tal\" esto es una prueba";
 
-	printf("Var content: %s\n", extract_between_chars(str, '\"'));
+bool	is_in_set(char c, char *set)
+{
+	while (*set)
+	{
+		if (c == *set)
+			return (true);
+		set++;
+	}
+	return (false);
+}
+
+int	get_n_cmds(char *str)
+{
+	size_t	i;
+	size_t	n_substr;
+
+	i = 0;
+	n_substr = 0;
+	while (str[i])
+	{
+		if (!is_in_set(str[i], "\'\" "))
+		{
+			while (!is_in_set(str[i], "\'\" ") && str[i])
+				i++;
+			n_substr++;
+		}
+		else if (str[i] == '\"')
+		{
+			i++;
+			while (!is_in_set(str[i], "\"") && str[i])
+				i++;
+			n_substr++;
+			i++;
+		}
+		else if (str[i] == '\'')
+		{
+			i++;
+			while (!is_in_set(str[i], "\'") && str[i])
+				i++;
+			n_substr++;
+			i++;
+		}
+		else
+			i++;
+	}
+	return (n_substr);
+}
+
+
+char	**prepare_cmd_arr(char *str)
+{
+	size_t	i;
+	size_t	start;
+	size_t	n_substr;
+	char	**cmd_arr;
+
+	n_substr = get_n_cmds(str);
+	cmd_arr = (char **)malloc(sizeof(char *) * n_substr + 1);
+	if (!cmd_arr)
+		return (NULL);
+	cmd_arr[n_substr] = NULL;
+	i = 0;
+	n_substr = 0;
+	while (str[i])
+	{
+		if (!is_in_set(str[i], "\'\" "))
+		{
+			start = i;
+			while (!is_in_set(str[i], "\'\" ") && str[i])
+				i++;
+			cmd_arr[n_substr] = (char *)malloc(i - start + 1);
+			ft_strlcpy(cmd_arr[n_substr], str + start, i - start + 1);
+			n_substr++;
+		}
+		else if (str[i] == '\"')
+		{
+			i++;
+			start = i;
+			while (!is_in_set(str[i], "\"") && str[i])
+				i++;
+			cmd_arr[n_substr] = (char *)malloc(i - start + 1);
+			ft_strlcpy(cmd_arr[n_substr], str + start, i - start + 1);
+			n_substr++;
+			i++;
+		}
+		else if (str[i] == '\'')
+		{
+			i++;
+			start = i;
+			while (!is_in_set(str[i], "\'") && str[i])
+				i++;
+			cmd_arr[n_substr] = (char *)malloc(i - start + 1);
+			ft_strlcpy(cmd_arr[n_substr], str + start, i - start + 1);
+			n_substr++;
+			i++;
+		}
+		else
+			i++;
+	}
+	cmd_arr[n_substr] = NULL;
+	return (cmd_arr);
+}
+
+/*
+char	**split_cmds(char *str)
+{
+	size_t	i;
+	size_t	str_len;
+	size_t	substr_len;
+	size_t	n_substr;
+
+	i = 0;
+	str_len = ft_strlen(str);
+	n_substr = 0;
+	while (str[i])
+	{
+		if (!is_in_set(str[i], "\'\" "))
+		{
+			substr_len = 0;
+			while (!is_in_set(str[i], "\'\" "))
+			{
+				substr_len++;
+				i++;
+			}
+			n_substr++;
+		}
+		if (str[i] == '\"')
+		{
+			substr_len = 0;
+			while (!is_in_set(str[i], "\""))
+			{
+				substr_len++;
+				i++;
+			}
+			n_substr++;
+		}
+		if (str[i] == '\'')
+		{
+			substr_len = 0;
+			while (!is_in_set(str[i], "\'"))
+			{
+				substr_len++;
+				i++;
+			}
+			n_substr++;
+		}
+	}
+}
+*/
+/*
+int	main(int argc, char **argv)
+{
+	(void)argc;
+	char	**cmd_arr;
+
+	argv++;
+	cmd_arr = argv;
+	while (*cmd_arr)
+		printf("Var content: %s\n", *cmd_arr++);
 	return (0);
 }
 */
