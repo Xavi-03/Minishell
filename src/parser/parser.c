@@ -116,7 +116,7 @@ int	cmd_cmp(char *input, t_sh *sh)
 void	find_cmd(char **input_arr, t_sh *sh)
 {
 	static int	i = -1;
-	char	**value_var;
+	char	*value_var;
 
 	//i = -1;
 	add_galloc(input_arr, sh);
@@ -128,8 +128,7 @@ void	find_cmd(char **input_arr, t_sh *sh)
 		if (ft_strchr(input_arr[i], '$'))
 		{
 			value_var = found_var(input_arr[i], sh);
-			while (*value_var)
-				cmd_cmp(*(value_var++), sh);
+			cmd_cmp(value_var, sh);
 		}
 		else
 			cmd_cmp(input_arr[i], sh);

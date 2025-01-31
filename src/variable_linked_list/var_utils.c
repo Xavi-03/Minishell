@@ -10,6 +10,7 @@ void	add_var(char *input, t_sh *sh)
 	t_var	*var_node;
 	int		i;
 
+	printf("input: %s\n", input);
 	i = 0;
 	if (*input == '=')
 		return ;
@@ -19,19 +20,22 @@ void	add_var(char *input, t_sh *sh)
 	while (*input && *input != '=')
 		var_node->var[i++] = *(input++);
 	input++;
-	var_node->value = ft_split(input, ' ');
+	// Horrible hack but extracts content between quotes
+	var_node->value = extract_between_chars(sh->line, '\"');
+	printf("Value: %s\n", var_node->value);
+	printf("input: %s\n", input);
 }
 
-char **found_var(char *input, t_sh *sh)
+char *found_var(char *input, t_sh *sh)
 {
 	t_var	*var_iter;
-	char 	**value;
+	char 	*value;
 
 	value = NULL;
 	var_iter = sh->var_list;
 	input++;
 	if (ft_strncmp(input, "?", 2) == 0)
-		return(ft_split(ft_itoa(sh->last_command), ' ')); // no lo puedo anyadir al galloc
+		return(ft_itoa(sh->last_command)); // no lo puedo anyadir al galloc
 	while (var_iter)
 	{
 		if (var_iter->var)
@@ -40,12 +44,6 @@ char **found_var(char *input, t_sh *sh)
 				value = var_iter->value;
 		}
 		var_iter = var_iter->next;
-	}
-	if (!value)
-	{
-		value = galloc(2 * sizeof(char *), sh);
-		value[0] = "";
-		value[1] = NULL;
 	}
 	return (value);
 }

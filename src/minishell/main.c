@@ -45,6 +45,7 @@ int	main(int argc, char **argv, char **env)
 		else
 			add_history(input);
 		add_galloc(input, sh);
+		sh->line = input;
 		if (input[0] != '\0')
 			parser(ft_split(input, ' '), sh);
 		//free(input);
