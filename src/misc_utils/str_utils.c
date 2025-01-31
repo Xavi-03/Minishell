@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   str_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/31 18:04:34 by pohernan          #+#    #+#             */
+/*   Updated: 2025/01/31 18:04:34 by pohernan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-char *extract_between_chars(char *str, char c)
+char	*extract_between_chars(char *str, char c)
 {
 	char	*ptr_first_c;
 	char	*ptr_second_c;
@@ -11,8 +23,9 @@ char *extract_between_chars(char *str, char c)
 	if (!ptr_first_c)
 		return (NULL);
 	ptr_first_c++;
-	if (ft_strlen(ptr_first_c) > 2)
-		ptr_second_c = ft_strchr(ptr_first_c, c);
+	if (ft_strlen(ptr_first_c) < 3)
+		return (NULL);
+	ptr_second_c = ft_strchr(ptr_first_c, c);
 	if (!ptr_second_c)
 		return (NULL);
 	ptr_second_c++;

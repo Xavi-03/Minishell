@@ -1,20 +1,20 @@
 #include "../../includes/minishell.h"
 
-void    sig_handler(int signum)
+void	sig_handler(int signum)
 {
-    if (signum == SIGINT)
-    {
-        printf("\n");
-        rl_on_new_line();
-        rl_replace_line("", 0);
-        rl_redisplay();
-        //readline("Hello>\n");
-    }
+	if (signum == SIGINT)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
-//Aqui hago malloc porque estoy guardano con add_galloc en find_cmd
+
+//Aqui hago malloc porque estoy guardando con add_galloc en find_cmd
 char	**arr_copy(char **arr)
 {
-	int i;
+	int		i;
 	char	**new_arr;
 
 	i = -1;
@@ -34,7 +34,6 @@ int	main(int argc, char **argv, char **env)
 	char		*line;
 	t_sh		*sh;
 
-	int	i = 0; // debugger
 	sh = malloc(sizeof(t_sh));
 	sh->l_galloc = NULL;
 	sh->env = env;
@@ -43,17 +42,15 @@ int	main(int argc, char **argv, char **env)
 	sh->cmd_list = NULL;
 	if (argc != 1)
 	{
-		///sh->cmd_list = NULL;
 		parser(arr_copy(&argv[1]), sh);
 		terminate (sh);
-		exit(1);// implement execute the input(**argv) and exit
+		exit(EXIT_FAILURE);// implement execute the input(**argv) and exit
 	}
 
 	signal(SIGINT, sig_handler);
-	while(i < 5) // tmp debugger
+	while (true)
 	{
-		//sh->cmd_list = NULL;
-		if (env != NULL)
+		if (!env)
 			line = "minishell> ";
 		else
 			line = line_finder(sh);
@@ -65,12 +62,8 @@ int	main(int argc, char **argv, char **env)
 		add_galloc(input, sh);
 		sh->line = input;
 		if (input[0] != '\0')
-			parser(ft_split(input_cleaner(input, sh), ' '), sh);
-		//free(input);
-		i++; // debugger
+			parser(ft_split(input, ' '), sh);
 	}
-	//usleep(1000000); // debug
-	printf("main\n"); // debug
 	terminate (sh);
 	return (0);
 }

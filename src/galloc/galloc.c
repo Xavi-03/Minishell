@@ -49,6 +49,29 @@ void	*add_galloc(void *mem, t_sh *sh)
 	return (mem);
 }
 
+void	gfree(void *ptr, t_sh *sh)
+{
+	t_galloc	*mem_node;
+	t_galloc	*prev_node;
+
+	mem_node = sh->l_galloc;
+	prev_node = NULL;
+	while (mem_node)
+	{
+		if (mem_node->mem == ptr)
+		{
+			free(ptr);
+			ptr = NULL;
+			mem_node->mem = NULL;
+			if (prev_node)
+				prev_node->next = mem_node->next;
+			free(mem_node);
+		}
+		prev_node = mem_node;
+		mem_node = mem_node->next;
+	}
+}
+
 void	*galloc(size_t size, t_sh *sh)
 {
 	t_galloc	*new_node;

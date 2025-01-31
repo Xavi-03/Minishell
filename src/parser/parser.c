@@ -151,6 +151,7 @@ void	pipe_cleaner(t_sh *sh)
 	}
 }
 
+/*
 char *input_cleaner(char *input, t_sh *sh)
 {
 	char	*input_clean;
@@ -188,7 +189,7 @@ char *input_cleaner(char *input, t_sh *sh)
 	printf("%s\n");
 	return (input);
 }
-
+*/
 void	parser(char **input_arr, t_sh *sh)
 {
 	//char **input_arr;
