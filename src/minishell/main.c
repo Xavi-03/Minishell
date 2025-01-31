@@ -11,6 +11,22 @@ void    sig_handler(int signum)
         //readline("Hello>\n");
     }
 }
+//Aqui hago malloc porque estoy guardano con add_galloc en find_cmd
+char	**arr_copy(char **arr)
+{
+	int i;
+	char	**new_arr;
+
+	i = -1;
+	while (arr[++i])
+		;
+	new_arr = malloc((i + 1) * sizeof(char *));
+	i = -1;
+	while (arr[++i])
+		new_arr[i] = ft_strdup(arr[i]);
+	new_arr[i] = NULL;
+	return (new_arr);
+}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -24,9 +40,11 @@ int	main(int argc, char **argv, char **env)
 	sh->env = env;
 	sh->last_command = 0;
 	sh->var_list = var_init(sh->var_list, sh);
+	sh->cmd_list = NULL;
 	if (argc != 1)
 	{
-		parser(&argv[1], sh);
+		///sh->cmd_list = NULL;
+		parser(arr_copy(&argv[1]), sh);
 		terminate (sh);
 		exit(1);// implement execute the input(**argv) and exit
 	}
@@ -34,9 +52,9 @@ int	main(int argc, char **argv, char **env)
 	signal(SIGINT, sig_handler);
 	while(i < 5) // tmp debugger
 	{
-		sh->cmd_list = NULL;
-		if (env == NULL)
-			line = "minishell\n> ";
+		//sh->cmd_list = NULL;
+		if (env != NULL)
+			line = "minishell> ";
 		else
 			line = line_finder(sh);
 		input = readline(line);
@@ -47,7 +65,7 @@ int	main(int argc, char **argv, char **env)
 		add_galloc(input, sh);
 		sh->line = input;
 		if (input[0] != '\0')
-			parser(ft_split(input, ' '), sh);
+			parser(ft_split(input_cleaner(input, sh), ' '), sh);
 		//free(input);
 		i++; // debugger
 	}

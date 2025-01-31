@@ -53,6 +53,7 @@ t_var	*var_addnode(t_sh *sh)
 	t_var	*new_node;
 	t_var	*node_iter;
 
+	new_node = NULL;
 	new_node = var_init(new_node, sh);
 	node_iter = sh->var_list;
 	while (node_iter->next)

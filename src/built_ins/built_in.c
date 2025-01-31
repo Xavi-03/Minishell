@@ -53,7 +53,10 @@ int	exec_built_in(t_sh *sh)
 	else if (is_built_in(cmd, "env"))
 		printf("env\n");
 	else if (is_built_in(cmd, "exit"))
+	{
+		terminate(sh);
 		exit(EXIT_SUCCESS);
+	}
 	else
 		return (1);
 	return (0);

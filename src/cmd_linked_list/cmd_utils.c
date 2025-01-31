@@ -4,6 +4,7 @@ t_cmd	*cmd_addnode(t_sh *sh)
 {
 	t_cmd	*new_node;
 
+	new_node = NULL;
 	new_node = cmd_init(new_node, sh);
 	new_node->start = sh->cmd_list->start;
 	sh->cmd_list->next = new_node;
@@ -14,7 +15,7 @@ t_cmd	*cmd_addnode(t_sh *sh)
 t_cmd	*cmd_init(t_cmd *cmd_list, t_sh *sh)
 {
 	cmd_list = galloc(sizeof(t_cmd), sh);
-	//cmd_list->pid = 42;
+	cmd_list->pid = 42;
 	cmd_list->cmd_count = 0;
 	cmd_list->main_process = 0;
 	cmd_list->in_pipe = 0;
