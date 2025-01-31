@@ -83,6 +83,7 @@ void	*galloc(size_t size, t_sh *sh);
 //parser.c
 void	find_cmd(char **input_arr, t_sh *sh);
 void	parser(char **input_arr, t_sh *sh);
+void	pipe_cleaner(t_sh *sh);
 //execute.h
 void	in_file(t_sh *sh);
 void	out_file(t_sh *sh);

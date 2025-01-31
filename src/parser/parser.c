@@ -2,7 +2,7 @@
 
 int	command_builder(char *input, t_sh *sh)
 {
-	char	*path;
+	//char	*path;
 	t_cmd	*cmd;
 
 	cmd = sh->cmd_list;
@@ -78,7 +78,8 @@ int	check_std_redir(char *input, t_sh *sh)
 	return (0);
 }
 
-int	manage_cmd_pipes(char *input, t_sh *sh)
+// he borrado char *input del input de la function
+int	manage_cmd_pipes(t_sh *sh)
 {
 	t_cmd	*cmd;
 
@@ -107,7 +108,7 @@ int	cmd_cmp(char *input, t_sh *sh)
 	else if (check_std_redir(input, sh))
 		check_in_out_file(input, sh);
 	else if (ft_strncmp(input, "|", 2) == 0)
-		manage_cmd_pipes(input, sh);
+		manage_cmd_pipes(sh);
 	else
 		command_builder(input, sh);
 	return (0);
