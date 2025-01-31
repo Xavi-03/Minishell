@@ -111,11 +111,42 @@ void	echo(t_sh *sh)
 	exit (0);
 }
 
+char	**add_var_env(t_sh *sh)
+{
+	char	**new_arr;
+	int		i;
+
+	i = -1;
+	while (sh->env[++i])
+		;
+	new_arr = galloc((i + 2) * sizeof(char *), sh);
+	i = -1;
+	while (sh->env[++i])
+	{
+		new_arr[i]= ft_strdup(sh->env[i]);
+		add_galloc(new_arr[i], sh);
+	}
+	new_arr[i] = ft_strdup(sh->cmd_list->cmd_arr[1]); // maybe necesita cambiarse por ftstrjoin
+	add_galloc(new_arr[i], sh);
+	new_arr[++i] = NULL;
+
+	return (new_arr);
+}
+
 void	export(t_sh *sh)
 {
 	char	**env_ptr;
 
 	env_ptr = sh->env;
-	while (*env_ptr)
+	//printf("___%s\n", &sh->cmd_list->cmd_arr[0][0]);
+	if (sh->cmd_list->cmd_arr[1])
+		sh->env = add_var_env(sh);
+	else
+	{
+		while (*env_ptr)
 		printf("%s" RESET_COLOR "\n", *env_ptr++);
+	}
+	int	i = -1;
+	while (sh->env[++i])
+		printf("%s\n", sh->env[i]);
 }

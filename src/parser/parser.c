@@ -103,7 +103,7 @@ int	cmd_cmp(char *input, t_sh *sh)
 	t_cmd	*cmd;
 
 	cmd = sh->cmd_list;
-	if (ft_strchr(input, '='))
+	if (ft_strchr(input, '=') && ft_strncmp(sh->cmd_list->cmd_arr[0], "export", ft_strlen("export")) != 0)
 		add_var(input, sh);
 	else if (check_std_redir(input, sh))
 		check_in_out_file(input, sh);
@@ -218,6 +218,7 @@ void	parser(char **input_arr, t_sh *sh)
 	else if (sh->cmd_list->pid == 0 && !sh->cmd_list->main_process)
 	{
 		prepare_pipe(sh);
+		printf("_-_%s\n", sh->cmd_list->cmd_arr[1]);
 		if (sh->cmd_list->infile)
 			in_file(sh);
 		if (sh->cmd_list->outfile)
@@ -239,6 +240,7 @@ void	parser(char **input_arr, t_sh *sh)
 			if (sh->cmd_list->outfile)
 				out_file(sh);
 			prepare_pipe(sh);
+			printf("_-_%s\n", sh->cmd_list->cmd_arr[1]);
 			exec_built_in(sh);
 		}
 		temp_cmd = temp_cmd->next;
