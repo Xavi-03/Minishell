@@ -70,11 +70,11 @@ typedef struct s_galloc
 //line_finder.c
 char	*user_finder(char *user, char *pc, t_sh *sh);
 char	*path_finder(t_sh *sh);
-char	*line_finder(t_sh *sh);
+char	*prompt_finder(t_sh *sh);
 char	*get_path(char *command);
-//linee_utils.c
+//prompte_utils.c
 int		ft_lentoc(const char *str, char c);
-char	*linejoin(char *user, char *path, t_sh *sh);
+char	*promptjoin(char *user, char *path, t_sh *sh);
 char	*userjoin(char *user, char *pc, t_sh *sh);
 //galloc.c
 void	gfree(void *ptr, t_sh *sh);

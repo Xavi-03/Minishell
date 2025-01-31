@@ -31,7 +31,7 @@ char	**arr_copy(char **arr)
 int	main(int argc, char **argv, char **env)
 {
 	char		*input;
-	char		*line;
+	char		*prompt;
 	t_sh		*sh;
 
 	sh = malloc(sizeof(t_sh));
@@ -51,10 +51,10 @@ int	main(int argc, char **argv, char **env)
 	while (true)
 	{
 		if (!env)
-			line = "minishell> ";
+			prompt = "minishell> ";
 		else
-			line = line_finder(sh);
-		input = readline(line);
+			prompt = prompt_finder(sh);
+		input = readline(prompt);
 		if (!input)
 			terminate(sh);
 		else
