@@ -125,7 +125,7 @@ void	find_cmd(char **input_arr, t_sh *sh)
 		add_galloc(input_arr[i], sh);
 		if (ft_strchr(input_arr[i], '$'))
 		{
-			value_var = found_var(input_arr[i], sh);
+			value_var = find_var(input_arr[i], sh);
 			cmd_cmp(value_var, sh);
 		}
 		else

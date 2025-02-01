@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:04:34 by pohernan          #+#    #+#             */
-/*   Updated: 2025/01/31 22:10:52 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/01 17:19:45 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,17 @@ char	**prepare_cmd_arr(char *str)
 	n_substr = 0;
 	while (str[i])
 	{
-		if (!is_in_set(str[i], "\'\" "))
+		if (is_in_set(str[i], "|><"))
+		{
+			cmd_arr[n_substr] = (char *)malloc(2);
+			ft_strlcpy(cmd_arr[n_substr], str + i, 2);
+			n_substr++;
+			i++;
+		}
+		else if (!is_in_set(str[i], "\'\" "))
 		{
 			start = i;
-			while (!is_in_set(str[i], "\'\" ") && str[i])
+			while (!is_in_set(str[i], "\'\"|>< ") && str[i])
 				i++;
 			cmd_arr[n_substr] = (char *)malloc(i - start + 1);
 			ft_strlcpy(cmd_arr[n_substr], str + start, i - start + 1);
@@ -115,7 +122,7 @@ char	**prepare_cmd_arr(char *str)
 		{
 			i++;
 			start = i;
-			while (!is_in_set(str[i], "\"") && str[i])
+			while (!is_in_set(str[i], "\"|><") && str[i])
 				i++;
 			cmd_arr[n_substr] = (char *)malloc(i - start + 1);
 			ft_strlcpy(cmd_arr[n_substr], str + start, i - start + 1);
@@ -139,63 +146,26 @@ char	**prepare_cmd_arr(char *str)
 	cmd_arr[n_substr] = NULL;
 	return (cmd_arr);
 }
-
 /*
-char	**split_cmds(char *str)
-{
-	size_t	i;
-	size_t	str_len;
-	size_t	substr_len;
-	size_t	n_substr;
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <readline/readline.h>
 
-	i = 0;
-	str_len = ft_strlen(str);
-	n_substr = 0;
-	while (str[i])
-	{
-		if (!is_in_set(str[i], "\'\" "))
-		{
-			substr_len = 0;
-			while (!is_in_set(str[i], "\'\" "))
-			{
-				substr_len++;
-				i++;
-			}
-			n_substr++;
-		}
-		if (str[i] == '\"')
-		{
-			substr_len = 0;
-			while (!is_in_set(str[i], "\""))
-			{
-				substr_len++;
-				i++;
-			}
-			n_substr++;
-		}
-		if (str[i] == '\'')
-		{
-			substr_len = 0;
-			while (!is_in_set(str[i], "\'"))
-			{
-				substr_len++;
-				i++;
-			}
-			n_substr++;
-		}
-	}
-}
-*/
-/*
 int	main(int argc, char **argv)
 {
 	(void)argc;
+	(void)argv;
 	char	**cmd_arr;
+	char	*line;
 
-	argv++;
-	cmd_arr = argv;
-	while (*cmd_arr)
-		printf("Var content: %s\n", *cmd_arr++);
+	while (true)
+	{
+		line = readline("testshell > ");
+		cmd_arr = prepare_cmd_arr(line);
+		while (*cmd_arr)
+			printf("Var content: %s\n", *cmd_arr++);
+	}
 	return (0);
 }
 */

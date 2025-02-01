@@ -62,7 +62,7 @@ int	main(int argc, char **argv, char **env)
 		add_galloc(input, sh);
 		sh->line = input;
 		if (input[0] != '\0')
-			parser(ft_split(input, ' '), sh);
+			parser(prepare_cmd_arr(input), sh);
 		gfree(input, sh);
 	}
 	terminate (sh);
