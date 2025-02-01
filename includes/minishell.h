@@ -104,7 +104,7 @@ t_cmd	*cmd_addnode(t_sh *sh);
 t_cmd	*cmd_init(t_cmd *cmd_list, t_sh *sh);
 //var_utils.c
 void	add_var(char *input, t_sh *sh);
-char	*found_var(char *input, t_sh *sh);
+char	**found_var(char *input, t_sh *sh);
 t_var	*var_init(t_var *var, t_sh *sh);
 t_var	*var_addnode(t_sh *sh);
 

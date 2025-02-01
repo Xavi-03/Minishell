@@ -103,7 +103,7 @@ int	cmd_cmp(char *input, t_sh *sh)
 	t_cmd	*cmd;
 
 	cmd = sh->cmd_list;
-	if (ft_strchr(input, '=') && ft_strncmp(sh->cmd_list->cmd_arr[0], "export", ft_strlen("export")) != 0)
+	if (ft_strchr(input, '='))//&& ft_strncmp(sh->cmd_list->cmd_arr[0], "export", ft_strlen("export")) != 0)
 		add_var(input, sh);
 	else if (check_std_redir(input, sh))
 		check_in_out_file(input, sh);
@@ -115,6 +115,32 @@ int	cmd_cmp(char *input, t_sh *sh)
 }
 
 void	find_cmd(char **input_arr, t_sh *sh)
+{
+	static int	i = -1;
+	char **var_arr;
+
+	add_galloc(input_arr, sh);
+	while (input_arr[++i])
+	{
+		add_galloc(input_arr[i], sh);
+		if (!ft_strchr(input_arr[i], '$'))
+		{
+			cmd_cmp(input_arr[i], sh); // necesita cambiar el nombre de funcion
+			continue ;
+		}
+		var_arr = found_var(input_arr[i], sh);
+		printf("var_founded\n");
+		while (*var_arr)
+		{
+			cmd_cmp(*var_arr, sh);
+			var_arr++;
+		}
+	}
+	if (!input_arr[i])
+		i = -1;
+}
+
+/*void	find_cmd(char **input_arr, t_sh *sh)
 {
 	static int	i = -1;
 	char	*value_var;
@@ -133,7 +159,7 @@ void	find_cmd(char **input_arr, t_sh *sh)
 	}
 	if (!input_arr[i])
 		i = -1;
-}
+}*/
 
 void	pipe_cleaner(t_sh *sh)
 {
@@ -207,6 +233,8 @@ void	parser(char **input_arr, t_sh *sh)
 	// TODO revisar essto, hay que usar subprocesos con builtins
 
 	//TODO separa a dos funciones distintas lo siguiente
+	if (!sh->cmd_list->cmd_arr)
+		return ;
 	if (sh->cmd_list->built_in || sh->cmd_list->cmd_arr)
 		sh->cmd_list = fork_create(sh);
 	// Subprocess
@@ -218,7 +246,6 @@ void	parser(char **input_arr, t_sh *sh)
 	else if (sh->cmd_list->pid == 0 && !sh->cmd_list->main_process)
 	{
 		prepare_pipe(sh);
-		printf("_-_%s\n", sh->cmd_list->cmd_arr[1]);
 		if (sh->cmd_list->infile)
 			in_file(sh);
 		if (sh->cmd_list->outfile)
@@ -240,7 +267,6 @@ void	parser(char **input_arr, t_sh *sh)
 			if (sh->cmd_list->outfile)
 				out_file(sh);
 			prepare_pipe(sh);
-			printf("_-_%s\n", sh->cmd_list->cmd_arr[1]);
 			exec_built_in(sh);
 		}
 		temp_cmd = temp_cmd->next;
