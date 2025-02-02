@@ -105,7 +105,7 @@ int	cmd_cmp(char *input, t_sh *sh)
 	cmd = sh->cmd_list;
 	if (ft_strchr(input, '='))//&& ft_strncmp(sh->cmd_list->cmd_arr[0], "export", ft_strlen("export")) != 0)
 		add_var(input, sh);
-	else if (check_std_redir(input, sh))
+	if (check_std_redir(input, sh))
 		check_in_out_file(input, sh);
 	else if (ft_strncmp(input, "|", 2) == 0)
 		manage_cmd_pipes(sh);
@@ -129,7 +129,6 @@ void	find_cmd(char **input_arr, t_sh *sh)
 			continue ;
 		}
 		var_arr = found_var(input_arr[i], sh);
-		printf("var_founded\n");
 		while (*var_arr)
 		{
 			cmd_cmp(*var_arr, sh);

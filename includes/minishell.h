@@ -99,6 +99,9 @@ void	cd(t_sh *sh);
 void	echo(t_sh *sh);
 void	export(t_sh *sh);
 void	executer_built_in(t_sh *sh);
+void	print_env(t_sh *sh);
+//built_in_utils.c
+char	**add_var_env(t_sh *sh);
 //cmd_utils.c
 t_cmd	*cmd_addnode(t_sh *sh);
 t_cmd	*cmd_init(t_cmd *cmd_list, t_sh *sh);
@@ -116,6 +119,10 @@ char	*extract_between_chars(char *str, char c);
 void	pipe_cleaner(t_sh *sh);
 
 #endif
+
+//valgrind --track-origins=yes --trace-children=yes --leak-check=full
+// for check memory leaks with subprocess
+
 /* DUDAS
 Como reconocer commandos, y < > | u otros simbolos y no confundirlos con commandos,
 entiendo que "< infile cmd1 | cm2 > outfile" infile se reconoce por que le precede
