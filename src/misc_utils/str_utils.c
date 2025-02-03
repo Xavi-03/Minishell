@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:04:34 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/03 22:33:20 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/03 22:38:18 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ char	**prepare_cmd_arr(char *str)
 	cmd_arr[n_substr] = NULL;
 	return (cmd_arr);
 }
-
+/*
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -175,4 +175,4 @@ int	main(int argc, char **argv)
 	}
 	return (0);
 }
-
+*/
