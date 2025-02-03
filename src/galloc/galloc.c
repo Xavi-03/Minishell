@@ -92,7 +92,7 @@ void	*galloc(size_t size, t_sh *sh)
 	new_node = malloc(sizeof(t_galloc));
 	if (!new_node)
 		printf("\"Terminate()\""); // implement terminate();
-	mem = malloc(size);
+	mem = ft_calloc(1, size);
 	if (!mem)
 		printf("\"Terminate()\""); // implement terminate();
 	new_node->mem = mem;

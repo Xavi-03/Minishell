@@ -38,6 +38,7 @@ int	main(int argc, char **argv, char **env)
 	char		*input;
 	char		*prompt;
 	t_sh		*sh;
+	(void)argv; // TODO: Handle argv
 
 	sh = malloc(sizeof(t_sh));
 	sh->l_galloc = NULL;
@@ -45,9 +46,10 @@ int	main(int argc, char **argv, char **env)
 	sh->last_command = 0;
 	sh->var_list = var_init(sh->var_list, sh);
 	sh->cmd_list = NULL;
+	sh->input_arr = NULL;
 	if (argc != 1)
 	{
-		parser(arr_copy(&argv[1]), sh);
+		//parser(arr_copy(&argv[1]), sh);
 		terminate (sh);
 		exit(EXIT_FAILURE);// implement execute the input(**argv) and exit
 	}
@@ -71,7 +73,10 @@ int	main(int argc, char **argv, char **env)
 		add_galloc(input, sh);
 		sh->line = input;
 		if (input[0] != '\0')
-			parser(ft_split(input, ' '), sh);
+		{
+			sh->input_arr = prepare_cmd_arr(input);
+			parser(sh);
+		}
 		gfree(input, sh);
 	}
 	terminate (sh);

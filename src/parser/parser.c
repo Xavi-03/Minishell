@@ -98,8 +98,11 @@ int	manage_cmd_pipes(t_sh *sh)
 }
 
 //command compare
-int	cmd_cmp(char *input, t_sh *sh)
+int	cmd_parser(char *input, int input_idx, t_sh *sh)
 {
+	/*if(add_var(input, input_idx, sh)) // pol code in merge
+		return (1);
+	else if (check_std_redir(input, sh))*/
 	t_cmd	*cmd;
 
 	cmd = sh->cmd_list;
@@ -117,6 +120,7 @@ int	cmd_cmp(char *input, t_sh *sh)
 void	find_cmd(char **input_arr, t_sh *sh)
 {
 	static int	i = -1;
+
 	char **var_arr;
 
 	add_galloc(input_arr, sh);
@@ -148,13 +152,7 @@ void	find_cmd(char **input_arr, t_sh *sh)
 	while (input_arr[++i])
 	{
 		add_galloc(input_arr[i], sh);
-		if (ft_strchr(input_arr[i], '$'))
-		{
-			value_var = found_var(input_arr[i], sh);
-			cmd_cmp(value_var, sh);
-		}
-		else
-			cmd_cmp(input_arr[i], sh);
+		cmd_parser(input_arr[i], i, sh);
 	}
 	if (!input_arr[i])
 		i = -1;
@@ -215,23 +213,17 @@ char *input_cleaner(char *input, t_sh *sh)
 	return (input);
 }
 */
-void	parser(char **input_arr, t_sh *sh)
+void	parser(t_sh *sh)
 {
 	//char **input_arr;
 	t_cmd	*temp_cmd;
+	char	**input_arr;
 	 // var init
 	sh->cmd_list = cmd_init(sh->cmd_list, sh);
 	sh->cmd_list->start = sh->cmd_list;
+	input_arr = sh->input_arr;
 
 	find_cmd(input_arr, sh);
-	//sh->cmd_list = sh->cmd_list->start; // movido a fork create
-
-	//printf("%s\n", sh->cmd_list->cmd_arr[1]); // debug
-	// check is a built_int in cmd and make a function for execute that
-	//sh->cmd_list = fork_create(sh);
-	// TODO revisar essto, hay que usar subprocesos con builtins
-
-	//TODO separa a dos funciones distintas lo siguiente
 	if (!sh->cmd_list->cmd_arr)
 		return ;
 	if (sh->cmd_list->built_in || sh->cmd_list->cmd_arr)
