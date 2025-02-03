@@ -25,7 +25,7 @@ void	find_built_in(char *input, t_sh *sh)
 	else if (is_built_in(input, "export"))
 		set_main_process(sh);
 	else if (is_built_in(input, "unset"))
-		;
+		set_main_process(sh);
 	else if (is_built_in(input, "env"))
 		set_main_process(sh);
 	else if (is_built_in(input, "exit"))
@@ -49,7 +49,7 @@ int	exec_built_in(t_sh *sh)
 	else if (is_built_in(cmd, "export"))
 		export(sh);
 	else if (is_built_in(cmd, "unset"))
-		printf("unset\n");
+		unset(sh);
 	else if (is_built_in(cmd, "env"))
 		print_env(sh);
 	else if (is_built_in(cmd, "exit"))
@@ -136,4 +136,19 @@ void	export(t_sh *sh)
 	/*int	i = -1;  //debug
 	while (sh->env[++i]) //debug
 		printf("%s\n", sh->env[i]);*/ //debug
+}
+
+
+void	unset(t_sh *sh)
+{
+	char **new_env;
+	char *var_name;
+
+	var_name = sh->cmd_list->cmd_arr[1];
+	if (!var_name)
+		return ;
+	new_env = remove_var_env(var_name, sh);
+	if (new_env)
+		sh->env = new_env;
+	var_delnode(var_name, sh);
 }

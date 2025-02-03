@@ -45,7 +45,8 @@ char	**found_var(char *input, t_sh *sh)
 	{
 		if (var_iter->var_name)
 		{
-			if (ft_strncmp(input, var_iter->var_name, ft_strlen(input)) == 0)
+			printf("hello %s    %s\n", input, var_iter->var_name);
+			if (ft_strncmp(input, var_iter->var_name, ft_strlen(var_iter->var_name)) == 0)
 			{
 				value = var_iter->value;
 			}
@@ -71,6 +72,32 @@ char	*add_var(char *input, int input_idx, t_sh *sh)
 		return (var_node->value);
 	}
 	return (NULL);
+}
+
+void	var_delnode(char *var_name, t_sh *sh)
+{
+	t_var	*iter_node;
+	t_var	*prev_node;
+
+
+	iter_node = sh->var_list;
+	prev_node = NULL;
+	while (iter_node)
+	{
+		if (iter_node->var_name && ft_strncmp(var_name, iter_node->var_name, ft_strlen(var_name)) == 0)
+		{
+			free(iter_node->var_name);
+			free(iter_node->value);
+			free(iter_node);
+			if (prev_node)
+				prev_node->next = prev_node->next->next;
+			else
+				sh->var_list = prev_node;
+		}
+		prev_node = iter_node;
+		iter_node = iter_node->next;
+	}
+
 }
 
 t_var	*var_addnode(t_sh *sh)
