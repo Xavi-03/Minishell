@@ -30,7 +30,7 @@ void	add_var(char *input, t_sh *sh)
 */
 /*
 char	*find_var(char *input, t_sh *sh)
-
+*/
 char	**found_var(char *input, t_sh *sh)
 {
 	t_var	*var_iter;
@@ -43,9 +43,9 @@ char	**found_var(char *input, t_sh *sh)
 		return (ft_split(ft_itoa(sh->last_command), ' '));
 	while (var_iter)
 	{
-		if (var_iter->var)
+		if (var_iter->var_name)
 		{
-			if (ft_strncmp(input, var_iter->var, ft_strlen(input)) == 0)
+			if (ft_strncmp(input, var_iter->var_name, ft_strlen(input)) == 0)
 			{
 				value = var_iter->value;
 			}
@@ -54,7 +54,7 @@ char	**found_var(char *input, t_sh *sh)
 	}
 	return (ft_split(value, ' '));// poner el nuevo splitter
 }
-*/
+
 
 char	*add_var(char *input, int input_idx, t_sh *sh)
 {

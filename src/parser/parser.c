@@ -100,11 +100,12 @@ int	manage_cmd_pipes(t_sh *sh)
 //command compare
 int	cmd_parser(char *input, int input_idx, t_sh *sh)
 {
-	/*if(add_var(input, input_idx, sh)) // pol code in merge
-		return (1);
-	else if (check_std_redir(input, sh))*/
+	//if(add_var(input, input_idx, sh)) // pol code in merge
+		//return (1);
+	//else if (check_std_redir(input, sh))
 	t_cmd	*cmd;
 
+	(void)input_idx;
 	cmd = sh->cmd_list;
 	if (ft_strchr(input, '='))//&& ft_strncmp(sh->cmd_list->cmd_arr[0], "export", ft_strlen("export")) != 0)
 		add_var(input, sh);
@@ -129,13 +130,13 @@ void	find_cmd(char **input_arr, t_sh *sh)
 		add_galloc(input_arr[i], sh);
 		if (!ft_strchr(input_arr[i], '$'))
 		{
-			cmd_cmp(input_arr[i], sh); // necesita cambiar el nombre de funcion
+			cmd_parser(input_arr[i], i, sh); // necesita cambiar el nombre de funcion
 			continue ;
 		}
 		var_arr = found_var(input_arr[i], sh);
 		while (*var_arr)
 		{
-			cmd_cmp(*var_arr, sh);
+			cmd_parser(*var_arr, i, sh);
 			var_arr++;
 		}
 	}
