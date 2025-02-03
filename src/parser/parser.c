@@ -100,9 +100,15 @@ int	manage_cmd_pipes(t_sh *sh)
 //command compare
 int	cmd_parser(char *input, int input_idx, t_sh *sh)
 {
-	if(add_var(input, input_idx, sh))
+	/*if(add_var(input, input_idx, sh)) // pol code in merge
 		return (1);
-	else if (check_std_redir(input, sh))
+	else if (check_std_redir(input, sh))*/
+	t_cmd	*cmd;
+
+	cmd = sh->cmd_list;
+	if (ft_strchr(input, '='))//&& ft_strncmp(sh->cmd_list->cmd_arr[0], "export", ft_strlen("export")) != 0)
+		add_var(input, sh);
+	if (check_std_redir(input, sh))
 		check_in_out_file(input, sh);
 	else if (ft_strncmp(input, "|", 2) == 0)
 		manage_cmd_pipes(sh);
@@ -115,6 +121,33 @@ void	find_cmd(char **input_arr, t_sh *sh)
 {
 	static int	i = -1;
 
+	char **var_arr;
+
+	add_galloc(input_arr, sh);
+	while (input_arr[++i])
+	{
+		add_galloc(input_arr[i], sh);
+		if (!ft_strchr(input_arr[i], '$'))
+		{
+			cmd_cmp(input_arr[i], sh); // necesita cambiar el nombre de funcion
+			continue ;
+		}
+		var_arr = found_var(input_arr[i], sh);
+		while (*var_arr)
+		{
+			cmd_cmp(*var_arr, sh);
+			var_arr++;
+		}
+	}
+	if (!input_arr[i])
+		i = -1;
+}
+
+/*void	find_cmd(char **input_arr, t_sh *sh)
+{
+	static int	i = -1;
+	char	*value_var;
+	//i = -1;
 	add_galloc(input_arr, sh);
 	while (input_arr[++i])
 	{
@@ -123,7 +156,7 @@ void	find_cmd(char **input_arr, t_sh *sh)
 	}
 	if (!input_arr[i])
 		i = -1;
-}
+}*/
 
 void	pipe_cleaner(t_sh *sh)
 {
@@ -191,6 +224,8 @@ void	parser(t_sh *sh)
 	input_arr = sh->input_arr;
 
 	find_cmd(input_arr, sh);
+	if (!sh->cmd_list->cmd_arr)
+		return ;
 	if (sh->cmd_list->built_in || sh->cmd_list->cmd_arr)
 		sh->cmd_list = fork_create(sh);
 	// Subprocess

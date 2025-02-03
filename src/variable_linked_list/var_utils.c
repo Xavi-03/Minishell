@@ -21,11 +21,17 @@ void	add_var(char *input, t_sh *sh)
 		var_node->var_name[i++] = *(input++);
 	input++;
 	// Horrible hack but extracts content between quotes
-	var_node->value = extract_between_chars(sh->line, '\"');
+	if (ft_strchr(input, '"') || ft_strchr(input, '\''))
+		var_node->value = extract_between_chars(sh->line, '\"');
+	else
+		var_node->value = ft_strdup(input);
+	//esto hay que revisarlo y ver cuando meterlo en galloc
 }
 */
 /*
 char	*find_var(char *input, t_sh *sh)
+
+char	**found_var(char *input, t_sh *sh)
 {
 	t_var	*var_iter;
 	char	*value;
@@ -34,17 +40,19 @@ char	*find_var(char *input, t_sh *sh)
 	var_iter = sh->var_list;
 	input++;
 	if (ft_strncmp(input, "?", 2) == 0)
-		return (ft_itoa(sh->last_command));
+		return (ft_split(ft_itoa(sh->last_command), ' '));
 	while (var_iter)
 	{
 		if (var_iter->var)
 		{
 			if (ft_strncmp(input, var_iter->var, ft_strlen(input)) == 0)
+			{
 				value = var_iter->value;
+			}
 		}
 		var_iter = var_iter->next;
 	}
-	return (value);
+	return (ft_split(value, ' '));// poner el nuevo splitter
 }
 */
 

@@ -4,6 +4,7 @@ void	terminate(t_sh *sh)
 {
 	free_galloc(sh);
 	free(sh);
+	exit(EXIT_SUCCESS);
 }
 
 void	free_galloc(t_sh *sh)

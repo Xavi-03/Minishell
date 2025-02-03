@@ -2,6 +2,7 @@
 
 void	sig_handler(int signum)
 {
+	//printf("%i    %i\n", signum, SIGINT);
 	if (signum == SIGINT)
 	{
 		printf("\n");
@@ -9,6 +10,10 @@ void	sig_handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	/*if (signum == SIGQUIT)
+	{
+		printf("quit\n");
+		}*/
 }
 
 //Aqui hago malloc porque estoy guardando con add_galloc en find_cmd
@@ -50,6 +55,7 @@ int	main(int argc, char **argv, char **env)
 	}
 
 	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
 	while (true)
 	{
 		if (!env)
@@ -58,7 +64,10 @@ int	main(int argc, char **argv, char **env)
 			prompt = prompt_finder(sh);
 		input = readline(prompt);
 		if (!input)
+		{
+			printf("hola\n");
 			terminate(sh);
+		}
 		else
 			add_history(input);
 		add_galloc(input, sh);

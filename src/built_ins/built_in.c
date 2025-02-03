@@ -27,7 +27,7 @@ void	find_built_in(char *input, t_sh *sh)
 	else if (is_built_in(input, "unset"))
 		;
 	else if (is_built_in(input, "env"))
-		;
+		set_main_process(sh);
 	else if (is_built_in(input, "exit"))
 		set_main_process(sh);
 	else
@@ -51,12 +51,9 @@ int	exec_built_in(t_sh *sh)
 	else if (is_built_in(cmd, "unset"))
 		printf("unset\n");
 	else if (is_built_in(cmd, "env"))
-		printf("env\n");
+		print_env(sh);
 	else if (is_built_in(cmd, "exit"))
-	{
-		terminate(sh);
-		exit(EXIT_SUCCESS);
-	}
+		terminate(sh); // exit en terminate
 	else
 		return (1);
 	return (0);
@@ -111,11 +108,32 @@ void	echo(t_sh *sh)
 	exit (0);
 }
 
+void	print_env(t_sh *sh)
+{
+	int	i;
+	i = -1;
+	while (sh->env[++i])
+		printf("%s\n", sh->env[i]);
+}
+
 void	export(t_sh *sh)
 {
 	char	**env_ptr;
 
 	env_ptr = sh->env;
-	while (*env_ptr)
-		printf("%s" RESET_COLOR "\n", *env_ptr++);
+	//si no comprobamos que cmd_arr[1] es true da segfault al intentar strchr la magia de &&
+	if (sh->cmd_list->cmd_arr[1] && !ft_strchr(sh->cmd_list->cmd_arr[1], '='))
+		return ;
+	if (sh->cmd_list->cmd_arr[1])
+	{
+		sh->env = add_var_env(sh);
+	}
+	else
+	{
+		while (*env_ptr)
+			printf("%s" RESET_COLOR "\n", *env_ptr++);
+	}
+	/*int	i = -1;  //debug
+	while (sh->env[++i]) //debug
+		printf("%s\n", sh->env[i]);*/ //debug
 }
