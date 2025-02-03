@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/04 00:24:50 by pohernan          #+#    #+#             */
+/*   Updated: 2025/02/04 00:39:05 by pohernan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 void	sig_handler(int signum)
 {
-	//printf("%i    %i\n", signum, SIGINT);
 	if (signum == SIGINT)
 	{
 		printf("\n");
@@ -10,13 +21,9 @@ void	sig_handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	/*if (signum == SIGQUIT)
-	{
-		printf("quit\n");
-		}*/
 }
 
-//Aqui hago malloc porque estoy guardando con add_galloc en find_cmd
+/* Aqui hago malloc porque estoy guardando con add_galloc en find_cmd */
 char	**arr_copy(char **arr)
 {
 	int		i;
@@ -33,41 +40,36 @@ char	**arr_copy(char **arr)
 	return (new_arr);
 }
 
-int	main(int argc, char **argv, char **env)
+t_sh	*init_sh(char **env)
 {
-	char		*input;
-	char		*prompt;
-	t_sh		*sh;
-	(void)argv; // TODO: Handle argv
+	t_sh	*sh;
 
 	sh = malloc(sizeof(t_sh));
+	if (!sh)
+		return (NULL);
 	sh->l_galloc = NULL;
 	sh->env = env;
 	sh->last_command = 0;
 	sh->var_list = var_init(sh->var_list, sh);
 	sh->cmd_list = NULL;
 	sh->input_arr = NULL;
-	if (argc != 1)
-	{
-		//parser(arr_copy(&argv[1]), sh);
-		terminate (sh);
-		exit(EXIT_FAILURE);// implement execute the input(**argv) and exit
-	}
+	return (sh);
+}
 
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, sig_handler);
+void	prompt_main(t_sh *sh)
+{
+	char	*prompt;
+	char	*input;
+
 	while (true)
 	{
-		if (!env)
+		if (!sh->env)
 			prompt = "minishell> ";
 		else
 			prompt = prompt_finder(sh);
 		input = readline(prompt);
 		if (!input)
-		{
-			printf("hola\n");
 			terminate(sh);
-		}
 		else
 			add_history(input);
 		add_galloc(input, sh);
@@ -79,6 +81,23 @@ int	main(int argc, char **argv, char **env)
 		}
 		gfree(input, sh);
 	}
+}
+
+/* TODO: Handle argv */
+int	main(int argc, char **argv, char **env)
+{
+	t_sh		*sh;
+
+	(void)argv;
+	sh = init_sh(env);
+	if (argc != 1)
+	{
+		terminate (sh);
+		exit(EXIT_FAILURE);
+	}
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
+	prompt_main(sh);
 	terminate (sh);
 	return (0);
 }

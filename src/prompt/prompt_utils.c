@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prompt_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/04 00:32:30 by pohernan          #+#    #+#             */
+/*   Updated: 2025/02/04 00:32:50 by pohernan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 void	join_prompt_val(char **prompt, char **val)
@@ -37,7 +49,8 @@ char	*userjoin(char *user, char *pc, t_sh *sh)
 	if (!pc)
 		pc = "?";
 	div1 = "@";
-	prompt = galloc((ft_strlen(user) + ft_strlen(div1) + ft_strlen(pc) + 1), sh);
+	prompt = galloc((ft_strlen(user) + ft_strlen(div1) + \
+		ft_strlen(pc) + 1), sh);
 	prompt[0] = '\0';
 	join_prompt_val(&prompt, &user);
 	join_prompt_val(&prompt, &div1);

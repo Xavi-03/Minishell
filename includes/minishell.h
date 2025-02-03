@@ -120,6 +120,7 @@ t_var	*var_addnode(t_sh *sh);
 void	free_str_arr(char **str_arr);
 char	*extract_between_chars(char *str, char c);
 char	**prepare_cmd_arr(char *str);
+char	*get_env_var(char **env, char *env_var);
 
 // Pipe utils
 void	pipe_cleaner(t_sh *sh);

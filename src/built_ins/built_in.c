@@ -1,6 +1,16 @@
-#include "../../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   built_in.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/04 00:18:02 by pohernan          #+#    #+#             */
+/*   Updated: 2025/02/04 00:19:58 by pohernan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-//void	echo_built_int()
+#include "../../includes/minishell.h"
 
 int	is_built_in(char *input, char *cmd)
 {
@@ -53,36 +63,10 @@ int	exec_built_in(t_sh *sh)
 	else if (is_built_in(cmd, "env"))
 		print_env(sh);
 	else if (is_built_in(cmd, "exit"))
-		terminate(sh); // exit en terminate
+		terminate(sh);
 	else
 		return (1);
 	return (0);
-}
-
-void	cd(t_sh *sh)
-{
-	char	*home_path;
-	char	*path;
-	t_cmd	*cmd;
-
-	cmd = sh->cmd_list;
-	home_path = getenv("HOME");
-	if (cmd->cmd_count == 1)
-	{
-		chdir(home_path);
-		return ;
-	}
-	path = cmd->cmd_arr[1];
-	if (path[0] == '~')
-	{
-		if (ft_strlen(path) > 1)
-			home_path = ft_strjoin(home_path, path + 1);
-		else
-			home_path = ft_strdup(home_path);
-		chdir(home_path);
-		free(home_path);
-	}
-	chdir(path);
 }
 
 void	echo(t_sh *sh)
@@ -106,46 +90,4 @@ void	echo(t_sh *sh)
 	if (ft_strncmp(cmd->cmd_arr[1], "-n", 3) != 0)
 		printf("\n");
 	exit (0);
-}
-
-void	print_env(t_sh *sh)
-{
-	int	i;
-	i = -1;
-	while (sh->env[++i])
-		printf("%s\n", sh->env[i]);
-}
-
-void	export(t_sh *sh)
-{
-	char	**env_ptr;
-
-	env_ptr = sh->env;
-	//si no comprobamos que cmd_arr[1] es true da segfault al intentar strchr la magia de &&
-	if (sh->cmd_list->cmd_arr[1] && !ft_strchr(sh->cmd_list->cmd_arr[1], '='))
-		return ;
-	if (sh->cmd_list->cmd_arr[1])
-	{
-		sh->env = add_var_env(sh);
-	}
-	else
-	{
-		while (*env_ptr)
-			printf("%s" RESET_COLOR "\n", *env_ptr++);
-	}
-}
-
-
-void	unset(t_sh *sh)
-{
-	char **new_env;
-	char *var_name;
-
-	var_name = sh->cmd_list->cmd_arr[1];
-	if (!var_name)
-		return ;
-	new_env = remove_var_env(var_name, sh);
-	if (new_env)
-		sh->env = new_env;
-	var_delnode(var_name, sh);
 }

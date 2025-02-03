@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/04 00:35:55 by pohernan          #+#    #+#             */
+/*   Updated: 2025/02/04 00:38:45 by pohernan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	command_builder(char *input, t_sh *sh)
 {
-	//char	*path;
 	t_cmd	*cmd;
 
 	cmd = sh->cmd_list;
@@ -78,7 +89,7 @@ int	check_std_redir(char *input, t_sh *sh)
 	return (0);
 }
 
-// he borrado char *input del input de la function
+/* TODO: Check pipe implementation */
 int	manage_cmd_pipes(t_sh *sh)
 {
 	t_cmd	*cmd;
@@ -88,7 +99,7 @@ int	manage_cmd_pipes(t_sh *sh)
 	cmd->out_pipe = 1;
 	cmd_addnode(sh);
 	cmd = sh->cmd_list;
-	if (pipe(fd_pipe) < 0) //TODO:hay que revisar si esto falla que hay que hacer
+	if (pipe(fd_pipe) < 0)
 		printf("error\n");
 	cmd->in_pipe = 1;
 	cmd->fd_pipe = galloc(2 * sizeof(int), sh);
@@ -98,14 +109,10 @@ int	manage_cmd_pipes(t_sh *sh)
 }
 
 //command compare
-//int	cmd_parser(char *input, int input_idx, t_sh *sh)
 int	cmd_parser(char *input, t_sh *sh)
 {
 	t_cmd	*cmd;
 
-	/*if(add_var(input, input_idx, sh)) // pol code in merge
-		return (1);*/
-	//else if (check_std_redir(input, sh))
 	cmd = sh->cmd_list;
 	//else if (check_std_redir(input, sh))
 	if (ft_strchr(input, '='))//&& ft_strncmp(sh->cmd_list->cmd_arr[0], "export", ft_strlen("export")) != 0)
@@ -122,8 +129,7 @@ int	cmd_parser(char *input, t_sh *sh)
 void	find_cmd(char **input_arr, t_sh *sh)
 {
 	static int	i = -1;
-
-	char **var_arr;
+	char	**var_arr;
 
 	add_galloc(input_arr, sh);
 	while (input_arr[++i])
@@ -131,7 +137,7 @@ void	find_cmd(char **input_arr, t_sh *sh)
 		add_galloc(input_arr[i], sh);
 		if (!ft_strchr(input_arr[i], '$'))
 		{
-			cmd_parser(input_arr[i], sh); // necesita cambiar el nombre de funcion
+			cmd_parser(input_arr[i], sh);
 			continue ;
 		}
 		var_arr = found_var(input_arr[i], sh);
@@ -144,21 +150,6 @@ void	find_cmd(char **input_arr, t_sh *sh)
 	if (!input_arr[i])
 		i = -1;
 }
-
-/*void	find_cmd(char **input_arr, t_sh *sh)
-{
-	static int	i = -1;
-	char	*value_var;
-	//i = -1;
-	add_galloc(input_arr, sh);
-	while (input_arr[++i])
-	{
-		add_galloc(input_arr[i], sh);
-		cmd_parser(input_arr[i], i, sh);
-	}
-	if (!input_arr[i])
-		i = -1;
-}*/
 
 void	pipe_cleaner(t_sh *sh)
 {
@@ -215,26 +206,25 @@ char *input_cleaner(char *input, t_sh *sh)
 	return (input);
 }
 */
+
+/* TODO:revisar si debe ser terminate o exit para el subproceso */
 void	parser(t_sh *sh)
 {
-	//char **input_arr;
 	t_cmd	*temp_cmd;
 	char	**input_arr;
-	 // var init
+
 	sh->cmd_list = cmd_init(sh->cmd_list, sh);
 	sh->cmd_list->start = sh->cmd_list;
 	input_arr = sh->input_arr;
-
 	find_cmd(input_arr, sh);
 	if (!sh->cmd_list->cmd_arr)
 		return ;
 	if (sh->cmd_list->built_in || sh->cmd_list->cmd_arr)
 		sh->cmd_list = fork_create(sh);
-	// Subprocess
 	if (sh->cmd_list->pid == -1 && !sh->cmd_list->main_process)
 	{
 		printf("Fork Error\n");
-		exit(1); // TODO revisar si debe ser terminate o exit para el subproceso
+		exit(1);
 	}
 	else if (sh->cmd_list->pid == 0 && !sh->cmd_list->main_process)
 	{
@@ -271,7 +261,6 @@ void	parser(t_sh *sh)
 	while (temp_cmd)
 	{
 		waitpid(temp_cmd->pid, &sh->last_command, 0);
-		//printf("%i\n", sh->last_comand);
 		temp_cmd = temp_cmd->next;
 	}
 }

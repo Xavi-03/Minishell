@@ -1,11 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   var_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/04 00:33:57 by pohernan          #+#    #+#             */
+/*   Updated: 2025/02/04 00:34:52 by pohernan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-/*void	change_value(char *input, t_sh *sh)
-{
-
-}*/
-//falta cuando pasan "$?"
-
+/* TODO: check code for leaks and use galloc */
 void	add_var(char *input, t_sh *sh)
 {
 	t_var	*var_node;
@@ -14,23 +21,20 @@ void	add_var(char *input, t_sh *sh)
 	if (*input == '=')
 		return ;
 	var_node = var_addnode(sh);
-	var_node->var_name = galloc(((ft_strlen(input)
-		- ft_strlen(ft_strchr(input, '='))) + 1) * sizeof(char), sh);
+	var_node->var_name = galloc(((ft_strlen(input) - \
+		ft_strlen(ft_strchr(input, '='))) + 1) * sizeof(char), sh);
 	i = 0;
 	while (*input && *input != '=')
 		var_node->var_name[i++] = *(input++);
 	input++;
-	// Horrible hack but extracts content between quotes
 	if (ft_strchr(input, '"') || ft_strchr(input, '\''))
 		var_node->value = extract_between_chars(sh->line, '\"');
 	else
 		var_node->value = ft_strdup(input);
-	//esto hay que revisarlo y ver cuando meterlo en galloc
 }
 
-/*
-char	*find_var(char *input, t_sh *sh)
-*/
+/* TODO: Add new splitter */
+
 char	**found_var(char *input, t_sh *sh)
 {
 	t_var	*var_iter;
@@ -45,45 +49,26 @@ char	**found_var(char *input, t_sh *sh)
 	{
 		if (var_iter->var_name)
 		{
-			//printf("hello %s    %s\n", input, var_iter->var_name);
-			if (ft_strncmp(input, var_iter->var_name, ft_strlen(var_iter->var_name)) == 0)
-			{
+			if (ft_strncmp(input, var_iter->var_name, \
+				ft_strlen(var_iter->var_name)) == 0)
 				value = var_iter->value;
-			}
 		}
 		var_iter = var_iter->next;
 	}
-	return (ft_split(value, ' '));// poner el nuevo splitter
+	return (ft_split(value, ' '));
 }
-
-/*char	*add_var(char *input, int input_idx, t_sh *sh)
-{
-	t_var	*var_node;
-	char	*var_content;
-
-	var_content = sh->input_arr[input_idx + 1];
-	if (input[ft_strlen(input) - 1] == '=' && var_content)
-	{
-		var_node = var_addnode(sh);
-		var_node->var_name = galloc(strlen(input), sh);
-		var_node->value = add_galloc(ft_strdup(var_content), sh);
-		ft_strlcpy(var_node->var_name, input, ft_strlen(input) - 1);
-		return (var_node->value);
-	}
-	return (NULL);
-	}*/
 
 void	var_delnode(char *var_name, t_sh *sh)
 {
 	t_var	*iter_node;
 	t_var	*prev_node;
 
-
 	iter_node = sh->var_list;
 	prev_node = NULL;
 	while (iter_node)
 	{
-		if (iter_node->var_name && ft_strncmp(var_name, iter_node->var_name, ft_strlen(var_name)) == 0)
+		if (iter_node->var_name && \
+			ft_strncmp(var_name, iter_node->var_name, ft_strlen(var_name)) == 0)
 		{
 			free(iter_node->var_name);
 			free(iter_node->value);
@@ -96,7 +81,6 @@ void	var_delnode(char *var_name, t_sh *sh)
 		prev_node = iter_node;
 		iter_node = iter_node->next;
 	}
-
 }
 
 t_var	*var_addnode(t_sh *sh)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   galloc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/04 00:22:18 by pohernan          #+#    #+#             */
+/*   Updated: 2025/02/04 00:23:53 by pohernan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 void	terminate(t_sh *sh)
@@ -24,6 +36,8 @@ void	free_galloc(t_sh *sh)
 	}
 }
 
+/*TODO Implement terminate and check if galloc fails*/
+
 void	*add_galloc(void *mem, t_sh *sh)
 {
 	t_galloc	*new_node;
@@ -34,14 +48,14 @@ void	*add_galloc(void *mem, t_sh *sh)
 	{
 		sh->l_galloc = malloc(sizeof(t_galloc));
 		if (!sh->l_galloc)
-			return (NULL);// check if first galloc fail;
+			return (NULL);
 		sh->l_galloc->next = NULL;
 		sh->l_galloc->mem = NULL;
 		sh->l_galloc->start = sh->l_galloc;
 	}
 	new_node = malloc(sizeof(t_galloc));
 	if (!new_node)
-		printf("Terminate()"); // implement terminate();
+		printf("Terminate()");
 	new_node->mem = mem;
 	new_node->next = NULL;
 	new_node->start = sh->l_galloc->start;
@@ -74,6 +88,8 @@ void	gfree(void *ptr, t_sh *sh)
 	}
 }
 
+/*TODO Implement terminate and check if galloc fails*/
+
 void	*galloc(size_t size, t_sh *sh)
 {
 	t_galloc	*new_node;
@@ -84,17 +100,17 @@ void	*galloc(size_t size, t_sh *sh)
 	{
 		sh->l_galloc = malloc(sizeof(t_galloc));
 		if (!sh->l_galloc)
-			return (NULL);// check if first galloc fail;
+			return (NULL);
 		sh->l_galloc->next = NULL;
 		sh->l_galloc->mem = NULL;
 		sh->l_galloc->start = sh->l_galloc;
 	}
 	new_node = malloc(sizeof(t_galloc));
 	if (!new_node)
-		printf("\"Terminate()\""); // implement terminate();
+		printf("\"Terminate()\"");
 	mem = ft_calloc(1, size);
 	if (!mem)
-		printf("\"Terminate()\""); // implement terminate();
+		printf("\"Terminate()\"");
 	new_node->mem = mem;
 	new_node->next = NULL;
 	new_node->start = sh->l_galloc->start;
