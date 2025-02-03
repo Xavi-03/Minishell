@@ -133,9 +133,6 @@ void	export(t_sh *sh)
 		while (*env_ptr)
 			printf("%s" RESET_COLOR "\n", *env_ptr++);
 	}
-	/*int	i = -1;  //debug
-	while (sh->env[++i]) //debug
-		printf("%s\n", sh->env[i]);*/ //debug
 }
 
 

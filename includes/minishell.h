@@ -110,8 +110,8 @@ t_cmd	*cmd_addnode(t_sh *sh);
 t_cmd	*cmd_init(t_cmd *cmd_list, t_sh *sh);
 //var_utils.c
 void	var_delnode(char *var_name, t_sh *sh);
-char	*add_var(char *input, int input_idx, t_sh *sh); // merge pol
-//void	add_var(char *input, t_sh *sh); // merge javi
+//char	*add_var(char *input, int input_idx, t_sh *sh); // merge pol
+void	add_var(char *input, t_sh *sh); // merge javi
 char	**found_var(char *input, t_sh *sh);
 t_var	*var_init(t_var *var, t_sh *sh);
 t_var	*var_addnode(t_sh *sh);

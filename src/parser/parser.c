@@ -98,25 +98,18 @@ int	manage_cmd_pipes(t_sh *sh)
 }
 
 //command compare
-int	cmd_parser(char *input, int input_idx, t_sh *sh)
+//int	cmd_parser(char *input, int input_idx, t_sh *sh)
+int	cmd_parser(char *input, t_sh *sh)
 {
-<<<<<<< HEAD
 	t_cmd	*cmd;
 
-	if(add_var(input, input_idx, sh)) // pol code in merge
-		return (1);
-	else if (check_std_redir(input, sh))
-	cmd = sh->cmd_list;
-=======
+	/*if(add_var(input, input_idx, sh)) // pol code in merge
+		return (1);*/
 	//else if (check_std_redir(input, sh))
-	t_cmd	*cmd;
-
 	cmd = sh->cmd_list;
-	if(add_var(input, input_idx, sh)) // pol code in merge
-		return (1);
-	//if (ft_strchr(input, '='))//&& ft_strncmp(sh->cmd_list->cmd_arr[0], "export", ft_strlen("export")) != 0)
-		//add_var(input, sh);
->>>>>>> origin/dev_javi
+	//else if (check_std_redir(input, sh))
+	if (ft_strchr(input, '='))//&& ft_strncmp(sh->cmd_list->cmd_arr[0], "export", ft_strlen("export")) != 0)
+		add_var(input, sh);
 	if (check_std_redir(input, sh))
 		check_in_out_file(input, sh);
 	else if (ft_strncmp(input, "|", 2) == 0)
@@ -138,13 +131,13 @@ void	find_cmd(char **input_arr, t_sh *sh)
 		add_galloc(input_arr[i], sh);
 		if (!ft_strchr(input_arr[i], '$'))
 		{
-			cmd_parser(input_arr[i], i, sh); // necesita cambiar el nombre de funcion
+			cmd_parser(input_arr[i], sh); // necesita cambiar el nombre de funcion
 			continue ;
 		}
 		var_arr = found_var(input_arr[i], sh);
 		while (*var_arr)
 		{
-			cmd_parser(*var_arr, i, sh);
+			cmd_parser(*var_arr, sh);
 			var_arr++;
 		}
 	}

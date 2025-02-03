@@ -5,7 +5,7 @@
 
 }*/
 //falta cuando pasan "$?"
-/*
+
 void	add_var(char *input, t_sh *sh)
 {
 	t_var	*var_node;
@@ -27,7 +27,7 @@ void	add_var(char *input, t_sh *sh)
 		var_node->value = ft_strdup(input);
 	//esto hay que revisarlo y ver cuando meterlo en galloc
 }
-*/
+
 /*
 char	*find_var(char *input, t_sh *sh)
 */
@@ -45,7 +45,7 @@ char	**found_var(char *input, t_sh *sh)
 	{
 		if (var_iter->var_name)
 		{
-			printf("hello %s    %s\n", input, var_iter->var_name);
+			//printf("hello %s    %s\n", input, var_iter->var_name);
 			if (ft_strncmp(input, var_iter->var_name, ft_strlen(var_iter->var_name)) == 0)
 			{
 				value = var_iter->value;
@@ -56,7 +56,7 @@ char	**found_var(char *input, t_sh *sh)
 	return (ft_split(value, ' '));// poner el nuevo splitter
 }
 
-char	*add_var(char *input, int input_idx, t_sh *sh)
+/*char	*add_var(char *input, int input_idx, t_sh *sh)
 {
 	t_var	*var_node;
 	char	*var_content;
@@ -71,7 +71,7 @@ char	*add_var(char *input, int input_idx, t_sh *sh)
 		return (var_node->value);
 	}
 	return (NULL);
-}
+	}*/
 
 void	var_delnode(char *var_name, t_sh *sh)
 {
