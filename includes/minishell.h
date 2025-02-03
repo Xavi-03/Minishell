@@ -99,15 +99,17 @@ void	find_built_in(char *input, t_sh *sh);
 void	cd(t_sh *sh);
 void	echo(t_sh *sh);
 void	export(t_sh *sh);
+void	unset(t_sh *sh);
 void	executer_built_in(t_sh *sh);
 void	print_env(t_sh *sh);
 //built_in_utils.c
 char	**add_var_env(t_sh *sh);
+char	**remove_var_env(char *var_name, t_sh *sh);
 //cmd_utils.c
 t_cmd	*cmd_addnode(t_sh *sh);
 t_cmd	*cmd_init(t_cmd *cmd_list, t_sh *sh);
 //var_utils.c
-
+void	var_delnode(char *var_name, t_sh *sh);
 char	*add_var(char *input, int input_idx, t_sh *sh); // merge pol
 //void	add_var(char *input, t_sh *sh); // merge javi
 char	**found_var(char *input, t_sh *sh);
