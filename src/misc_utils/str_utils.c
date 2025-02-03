@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:04:34 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/01 17:19:45 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/03 22:33:20 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	get_n_cmds(char *str)
 	return (n_substr);
 }
 
-
 char	**prepare_cmd_arr(char *str)
 {
 	size_t	i;
@@ -113,7 +112,15 @@ char	**prepare_cmd_arr(char *str)
 		{
 			start = i;
 			while (!is_in_set(str[i], "\'\"|>< ") && str[i])
+			{
+				if (str[i + 1] == '=' && is_in_set(str[i + 2], "\"\'"))
+				{
+					i += 3;
+					while (!is_in_set(str[i], "\'\"") && str[i])
+						i++;
+				}
 				i++;
+			}
 			cmd_arr[n_substr] = (char *)malloc(i - start + 1);
 			ft_strlcpy(cmd_arr[n_substr], str + start, i - start + 1);
 			n_substr++;
@@ -146,7 +153,7 @@ char	**prepare_cmd_arr(char *str)
 	cmd_arr[n_substr] = NULL;
 	return (cmd_arr);
 }
-/*
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -168,4 +175,4 @@ int	main(int argc, char **argv)
 	}
 	return (0);
 }
-*/
+

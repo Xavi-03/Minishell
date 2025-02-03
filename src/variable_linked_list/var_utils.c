@@ -55,7 +55,6 @@ char	**found_var(char *input, t_sh *sh)
 	return (ft_split(value, ' '));// poner el nuevo splitter
 }
 
-
 char	*add_var(char *input, int input_idx, t_sh *sh)
 {
 	t_var	*var_node;
