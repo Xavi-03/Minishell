@@ -57,16 +57,29 @@ int	get_n_cmds(char *str)
 	n_substr = 0;
 	while (str[i])
 	{
-		if (!is_in_set(str[i], "\'\" "))
+		if (is_in_set(str[i], "|><"))
 		{
-			while (!is_in_set(str[i], "\'\" ") && str[i])
+			n_substr++;
+			i++;
+		}
+		else if (!is_in_set(str[i], "\'\" "))
+		{
+			while (!is_in_set(str[i], "\'\"|>< ") && str[i])
+			{
+				if (str[i + 1] == '=' && is_in_set(str[i + 2], "\"\'"))
+				{
+					i += 3;
+					while (!is_in_set(str[i], "\'\"") && str[i])
+						i++;
+				}
 				i++;
+			}
 			n_substr++;
 		}
 		else if (str[i] == '\"')
 		{
 			i++;
-			while (!is_in_set(str[i], "\"") && str[i])
+			while (!is_in_set(str[i], "\"|><") && str[i])
 				i++;
 			n_substr++;
 			i++;
@@ -93,7 +106,7 @@ char	**prepare_cmd_arr(char *str)
 	char	**cmd_arr;
 
 	n_substr = get_n_cmds(str);
-	cmd_arr = (char **)malloc(sizeof(char *) * n_substr + 1);
+	cmd_arr = (char **)malloc(sizeof(char *) * (n_substr + 1));
 	if (!cmd_arr)
 		return (NULL);
 	cmd_arr[n_substr] = NULL;
@@ -153,6 +166,7 @@ char	**prepare_cmd_arr(char *str)
 	cmd_arr[n_substr] = NULL;
 	return (cmd_arr);
 }
+
 /*
 #include <stdlib.h>
 #include <stdio.h>
@@ -168,7 +182,8 @@ int	main(int argc, char **argv)
 
 	while (true)
 	{
-		line = readline("testshell > ");
+		//line = readline("testshell > ");
+		line = "<cmd_arr_utils.c cat|wc|c";
 		cmd_arr = prepare_cmd_arr(line);
 		while (*cmd_arr)
 			printf("Var content: %s\n", *cmd_arr++);
