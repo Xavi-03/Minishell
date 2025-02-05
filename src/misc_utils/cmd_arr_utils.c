@@ -48,111 +48,100 @@ bool	is_in_set(char c, char *set)
 	return (false);
 }
 
-int	get_n_cmds(char *str)
+char	**create_cmd_arr(char **cmd_arr, size_t n_substr)
 {
-	size_t	i;
-	size_t	n_substr;
-
-	i = 0;
-	n_substr = 0;
-	while (str[i])
+	if (!cmd_arr)
 	{
-		if (!is_in_set(str[i], "\'\" "))
-		{
-			while (!is_in_set(str[i], "\'\" ") && str[i])
-				i++;
-			n_substr++;
-		}
-		else if (str[i] == '\"')
-		{
-			i++;
-			while (!is_in_set(str[i], "\"") && str[i])
-				i++;
-			n_substr++;
-			i++;
-		}
-		else if (str[i] == '\'')
-		{
-			i++;
-			while (!is_in_set(str[i], "\'") && str[i])
-				i++;
-			n_substr++;
-			i++;
-		}
-		else
-			i++;
+		cmd_arr = (char **)malloc(sizeof(char *) * (n_substr + 1));
+		if (!cmd_arr)
+			return (NULL);
+		cmd_arr[n_substr] = NULL;
 	}
-	return (n_substr);
+	return (cmd_arr);
 }
 
 char	**prepare_cmd_arr(char *str)
 {
 	size_t	i;
+	size_t	j;
 	size_t	start;
 	size_t	n_substr;
 	char	**cmd_arr;
 
-	n_substr = get_n_cmds(str);
-	cmd_arr = (char **)malloc(sizeof(char *) * n_substr + 1);
-	if (!cmd_arr)
-		return (NULL);
-	cmd_arr[n_substr] = NULL;
-	i = 0;
-	n_substr = 0;
-	while (str[i])
+	j = 0;
+	while (j < 2)
 	{
-		if (is_in_set(str[i], "|><"))
+		i = 0;
+		n_substr = 0;
+		while (str[i])
 		{
-			cmd_arr[n_substr] = (char *)malloc(2);
-			ft_strlcpy(cmd_arr[n_substr], str + i, 2);
-			n_substr++;
-			i++;
-		}
-		else if (!is_in_set(str[i], "\'\" "))
-		{
-			start = i;
-			while (!is_in_set(str[i], "\'\"|>< ") && str[i])
+			if (is_in_set(str[i], "|><"))
 			{
-				if (str[i + 1] == '=' && is_in_set(str[i + 2], "\"\'"))
+				if (cmd_arr)
 				{
-					i += 3;
-					while (!is_in_set(str[i], "\'\"") && str[i])
-						i++;
+					cmd_arr[n_substr] = (char *)malloc(2);
+					ft_strlcpy(cmd_arr[n_substr], str + i, 2);
 				}
+				n_substr++;
 				i++;
 			}
-			cmd_arr[n_substr] = (char *)malloc(i - start + 1);
-			ft_strlcpy(cmd_arr[n_substr], str + start, i - start + 1);
-			n_substr++;
-		}
-		else if (str[i] == '\"')
-		{
-			i++;
-			start = i;
-			while (!is_in_set(str[i], "\"|><") && str[i])
+			else if (!is_in_set(str[i], "\'\" "))
+			{
+				start = i;
+				while (!is_in_set(str[i], "\'\"|>< ") && str[i])
+				{
+					if (str[i + 1] == '=' && is_in_set(str[i + 2], "\"\'"))
+					{
+						i += 3;
+						while (!is_in_set(str[i], "\'\"") && str[i])
+							i++;
+					}
+					i++;
+				}
+				if (cmd_arr)
+				{
+					cmd_arr[n_substr] = (char *)malloc(i - start + 1);
+					ft_strlcpy(cmd_arr[n_substr], str + start, i - start + 1);
+				}
+				n_substr++;
+			}
+			else if (str[i] == '\"')
+			{
 				i++;
-			cmd_arr[n_substr] = (char *)malloc(i - start + 1);
-			ft_strlcpy(cmd_arr[n_substr], str + start, i - start + 1);
-			n_substr++;
-			i++;
-		}
-		else if (str[i] == '\'')
-		{
-			i++;
-			start = i;
-			while (!is_in_set(str[i], "\'") && str[i])
+				start = i;
+				while (!is_in_set(str[i], "\"|><") && str[i])
+					i++;
+				if (cmd_arr)
+				{
+					cmd_arr[n_substr] = (char *)malloc(i - start + 1);
+					ft_strlcpy(cmd_arr[n_substr], str + start, i - start + 1);
+				}
+				n_substr++;
 				i++;
-			cmd_arr[n_substr] = (char *)malloc(i - start + 1);
-			ft_strlcpy(cmd_arr[n_substr], str + start, i - start + 1);
-			n_substr++;
-			i++;
+			}
+			else if (str[i] == '\'')
+			{
+				i++;
+				start = i;
+				while (!is_in_set(str[i], "\'") && str[i])
+					i++;
+				if (cmd_arr)
+				{
+					cmd_arr[n_substr] = (char *)malloc(i - start + 1);
+					ft_strlcpy(cmd_arr[n_substr], str + start, i - start + 1);
+				}
+				n_substr++;
+				i++;
+			}
+			else
+				i++;
 		}
-		else
-			i++;
+		cmd_arr = create_cmd_arr(cmd_arr, n_substr);
+		j++;
 	}
-	cmd_arr[n_substr] = NULL;
 	return (cmd_arr);
 }
+
 /*
 #include <stdlib.h>
 #include <stdio.h>
@@ -169,6 +158,7 @@ int	main(int argc, char **argv)
 	while (true)
 	{
 		line = readline("testshell > ");
+		//line = "<cmd_arr_utils.c cat|wc|c";
 		cmd_arr = prepare_cmd_arr(line);
 		while (*cmd_arr)
 			printf("Var content: %s\n", *cmd_arr++);
