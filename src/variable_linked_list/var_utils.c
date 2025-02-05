@@ -55,8 +55,9 @@ char	**found_var(char *input, t_sh *sh)
 		}
 		var_iter = var_iter->next;
 	}
-	return (ft_split(value, ' '));
+	return (prepare_cmd_arr(value));
 }
+//return (ft_split(value, ' '));
 
 void	var_delnode(char *var_name, t_sh *sh)
 {
@@ -70,9 +71,9 @@ void	var_delnode(char *var_name, t_sh *sh)
 		if (iter_node->var_name && \
 			ft_strncmp(var_name, iter_node->var_name, ft_strlen(var_name)) == 0)
 		{
-			free(iter_node->var_name);
-			free(iter_node->value);
-			free(iter_node);
+			gfree(iter_node->var_name, sh);
+			gfree(iter_node->value, sh);
+			gfree(iter_node, sh);
 			if (prev_node)
 				prev_node->next = prev_node->next->next;
 			else

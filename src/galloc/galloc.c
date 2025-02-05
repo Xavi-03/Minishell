@@ -12,11 +12,11 @@
 
 #include "../../includes/minishell.h"
 
-void	terminate(t_sh *sh)
+void	terminate(int exit_value, t_sh *sh)
 {
 	free_galloc(sh);
 	free(sh);
-	exit(EXIT_SUCCESS);
+	exit(exit_value);
 }
 
 void	free_galloc(t_sh *sh)
@@ -48,14 +48,14 @@ void	*add_galloc(void *mem, t_sh *sh)
 	{
 		sh->l_galloc = malloc(sizeof(t_galloc));
 		if (!sh->l_galloc)
-			return (NULL);
+			exit(EXIT_FAILURE);
 		sh->l_galloc->next = NULL;
 		sh->l_galloc->mem = NULL;
 		sh->l_galloc->start = sh->l_galloc;
 	}
 	new_node = malloc(sizeof(t_galloc));
 	if (!new_node)
-		printf("Terminate()");
+		terminate(EXIT_FAILURE, sh);
 	new_node->mem = mem;
 	new_node->next = NULL;
 	new_node->start = sh->l_galloc->start;
@@ -100,17 +100,17 @@ void	*galloc(size_t size, t_sh *sh)
 	{
 		sh->l_galloc = malloc(sizeof(t_galloc));
 		if (!sh->l_galloc)
-			return (NULL);
+			exit(EXIT_FAILURE);
 		sh->l_galloc->next = NULL;
 		sh->l_galloc->mem = NULL;
 		sh->l_galloc->start = sh->l_galloc;
 	}
 	new_node = malloc(sizeof(t_galloc));
 	if (!new_node)
-		printf("\"Terminate()\"");
+		terminate(EXIT_FAILURE, sh);
 	mem = ft_calloc(1, size);
 	if (!mem)
-		printf("\"Terminate()\"");
+		terminate(EXIT_FAILURE, sh);
 	new_node->mem = mem;
 	new_node->next = NULL;
 	new_node->start = sh->l_galloc->start;

@@ -24,20 +24,34 @@ void	sig_handler(int signum)
 }
 
 /* Aqui hago malloc porque estoy guardando con add_galloc en find_cmd */
-char	**arr_copy(char **arr)
+char	*arr_to_str(char **arr)
 {
 	int		i;
-	char	**new_arr;
+	int		j;
+	char	*new_str;
 
 	i = -1;
+	j = 0;
 	while (arr[++i])
-		;
-	new_arr = malloc((i + 1) * sizeof(char *));
+	{
+		j += ft_strlen(arr[i]);
+		if (arr[i + 1])
+			j += 1;
+	}
+	new_str = malloc((j + 1) * sizeof(char));
+	if (!new_str)
+		return (NULL);
+	new_str[0] = '\0';
 	i = -1;
-	while (arr[++i])
-		new_arr[i] = ft_strdup(arr[i]);
-	new_arr[i] = NULL;
-	return (new_arr);
+	j = -1;
+	while (*arr)
+	{
+		ft_strlcat(new_str, *arr, ft_strlen(new_str) + 2 + ft_strlen(*arr));
+		if (arr[1])
+			ft_strlcat(new_str, " ", ft_strlen(new_str) + 2);
+		arr++;
+	}
+	return (new_str);
 }
 
 t_sh	*init_sh(char **env)
@@ -69,7 +83,7 @@ void	prompt_main(t_sh *sh)
 			prompt = prompt_finder(sh);
 		input = readline(prompt);
 		if (!input)
-			terminate(sh);
+			terminate(EXIT_FAILURE, sh);
 		else
 			add_history(input);
 		add_galloc(input, sh);
@@ -87,17 +101,20 @@ void	prompt_main(t_sh *sh)
 int	main(int argc, char **argv, char **env)
 {
 	t_sh		*sh;
+	char		*input;
 
-	(void)argv;
 	sh = init_sh(env);
 	if (argc != 1)
 	{
-		terminate (sh);
-		exit(EXIT_FAILURE);
+		input = arr_to_str(&argv[1]);
+		add_galloc(input, sh);
+		sh->line = input;
+		sh->input_arr = prepare_cmd_arr(input);
+		parser(sh);
+		terminate(EXIT_SUCCESS, sh);
 	}
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
 	prompt_main(sh);
-	terminate (sh);
-	return (0);
+	terminate (EXIT_SUCCESS, sh);
 }

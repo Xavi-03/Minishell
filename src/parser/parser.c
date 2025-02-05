@@ -37,70 +37,19 @@ int	command_builder(char *input, t_sh *sh)
 	return (0);
 }
 
-void	parse_file_redir(char *input, t_sh *sh)
-{
-	t_cmd	*cmd;
-
-	cmd = sh->cmd_list;
-	if (cmd->f_next_infile > 0)
-	{
-		if (cmd->f_next_infile == DOUBLE_REDIR)
-			cmd->fd_in_red = 1;
-		cmd->f_next_infile = 0;
-		cmd->infile = ft_strdup(input);
-		add_galloc(cmd->infile, sh);
-	}
-	else if (cmd->f_next_outfile > 0)
-	{
-		if (cmd->f_next_outfile == DOUBLE_REDIR)
-			cmd->fd_out_red = 1;
-		cmd->f_next_outfile = 0;
-		cmd->outfile = ft_strdup(input);
-		add_galloc(cmd->outfile, sh);
-	}
-}
-
-void	check_in_out_file(char *input, t_sh *sh)
-{
-	t_cmd	*cmd;
-
-	cmd = sh->cmd_list;
-	if (ft_strncmp(input, "<", 2) == 0)
-		cmd->f_next_infile = SINGLE_REDIR;
-	else if (ft_strncmp(input, "<<", 3) == 0)
-		cmd->f_next_infile = DOUBLE_REDIR;
-	else if (ft_strncmp(input, ">", 2) == 0)
-		cmd->f_next_outfile = SINGLE_REDIR;
-	else if (ft_strncmp(input, ">>", 3) == 0)
-		cmd->f_next_outfile = DOUBLE_REDIR;
-	else
-		parse_file_redir(input, sh);
-}
-
-int	check_std_redir(char *input, t_sh *sh)
-{
-	t_cmd	*cmd;
-
-	cmd = sh->cmd_list;
-	if (ft_strncmp(input, ">", 2) == 0 || ft_strncmp(input, "<", 2) == 0 \
-		|| ft_strncmp(input, ">>", 3) == 0 || ft_strncmp(input, "<<", 3) == 0 \
-		|| cmd->f_next_infile > 0 || cmd->f_next_outfile > 0)
-		return (1);
-	return (0);
-}
-
-/* TODO: Check pipe implementation */
 int	manage_cmd_pipes(t_sh *sh)
 {
 	t_cmd	*cmd;
-
 	int		fd_pipe[2];
+
 	cmd = sh->cmd_list;
 	cmd->out_pipe = 1;
-	cmd_addnode(sh);
-	cmd = sh->cmd_list;
+	cmd = cmd_addnode(sh);
 	if (pipe(fd_pipe) < 0)
-		printf("error\n");
+	{
+		ft_putstr_fd("Pipe Error\n", 2);
+		terminate(EXIT_FAILURE, sh);
+	}
 	cmd->in_pipe = 1;
 	cmd->fd_pipe = galloc(2 * sizeof(int), sh);
 	cmd->fd_pipe[0] = fd_pipe[0];
@@ -114,10 +63,9 @@ int	cmd_parser(char *input, t_sh *sh)
 	t_cmd	*cmd;
 
 	cmd = sh->cmd_list;
-	//else if (check_std_redir(input, sh))
-	if (ft_strchr(input, '='))//&& ft_strncmp(sh->cmd_list->cmd_arr[0], "export", ft_strlen("export")) != 0)
+	if (ft_strchr(input, '='))
 		add_var(input, sh);
-	if (check_std_redir(input, sh))
+	else if (check_std_redir(input, sh))
 		check_in_out_file(input, sh);
 	else if (ft_strncmp(input, "|", 2) == 0)
 		manage_cmd_pipes(sh);
@@ -129,7 +77,7 @@ int	cmd_parser(char *input, t_sh *sh)
 void	find_cmd(char **input_arr, t_sh *sh)
 {
 	static int	i = -1;
-	char	**var_arr;
+	char		**var_arr;
 
 	add_galloc(input_arr, sh);
 	while (input_arr[++i])
@@ -151,20 +99,26 @@ void	find_cmd(char **input_arr, t_sh *sh)
 		i = -1;
 }
 
-void	pipe_cleaner(t_sh *sh)
+void	parser(t_sh *sh)
 {
-	t_cmd	*cmd_node;
+	char	**input_arr;
 
-	cmd_node = sh->cmd_list->start;
-	while (cmd_node)
+	sh->cmd_list = cmd_init(sh->cmd_list, sh);
+	sh->cmd_list->start = sh->cmd_list;
+	input_arr = sh->input_arr;
+	find_cmd(input_arr, sh);
+	if (!sh->cmd_list->cmd_arr)
+		return ;
+	if (sh->cmd_list->built_in || sh->cmd_list->cmd_arr)
+		sh->cmd_list = fork_create(sh);
+	if (sh->cmd_list->pid == -1 && !sh->cmd_list->main_process)
 	{
-		if (cmd_node->fd_pipe)
-		{
-			close(cmd_node->fd_pipe[0]);
-			close(cmd_node->fd_pipe[1]);
-		}
-		cmd_node = cmd_node->next;
+		ft_putstr_fd("Fork Error\n", 2);
+		terminate(EXIT_FAILURE, sh);
 	}
+	else if (sh->cmd_list->pid == 0 && !sh->cmd_list->main_process)
+		subprocess_executer(sh);
+	main_process_executer(sh);
 }
 
 /*
@@ -206,61 +160,3 @@ char *input_cleaner(char *input, t_sh *sh)
 	return (input);
 }
 */
-
-/* TODO:revisar si debe ser terminate o exit para el subproceso */
-void	parser(t_sh *sh)
-{
-	t_cmd	*temp_cmd;
-	char	**input_arr;
-
-	sh->cmd_list = cmd_init(sh->cmd_list, sh);
-	sh->cmd_list->start = sh->cmd_list;
-	input_arr = sh->input_arr;
-	find_cmd(input_arr, sh);
-	if (!sh->cmd_list->cmd_arr)
-		return ;
-	if (sh->cmd_list->built_in || sh->cmd_list->cmd_arr)
-		sh->cmd_list = fork_create(sh);
-	if (sh->cmd_list->pid == -1 && !sh->cmd_list->main_process)
-	{
-		printf("Fork Error\n");
-		exit(1);
-	}
-	else if (sh->cmd_list->pid == 0 && !sh->cmd_list->main_process)
-	{
-		prepare_pipe(sh);
-		if (sh->cmd_list->infile)
-			in_file(sh);
-		if (sh->cmd_list->outfile)
-			out_file(sh);
-		if (sh->cmd_list->built_in)
-			exec_built_in(sh);
-		if (sh->cmd_list->cmd_arr)
-			execute(sh);
-	}
-	// Main process
-	sh->cmd_list = sh->cmd_list->start;
-	temp_cmd = sh->cmd_list;
-	while (temp_cmd)
-	{
-		if (temp_cmd->main_process) // no estoy seguro de si esto se tiene que hacer asi
-		{
-			if (sh->cmd_list->infile)
-				in_file(sh);
-			if (sh->cmd_list->outfile)
-				out_file(sh);
-			prepare_pipe(sh);
-			exec_built_in(sh);
-		}
-		temp_cmd = temp_cmd->next;
-	}
-	sh->cmd_list = sh->cmd_list->start;
-	temp_cmd = sh->cmd_list;
-	pipe_cleaner(sh);
-	temp_cmd = sh->cmd_list->start;
-	while (temp_cmd)
-	{
-		waitpid(temp_cmd->pid, &sh->last_command, 0);
-		temp_cmd = temp_cmd->next;
-	}
-}

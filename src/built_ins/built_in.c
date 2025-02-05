@@ -12,14 +12,14 @@
 
 #include "../../includes/minishell.h"
 
-int	is_built_in(char *input, char *cmd)
+static int	is_built_in(char *input, char *cmd)
 {
 	if (ft_strncmp(input, cmd, ft_strlen(input)) == 0)
 		return (1);
 	return (0);
 }
 
-void	set_main_process(t_sh *sh)
+static void	set_main_process(t_sh *sh)
 {
 	sh->cmd_list->main_process = 1;
 }
@@ -37,7 +37,7 @@ void	find_built_in(char *input, t_sh *sh)
 	else if (is_built_in(input, "unset"))
 		set_main_process(sh);
 	else if (is_built_in(input, "env"))
-		set_main_process(sh);
+		;
 	else if (is_built_in(input, "exit"))
 		set_main_process(sh);
 	else
@@ -55,7 +55,7 @@ int	exec_built_in(t_sh *sh)
 	else if (is_built_in(cmd, "cd"))
 		cd(sh);
 	else if (is_built_in(cmd, "pwd"))
-		printf("pwd\n");
+		printf("pwd\n");//TODO
 	else if (is_built_in(cmd, "export"))
 		export(sh);
 	else if (is_built_in(cmd, "unset"))
@@ -63,7 +63,7 @@ int	exec_built_in(t_sh *sh)
 	else if (is_built_in(cmd, "env"))
 		print_env(sh);
 	else if (is_built_in(cmd, "exit"))
-		terminate(sh);
+		terminate(EXIT_SUCCESS, sh);
 	else
 		return (1);
 	return (0);
@@ -89,5 +89,4 @@ void	echo(t_sh *sh)
 	}
 	if (ft_strncmp(cmd->cmd_arr[1], "-n", 3) != 0)
 		printf("\n");
-	exit (0);
 }
