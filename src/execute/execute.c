@@ -12,6 +12,16 @@
 
 #include "../../includes/minishell.h"
 
+void	sigler(int signum)
+{
+	(void)signum;
+	/*if (signum == SIGINT)
+	{
+		printf("Hola\n");
+		exit(42);
+	}*/
+}
+
 void	subprocess_executer(t_sh *sh)
 {
 	prepare_pipe(sh);
@@ -32,7 +42,6 @@ void	subprocess_executer(t_sh *sh)
 void	main_process_executer(t_sh *sh)
 {
 	t_cmd	*temp_cmd;
-
 	sh->cmd_list = sh->cmd_list->start;
 	temp_cmd = sh->cmd_list;
 	while (temp_cmd)
@@ -48,6 +57,8 @@ void	main_process_executer(t_sh *sh)
 	while (temp_cmd)
 	{
 		waitpid(temp_cmd->pid, &sh->last_command, 0);
+		//if (sh->last_command == 256)
+		//	sh->last_command -= 129;
 		temp_cmd = temp_cmd->next;
 	}
 }

@@ -69,6 +69,7 @@ char	**prepare_cmd_arr(char *str)
 	char	**cmd_arr;
 
 	j = 0;
+	cmd_arr = NULL;
 	while (j < 2)
 	{
 		i = 0;
