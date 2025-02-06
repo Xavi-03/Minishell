@@ -46,6 +46,8 @@ t_cmd	*fork_create(t_sh *sh)
 			cmd_node->pid = fork();
 			if (!cmd_node->pid)
 				return (cmd_node);
+			if (!cmd_node->cmd_arr[0])
+				cmd_node->not_found = 1;
 		}
 		cmd_node = cmd_node->next;
 	}

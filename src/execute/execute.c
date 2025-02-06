@@ -57,8 +57,10 @@ void	main_process_executer(t_sh *sh)
 	while (temp_cmd)
 	{
 		waitpid(temp_cmd->pid, &sh->last_command, 0);
-		//if (sh->last_command == 256)
-		//	sh->last_command -= 129;
+		if (temp_cmd->not_found)
+			sh->last_command = 127;
+		if (sh->last_command == 256)
+			sh->last_command = 1;
 		temp_cmd = temp_cmd->next;
 	}
 }
