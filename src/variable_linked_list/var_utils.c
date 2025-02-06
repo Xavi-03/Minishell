@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:33:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/04 00:34:52 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/06 19:19:53 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	add_var(char *input, t_sh *sh)
 		var_node->var_name[i++] = *(input++);
 	input++;
 	if (ft_strchr(input, '"') || ft_strchr(input, '\''))
-		var_node->value = extract_between_chars(sh->line, '\"');
+		var_node->value = extract_between_chars(sh->line, '\"', sh);
 	else
 		var_node->value = ft_strdup(input);
 }
@@ -55,7 +55,7 @@ char	**found_var(char *input, t_sh *sh)
 		}
 		var_iter = var_iter->next;
 	}
-	return (prepare_cmd_arr(value));
+	return (prepare_cmd_arr(value, sh));
 }
 //return (ft_split(value, ' '));
 

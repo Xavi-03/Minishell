@@ -66,6 +66,17 @@ typedef struct s_galloc
 	struct s_galloc	*start;
 }	t_galloc;
 
+typedef struct s_cmd_arr_args
+{
+	char	*str;
+	char	**cmd_arr;
+	size_t	i;
+	size_t	j;
+	size_t	start;
+	size_t	n_substr;
+	/* data */
+}				t_cmd_arr_args;
+
 
 //55 f 6 s 1 m
 
@@ -124,13 +135,6 @@ t_sh	*init_sh(char **env);
 void	prompt_main(t_sh *sh);
 //int	main(int argc, char **argv, char **env)		MAIN
 
-//./misc_utils.c									FOLDER
-//	cmd_arr_utils.c									FILE
-char	*extract_between_chars(char *str, char c);
-bool	is_in_set(char c, char *set);
-int		get_n_cmds(char *str);
-char	**prepare_cmd_arr(char *str);
-
 //./parser											FOLDER
 //	arr_utils.c										FILE
 void	free_str_arr(char **str_arr);
@@ -168,6 +172,18 @@ void	var_delnode(char *var_name, t_sh *sh);
 t_var	*var_addnode(t_sh *sh);
 t_var	*var_init(t_var *var_node, t_sh *sh);
 
+// ./cmd_arr
+//cmd_arr stuff
+int		get_n_cmds(char *str);
+char	**prepare_cmd_arr(char *str, t_sh *sh);
+void	first_set(t_cmd_arr_args *args, t_sh *sh);
+void	second_set(t_cmd_arr_args *args, t_sh *sh);
+void	third_set(t_cmd_arr_args *args, t_sh *sh);
+void	fourth_set(t_cmd_arr_args *args, t_sh *sh);
+char	*extract_between_chars(char *str, char c, t_sh *sh);
+bool	is_in_set(char c, char *set);
+char	**create_cmd_arr(char **cmd_arr, size_t n_substr, t_sh *sh);
+void	cmd_arr_args_init(t_cmd_arr_args *args, char *str);
 #endif
 
 //valgrind --track-origins=yes --trace-children=yes --leak-check=full
