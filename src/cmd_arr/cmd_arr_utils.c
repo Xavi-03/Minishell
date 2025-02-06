@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:04:34 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/06 19:44:55 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/06 21:27:30 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,6 @@ char	**prepare_cmd_arr(char *str, t_sh *sh)
 		args.cmd_arr = create_cmd_arr(args.cmd_arr, args.n_substr, sh);
 		args.j++;
 	}
-	//	int i = 0;
-	//	while (args.cmd_arr[i])
-	//		printf("VAR: %s\n", args.cmd_arr[i++]);
 	return (args.cmd_arr);
 }
 

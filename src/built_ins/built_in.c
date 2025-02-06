@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:18:02 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/04 00:19:58 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/06 20:09:22 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	is_built_in(char *input, char *cmd)
 {
-	if (ft_strncmp(input, cmd, ft_strlen(input)) == 0)
+	if (ft_strncmp(input, cmd, ft_strlen(cmd)) == 0)
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:35:55 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/04 00:38:45 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/06 21:27:22 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	find_cmd(char **input_arr, t_sh *sh)
 			continue ;
 		}
 		var_arr = found_var(input_arr[i], sh);
-		while (*var_arr)
+		while (var_arr && *var_arr)
 		{
 			cmd_parser(*var_arr, sh);
 			var_arr++;
