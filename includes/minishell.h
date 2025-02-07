@@ -177,10 +177,10 @@ t_var	*var_init(t_var *var_node, t_sh *sh);
 //cmd_arr stuff
 int		get_n_cmds(char *str);
 char	**prepare_cmd_arr(char *str, t_sh *sh);
-void	first_set(t_cmd_arr_args *args, t_sh *sh);
-void	second_set(t_cmd_arr_args *args, t_sh *sh);
-void	third_set(t_cmd_arr_args *args, t_sh *sh);
-void	fourth_set(t_cmd_arr_args *args, t_sh *sh);
+void	process_redirs(t_cmd_arr_args *args, t_sh *sh);
+void	process_everything_else(t_cmd_arr_args *args, t_sh *sh);
+void	process_double_quotes(t_cmd_arr_args *args, t_sh *sh);
+void	process_single_quotes(t_cmd_arr_args *args, t_sh *sh);
 char	*extract_between_chars(char *str, char c, t_sh *sh);
 bool	is_in_set(char c, char *set);
 char	**create_cmd_arr(char **cmd_arr, size_t n_substr, t_sh *sh);

@@ -75,13 +75,13 @@ char	**prepare_cmd_arr(char *str, t_sh *sh)
 		while (str[args.i])
 		{
 			if (is_in_set(str[args.i], "|><"))
-				first_set(&args, sh);
+				process_redirs(&args, sh);
 			else if (!is_in_set(str[args.i], "\'\" "))
-				second_set(&args, sh);
+				process_everything_else(&args, sh);
 			else if (str[args.i] == '\"')
-				third_set(&args, sh);
+				process_double_quotes(&args, sh);
 			else if (str[args.i] == '\'')
-				fourth_set(&args, sh);
+				process_single_quotes(&args, sh);
 			else
 				args.i++;
 		}
