@@ -52,10 +52,8 @@ char	**add_var_env(t_sh *sh)
 	char	**new_arr;
 	int		i;
 	char	*var_str;
-	bool	var_exists;
 
 	i = -1;
-	var_exists = false;
 	var_str = sh->cmd_list->cmd_arr[1];
 	while (sh->env[++i])
 		;

@@ -60,9 +60,6 @@ int	manage_cmd_pipes(t_sh *sh)
 //command compare
 int	cmd_parser(char *input, t_sh *sh)
 {
-	t_cmd	*cmd;
-
-	cmd = sh->cmd_list;
 	if (ft_strchr(input, '='))
 		add_var(input, sh);
 	else if (check_std_redir(input, sh))

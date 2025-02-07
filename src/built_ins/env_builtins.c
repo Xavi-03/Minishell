@@ -23,9 +23,6 @@ void	print_env(t_sh *sh)
 
 void	export(t_sh *sh)
 {
-	char	**env_ptr;
-
-	env_ptr = sh->env;
 	if (sh->cmd_list->cmd_arr[1] && !ft_strchr(sh->cmd_list->cmd_arr[1], '='))
 		return ;
 	if (sh->cmd_list->cmd_arr[1])

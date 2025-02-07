@@ -64,6 +64,7 @@ t_sh	*init_sh(char **env)
 	sh->l_galloc = NULL;
 	sh->env = env;
 	sh->last_command = 0;
+	sh->var_list = NULL;
 	sh->var_list = var_init(sh->var_list, sh);
 	sh->cmd_list = NULL;
 	sh->input_arr = NULL;

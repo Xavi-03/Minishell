@@ -16,13 +16,11 @@ void	first_set(t_cmd_arr_args *args, t_sh *sh)
 {
 	char	**cmd_arr;
 	char	*str;
-	size_t	n_chars;
 	size_t	start;
 
 	start = args->i;
 	cmd_arr = args->cmd_arr;
 	str = args->str;
-	n_chars = 1;
 
 	if ((str[args->i] == '>' && str[args->i + 1] == '>')
 		|| (str[args->i] == '<' && str[args->i + 1] == '<'))
