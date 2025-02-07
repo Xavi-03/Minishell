@@ -21,6 +21,12 @@ void	sig_handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	if (SIGQUIT == signum)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
 /* Aqui hago malloc porque estoy guardando con add_galloc en find_cmd */
@@ -98,6 +104,7 @@ void	prompt_main(t_sh *sh)
 	}
 }
 
+
 /* TODO: Handle argv */
 int	main(int argc, char **argv, char **env)
 {
@@ -116,6 +123,8 @@ int	main(int argc, char **argv, char **env)
 	}
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
+
+	//sigaction(SIGINT, &act, 0);
 	prompt_main(sh);
 	terminate (EXIT_SUCCESS, sh);
 }
