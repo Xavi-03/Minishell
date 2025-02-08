@@ -12,18 +12,13 @@
 
 #include "../../includes/minishell.h"
 
-void	process_double_quotes(t_cmd_arr_args *args, t_sh *sh)
+void	copy_substr(t_cmd_arr_args *args, t_sh *sh, size_t start)
 {
-	size_t	start;
-	char	*str;
 	char	**cmd_arr;
+	char	*str;
 
-	args->i++;
-	start = args->i;
-	str = args->str;
 	cmd_arr = args->cmd_arr;
-	while (!is_in_set(str[args->i], "\"|><") && str[args->i])
-		args->i++;
+	str = args->str;
 	if (cmd_arr)
 	{
 		cmd_arr[args->n_substr] = (char *)galloc(args->i - start + 1, sh);
@@ -31,4 +26,25 @@ void	process_double_quotes(t_cmd_arr_args *args, t_sh *sh)
 	}
 	args->n_substr++;
 	args->i++;
+}
+
+void	process_double_quotes(t_cmd_arr_args *args, t_sh *sh)
+{
+	size_t	start;
+	char	*str;
+
+	args->i++;
+	start = args->i;
+	str = args->str;
+	while (!is_in_set(str[args->i], "\"|><") && str[args->i])
+	{
+		if (str[args->i + 1] == '$')
+		{
+			copy_substr(args, sh, start);
+			process_everything_else(args, sh);
+			start = args->i;
+		}
+		args->i++;
+	}
+	copy_substr(args, sh, start);
 }

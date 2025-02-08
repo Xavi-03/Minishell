@@ -90,4 +90,3 @@ char	**prepare_cmd_arr(char *str, t_sh *sh)
 	}
 	return (args.cmd_arr);
 }
-

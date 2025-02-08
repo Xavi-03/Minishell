@@ -29,7 +29,6 @@ void	process_redirs(t_cmd_arr_args *args, t_sh *sh)
 	start = args->i;
 	cmd_arr = args->cmd_arr;
 	str = args->str;
-
 	args->i = arrow_parser(str, args->i);
 	if (cmd_arr)
 	{
