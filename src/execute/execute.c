@@ -21,9 +21,18 @@ void	sigler(int signum)
 		exit(42);
 	}*/
 }
+void	sigquit_handler(int signal)
+{
+	if (signal == SIGINT)
+  		printf("\nIntercepted SIGINT!\n");
+}
 
 void	subprocess_executer(t_sh *sh)
 {
+//	struct sigaction act;
+//	bzero(&act, sizeof(act));
+//	act.sa_handler = &sigquit_handler;
+//	sigaction(SIGINT, &act, 0);
 	prepare_pipe(sh);
 	if (sh->cmd_list->infile)
 		in_file(sh);
@@ -57,10 +66,14 @@ void	main_process_executer(t_sh *sh)
 	while (temp_cmd)
 	{
 		waitpid(temp_cmd->pid, &sh->last_command, 0);
+		if (WIFSIGNALED(sh->last_command))
+			sh->last_command = 128 + WTERMSIG(sh->last_command);
+		else if (WIFEXITED(sh->last_command))
+			sh->last_command = WEXITSTATUS(sh->last_command);
 		if (temp_cmd->not_found)
 			sh->last_command = 127;
-		if (sh->last_command == 256)
-			sh->last_command = 1;
+		/*if (sh->last_command == 2)
+			sh->last_command = 130;*/
 		temp_cmd = temp_cmd->next;
 	}
 }
@@ -68,13 +81,9 @@ void	main_process_executer(t_sh *sh)
 void	execute(t_sh *sh)
 {
 	t_cmd	*cmd;
-	/*char **str = galloc(2 * sizeof(char *), sh);
-	str[0] = "./bat";
-	str[1] = NULL;*/
 
 	cmd = sh->cmd_list;
 	execve(cmd->cmd_arr[0], cmd->cmd_arr, sh->env);
-	//printf("%i\n", execve(str[0], str, sh->env));
 	printf("minishell: Command not Found\n");
 	terminate(1, sh);
 }
