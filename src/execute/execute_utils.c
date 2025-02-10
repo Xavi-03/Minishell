@@ -1,18 +1,63 @@
 #include "../../includes/minishell.h"
 
+
+void	here_doc(t_sh *sh)
+{
+	//char	*line;
+	int		i;
+	char	*arr[100];
+
+	i = 0;
+	dup2(sh->cmd_list->fd_pipe[1], STDOUT_FILENO);
+	close(sh->cmd_list->fd_pipe[0]);
+	close(sh->cmd_list->fd_pipe[1]);
+	while (true)
+	{
+		write(1, "> ", 2);
+		arr[i] = get_next_line(0);
+		add_galloc(arr[i], sh);
+		if (ft_strncmp(arr[i], sh->cmd_list->infile, ft_strlen(sh->cmd_list->infile)) == 0)
+		{
+			arr[i] = NULL;
+			break ;
+		}
+		i++;
+	}
+	i = -1;
+	while (arr[++i])
+		printf("%s", arr[i]);
+	terminate(0, sh);
+}
+
 void	in_file(t_sh *sh)
 {
+	int		fd_pipe[2];
+
 	if (sh->cmd_list->fd_in_red)
-		sh->cmd_list->fd_in = open(sh->cmd_list->infile, O_RDONLY);
-	else
-		sh->cmd_list->fd_in = open(sh->cmd_list->infile, O_RDONLY);
-	if (sh->cmd_list->fd_in < 0)
 	{
-		printf("infile error\n");
-		exit(1);
+		sh->cmd_list->fd_pipe = galloc(2 * sizeof(int *), sh);
+		if (pipe(fd_pipe) < 0)
+		{
+			ft_putstr_fd("Pipe Error\n", 2);
+			terminate(EXIT_FAILURE, sh);
+		}
+		sh->cmd_list->fd_pipe[0] = fd_pipe[0];
+		sh->cmd_list->fd_pipe[1] = fd_pipe[1];
+		sh->cmd_list->pid = fork();
+		if (sh->cmd_list->pid == -1)
+		{
+			ft_putstr_fd("Fork Error\n", 2);
+			terminate(EXIT_FAILURE, sh);
+		}
+		if (sh->cmd_list->pid == 0)
+		{
+			here_doc(sh);
+			terminate(0, sh);
+		}
+		dup2(sh->cmd_list->fd_pipe[0], STDIN_FILENO);
+		close(sh->cmd_list->fd_pipe[0]);
+		close(sh->cmd_list->fd_pipe[1]);
 	}
-	dup2(sh->cmd_list->fd_in, STDIN_FILENO);
-	close(sh->cmd_list->fd_in);
 }
 
 void	out_file(t_sh *sh)

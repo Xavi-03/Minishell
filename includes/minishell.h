@@ -2,6 +2,7 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include "get_next_line.h"
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -78,7 +79,7 @@ typedef struct s_cmd_arr_args
 	/* data */
 }				t_cmd_arr_args;
 
-
+char	*get_next_line(int fd);
 //55 f 6 s 1 m
 
 //./buil_ins										FOLDER

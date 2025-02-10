@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 RM = rm -f
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror -g -I env
 LIBFTDIR = libft/
 OBJ_DIR = obj/
 
