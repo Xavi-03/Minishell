@@ -76,8 +76,10 @@ void	find_cmd(char **input_arr, t_sh *sh)
 	static int	i = -1;
 	char		**var_arr;
 
+	add_galloc(input_arr, sh);
 	while (input_arr[++i])
 	{
+		add_galloc(input_arr[i], sh);
 		if (input_arr[i][0] != '$')
 		{
 			cmd_parser(input_arr[i], sh);
