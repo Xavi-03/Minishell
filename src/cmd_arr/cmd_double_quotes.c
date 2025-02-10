@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/06 19:43:25 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:45:20 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	copy_substr(t_cmd_arr_args *args, t_sh *sh, size_t start)
 	args->i++;
 }
 
+
+
 void	process_double_quotes(t_cmd_arr_args *args, t_sh *sh)
 {
 	size_t	start;
@@ -46,5 +48,6 @@ void	process_double_quotes(t_cmd_arr_args *args, t_sh *sh)
 		}
 		args->i++;
 	}
-	copy_substr(args, sh, start);
+	if (str[start] != '\"')
+		copy_substr(args, sh, start);
 }

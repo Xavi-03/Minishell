@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:35:55 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/06 21:27:22 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:48:28 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	find_cmd(char **input_arr, t_sh *sh)
 	while (input_arr[++i])
 	{
 		add_galloc(input_arr[i], sh);
-		if (!ft_strchr(input_arr[i], '$'))
+		if (input_arr[i][0] != '$')
 		{
 			cmd_parser(input_arr[i], sh);
 			continue ;
