@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/10 20:17:56 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/10 22:00:20 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,14 @@ void	process_double_quotes(t_cmd_arr_args *args, t_sh *sh)
 	args->i++;
 	start = args->i;
 	str = args->str;
-	printf("Inside double quotes %s\n", &str[args->i]);
 	while (!is_in_set(str[args->i], "\"|><") && str[args->i])
 	{
-		if (str[args->i] == '$')
+		if (str[args->i] && str[args->i] == '$')
 		{
 			if (args->i > start)
 			{
-				args->i--;
 				copy_substr(args, sh, start);
+				args->i--;
 			}
 			process_everything_else(args, sh);
 			start = args->i;
