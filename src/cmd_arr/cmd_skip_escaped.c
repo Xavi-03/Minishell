@@ -1,37 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_single_quotes.c                                :+:      :+:    :+:   */
+/*   cmd_skip_escaped.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/11 17:15:22 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/11 17:55:49 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	process_single_quotes(t_cmd_arr_args *args, t_sh *sh)
+void	remove_backslashes(t_cmd_arr_args *args, t_sh *sh)
 {
-	size_t	start;
-	char	*str;
 	char	**cmd_arr;
+	size_t	i;
+	size_t	j;
 
-	args->i++;
-	start = args->i;
-	str = args->str;
+	(void) sh;
 	cmd_arr = args->cmd_arr;
-	while (!is_in_set(str[args->i], "\'") && str[args->i])
+	i = 0;
+	while (cmd_arr[i])
 	{
-		skip_escaped(args, sh);
-		args->i++;
+		j = 0;
+		while (cmd_arr[i][j])
+		{
+			if (cmd_arr[i][j] == '\\' && cmd_arr[i][j] \
+				&& cmd_arr[i][j + 1] && cmd_arr[i][j + 1] != ' ')
+			{
+				ft_strlcpy(cmd_arr[i] + j, cmd_arr[i] + j + 1, \
+					ft_strlen(cmd_arr[i] + j + 1));
+			}
+			j++;
+		}
+		i++;
 	}
-	if (cmd_arr)
-	{
-		cmd_arr[args->n_substr] = (char *)galloc(args->i - start + 1, sh);
-		ft_strlcpy(cmd_arr[args->n_substr], str + start, args->i - start + 1);
-	}
-	args->n_substr++;
-	args->i++;
+}
+
+void	skip_escaped(t_cmd_arr_args *args, t_sh *sh)
+{
+	char	*str;
+
+	(void) sh;
+	str = args->str;
+	if (str[args->i] == '\\' && str[args->i + 1] \
+		&& str[args->i + 2])
+		args->i += 2;
 }
