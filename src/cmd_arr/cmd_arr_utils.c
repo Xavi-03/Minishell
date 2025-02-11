@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:04:34 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/10 18:36:32 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:37:29 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ char	**prepare_cmd_arr(char *str, t_sh *sh)
 		args.cmd_arr = create_cmd_arr(args.cmd_arr, args.n_substr, sh);
 		args.j++;
 	}
-	print_cmd_arr(args.cmd_arr);
+	remove_backslashes(&args, sh);
+	//print_cmd_arr(args.cmd_arr);
 	return (args.cmd_arr);
 }
 

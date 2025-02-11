@@ -182,10 +182,12 @@ void	process_redirs(t_cmd_arr_args *args, t_sh *sh);
 void	process_everything_else(t_cmd_arr_args *args, t_sh *sh);
 void	process_double_quotes(t_cmd_arr_args *args, t_sh *sh);
 void	process_single_quotes(t_cmd_arr_args *args, t_sh *sh);
+void	skip_escaped(t_cmd_arr_args *args, t_sh *sh);
 char	*extract_between_chars(char *str, char c, t_sh *sh);
 bool	is_in_set(char c, char *set);
 char	**create_cmd_arr(char **cmd_arr, size_t n_substr, t_sh *sh);
 void	cmd_arr_args_init(t_cmd_arr_args *args, char *str);
+void	remove_backslashes(t_cmd_arr_args *args, t_sh *sh);
 #endif
 
 //valgrind --track-origins=yes --trace-children=yes --leak-check=full

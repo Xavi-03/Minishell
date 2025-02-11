@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:18:02 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/06 20:09:22 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/10 21:57:24 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,7 @@ void	echo(t_sh *sh)
 		i++;
 	i++;
 	while (cmd->cmd_arr[i])
-	{
 		printf("%s", cmd->cmd_arr[i++]);
-		if (cmd->cmd_arr[i])
-			printf(" ");
-	}
 	if (ft_strncmp(cmd->cmd_arr[1], "-n", 3) != 0)
 		printf("\n");
 }
