@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/10 19:26:30 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:40:56 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ static size_t	arrow_parser(char *str, size_t i)
 		i += 2;
 	else if ((str[i] == '>' && str[i + 1] != '>')
 		|| (str[i] == '<' && str[i + 1] != '<'))
+		i++;
+	else if ((str[i] == '|' && str[i + 1] != '|')
+		|| (str[i] == '|' && str[i + 1] != '|'))
 		i++;
 	return (i);
 }
