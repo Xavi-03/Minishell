@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 18:49:38 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/04 00:21:50 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/11 19:16:15 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ char	*get_path(char *command)
 	char	*path;
 
 	env_path = getenv("PATH");
+	if (!env_path)
+		return (NULL);
 	paths = ft_split(env_path, ':');
 	path = pathfinder(paths, command);
 	free_str_arr(paths);

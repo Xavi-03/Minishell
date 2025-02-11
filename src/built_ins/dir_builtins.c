@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:18:02 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/04 00:21:34 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/11 19:15:56 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	cd(t_sh *sh)
 
 	cmd = sh->cmd_list;
 	home_path = getenv("HOME");
+	if (!home_path)
+		return ;
 	if (cmd->cmd_count == 1)
 	{
 		chdir(home_path);
