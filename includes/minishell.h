@@ -106,6 +106,7 @@ t_cmd	*cmd_addnode(t_sh *sh);
 //cmp_var_names    STATIC
 //dup_modify_env    STATIC
 char	**add_var_env(t_sh *sh);
+char	**env_backup(t_sh *sh);
 //var_in_env    STATIC
 char	**remove_var_env(char *var_name, t_sh *sh);
 
