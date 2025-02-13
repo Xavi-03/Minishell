@@ -31,6 +31,20 @@ typedef struct	s_sh
 	char			*line;
 }	t_sh;
 
+typedef struct s_redir
+{
+	int				f_next_infile;
+	int				fd_in;
+	int				fd_in_red;
+	char			*infile;
+	int				f_next_outfile;
+	int				fd_out;
+	int				fd_out_red;
+	char			*outfile;
+	struct s_redir	*next;
+	struct s_redir	*start;
+}	t_redir;
+
 typedef struct	s_cmd
 {
 	int				pid;
@@ -40,16 +54,17 @@ typedef struct	s_cmd
 	int				out_pipe;
 	int				in_pipe;
 	int				*fd_pipe;
-	int				f_next_infile;
+	/*int				f_next_infile;
 	int				fd_in;
 	int				fd_in_red;
 	char			*infile;
 	int				f_next_outfile;
 	int				fd_out;
 	int				fd_out_red;
-	char			*outfile;
+	char			*outfile;*/
 	int				built_in;
 	char			**cmd_arr;
+	struct s_redir	*redir_list;
 	struct s_cmd	*next;
 	struct s_cmd	*start;
 }	t_cmd;
@@ -165,6 +180,11 @@ void	join_prompt_val(char **prompt, char **val);
 char	*promptjoin(char *user, char *path, t_sh *sh);
 char	*userjoin(char *user, char *pc, t_sh *sh);
 int		ft_lentoc(const char *str, char c);
+
+//./redir_linked_list								FOLDER
+//	redir_utils.c									FILE
+t_redir	*redir_addnode(t_sh *sh);
+t_redir	*redir_init(t_redir *redir_node, t_sh *sh);
 
 //./variable_linked_list							FOLDER
 //	var_utils.c										FILE

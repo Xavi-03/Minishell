@@ -1,9 +1,8 @@
 #include "../../includes/minishell.h"
 
 
-void	here_doc(t_sh *sh)
+/*void	here_doc(t_sh *sh)
 {
-	//char	*line;
 	int		i;
 	char	*arr[100];
 
@@ -27,13 +26,10 @@ void	here_doc(t_sh *sh)
 	while (arr[++i])
 		printf("%s", arr[i]);
 	terminate(0, sh);
-}
+}*/
 
-void	in_file(t_sh *sh)
-{
-	int		fd_pipe[2];
-
-	if (sh->cmd_list->fd_in_red)
+// last here doc
+/*if (sh->cmd_list->fd_in_red)
 	{
 		sh->cmd_list->fd_pipe = galloc(2 * sizeof(int *), sh);
 		if (pipe(fd_pipe) < 0)
@@ -57,6 +53,48 @@ void	in_file(t_sh *sh)
 		dup2(sh->cmd_list->fd_pipe[0], STDIN_FILENO);
 		close(sh->cmd_list->fd_pipe[0]);
 		close(sh->cmd_list->fd_pipe[1]);
+		return ;
+	}*/
+
+static void	prepare_in_file(t_redir *redir)
+{
+	if (redir->fd_in_red)
+	{//TODO: here_doc
+		printf("here_doc not implmented");
+		return ;
+	}
+	else if (redir->infile)
+		redir->fd_in = open(redir->infile, O_RDONLY);
+	if (redir->fd_in < 0 && redir->infile)
+	{
+		printf("infile error\n");
+		exit(1);
+	}
+	if (redir->infile)
+	{
+		if (redir->next && redir->next->infile)
+			dup2(redir->fd_in, redir->next->fd_in);
+		else
+		{
+			printf("dup2 strin %i\n", redir->fd_in);
+			dup2(redir->fd_in, STDIN_FILENO);
+			close(redir->fd_in);
+		}
+
+	}
+}
+
+void	in_file(t_sh *sh)
+{
+	//int		fd_pipe[2];
+	t_redir	*redir;
+
+	redir = sh->cmd_list->redir_list;
+	redir = redir->start;
+	while (redir)
+	{
+		prepare_in_file(redir);
+		redir = redir->next;
 	}
 }
 
@@ -65,17 +103,20 @@ void	out_file(t_sh *sh)
 	t_cmd	*cmd;
 
 	cmd = sh->cmd_list;
-	if (cmd->fd_out_red)
-		cmd->fd_out = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else
-		cmd->fd_out = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (cmd->fd_out < 0)
+	if (cmd->redir_list->fd_out_red)
+		cmd->redir_list->fd_out = open(cmd->redir_list->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (cmd->redir_list->outfile)
+		cmd->redir_list->fd_out = open(cmd->redir_list->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (cmd->redir_list->fd_out < 0 && cmd->redir_list->outfile)
 	{
 		printf("outfile error\n");
 		exit(1);
 	}
-	dup2(cmd->fd_out, STDOUT_FILENO);
-	close(cmd->fd_out);
+	if (cmd->redir_list->outfile)
+	{
+		dup2(cmd->redir_list->fd_out, STDOUT_FILENO);
+		close(cmd->redir_list->fd_out);
+	}
 }
 
 t_cmd	*fork_create(t_sh *sh)
