@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/11 17:14:26 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/13 23:40:10 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 void	copy_substr(t_cmd_arr_args *args, t_sh *sh, size_t start)
 {
-	char	**cmd_arr;
+	t_token	**cmd_arr;
 	char	*str;
 
 	cmd_arr = args->cmd_arr;
 	str = args->str;
 	if (cmd_arr)
 	{
-		cmd_arr[args->n_substr] = (char *)galloc(args->i - start + 1, sh);
-		ft_strlcpy(cmd_arr[args->n_substr], str + start, args->i - start + 1);
+		cmd_arr[args->n_tokens]->str = (char *)galloc(args->i - start + 1, sh);
+		ft_strlcpy(cmd_arr[args->n_tokens]->str, str + start, args->i - start + 1);
 	}
-	args->n_substr++;
+	args->n_tokens++;
 	args->i++;
 }
 
@@ -33,8 +33,8 @@ void	process_double_quotes(t_cmd_arr_args *args, t_sh *sh)
 	size_t	start;
 	char	*str;
 
-	args->i++;
 	start = args->i;
+	args->i++;
 	str = args->str;
 	while (!is_in_set(str[args->i], "\"|><") && str[args->i])
 	{

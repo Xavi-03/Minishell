@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:35:55 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/11 17:54:43 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/13 23:38:15 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,22 @@ int	cmd_parser(char *input, t_sh *sh)
 	return (0);
 }
 
-void	find_cmd(char **input_arr, t_sh *sh)
+void	find_cmd(t_token **input_arr, t_sh *sh)
 {
 	static int	i = -1;
-	char		**var_arr;
+	t_token		**var_arr;
 
 	while (input_arr[++i])
 	{
-		if (input_arr[i][0] != '$')
+		if (input_arr[i]->str[0] != '$')
 		{
-			cmd_parser(input_arr[i], sh);
+			cmd_parser(input_arr[i]->str, sh);
 			continue ;
 		}
-		var_arr = found_var(input_arr[i], sh);
+		var_arr = found_var(input_arr[i]->str, sh);
 		while (var_arr && *var_arr)
 		{
-			cmd_parser(*var_arr, sh);
+			cmd_parser((*var_arr)->str, sh);
 			var_arr++;
 		}
 	}
@@ -96,7 +96,7 @@ void	find_cmd(char **input_arr, t_sh *sh)
 
 void	parser(t_sh *sh)
 {
-	char	**input_arr;
+	t_token	**input_arr;
 
 	sh->cmd_list = cmd_init(sh->cmd_list, sh);
 	sh->cmd_list->start = sh->cmd_list;

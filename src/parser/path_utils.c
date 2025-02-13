@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 18:49:38 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/11 19:16:15 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/13 22:46:22 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,27 +67,3 @@ char	*get_path(char *command)
 	free_str_arr(paths);
 	return (path);
 }
-/*
-char	**create_cmd_arr(char *str, char **env)
-{
-	char	**cmd_arr;
-	char	*path;
-
-	if (!str || !*str)
-		return (NULL);
-	cmd_arr = ft_split(str, ' ');
-	if (!cmd_arr)
-		return (NULL);
-	if (access(cmd_arr[0], X_OK) == 0)
-		return (cmd_arr);
-	path = get_path(cmd_arr[0]);
-	if (!path)
-	{
-		free_str_arr(cmd_arr);
-		return (NULL);
-	}
-	free(cmd_arr[0]);
-	cmd_arr[0] = path;
-	return (cmd_arr);
-}
-*/

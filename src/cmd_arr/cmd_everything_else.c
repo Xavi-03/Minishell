@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/11 17:14:51 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/14 00:00:26 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	process_everything_else(t_cmd_arr_args *args, t_sh *sh)
 {
 	size_t	start;
 	char	*str;
-	char	**cmd_arr;
+	t_token	**cmd_arr;
 
 	start = args->i;
 	str = args->str;
@@ -37,8 +37,8 @@ void	process_everything_else(t_cmd_arr_args *args, t_sh *sh)
 	}
 	if (cmd_arr)
 	{
-		cmd_arr[args->n_substr] = (char *)galloc(args->i - start + 1, sh);
-		ft_strlcpy(cmd_arr[args->n_substr], str + start, args->i - start + 1);
+		cmd_arr[args->n_tokens]->str = (char *)galloc(args->i - start + 1, sh);
+		ft_strlcpy(cmd_arr[args->n_tokens]->str, str + start, args->i - start + 1);
 	}
-	args->n_substr++;
+	args->n_tokens++;
 }
