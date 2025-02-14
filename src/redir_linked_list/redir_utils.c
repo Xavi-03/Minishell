@@ -18,6 +18,8 @@ t_redir	*redir_init(t_redir *redir_node, t_sh *sh)
 	redir_node->f_next_infile = 0;
 	redir_node->fd_in = 0;
 	redir_node->fd_in_red = 0;
+	redir_node->pipe_fd = NULL;
+	redir_node->pid = 42;
 	redir_node->infile = NULL;
 	redir_node->f_next_outfile = 0;
 	redir_node->fd_out = 0;

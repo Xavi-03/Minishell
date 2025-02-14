@@ -36,6 +36,8 @@ typedef struct s_redir
 	int				f_next_infile;
 	int				fd_in;
 	int				fd_in_red;
+	int				*pipe_fd;
+	int				pid;
 	char			*infile;
 	int				f_next_outfile;
 	int				fd_out;
@@ -130,8 +132,9 @@ void	subprocess_executer(t_sh *sh);
 void	main_process_executer(t_sh *sh);
 void	execute(t_sh *sh);
 //	execute_utils.c									FILE
-void	in_file(t_sh *sh);
-void	out_file(t_sh *sh);
+//prepare_in_file	STATIC
+//prepare_out_file	STATIC
+void	prepare_file(t_sh *sh);
 t_cmd	*fork_create(t_sh *sh);
 void	prepare_pipe(t_sh *sh);
 void	pipe_cleaner(t_sh *sh);

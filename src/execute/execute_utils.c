@@ -56,66 +56,156 @@
 		return ;
 	}*/
 
-static void	prepare_in_file(t_redir *redir)
+
+
+static void	here_doc_pipe(t_redir *redir, t_sh *sh)
 {
-	if (redir->fd_in_red)
-	{//TODO: here_doc
-		printf("here_doc not implmented");
+	(void)redir;
+	(void)sh;
+	int	temp_pipe_fd[2];
+
+	if (pipe(temp_pipe_fd) < 0)
+	{
+		ft_putstr_fd("Pipe Error\n", 2);
+		terminate(EXIT_FAILURE, sh);
+	}
+	redir->pipe_fd = galloc(2 * sizeof(int), sh);
+	redir->pipe_fd[0] = temp_pipe_fd[0];
+	redir->pipe_fd[1] = temp_pipe_fd[1];
+
+	//dup2(redir->pipe_fd[0], redir->fd_in);
+	/*dup2(redir->pipe_fd[1], redir->fd_in);
+	close(redir->pipe_fd[0]);
+	close(redir->pipe_fd[1]);*/
+}
+
+static void	here_doc(t_redir *redir, t_sh *sh)
+{
+	char	*arr[100];
+	int	i;
+
+	printf("in %i  out %i\n", redir->pipe_fd[0], redir->pipe_fd[1]);
+	redir->pid = fork();
+	if (redir->pid < 0)
+	{
+		ft_putstr_fd("Fork Error\n", 2);
+		terminate(EXIT_FAILURE, sh);
+	}
+	else if (redir->pid > 0)
+	{
+		dup2(redir->pipe_fd[0], STDIN_FILENO);
+		close(redir->pipe_fd[0]);
+		close(redir->pipe_fd[1]);
+		waitpid(redir->pid, NULL, 0);
 		return ;
 	}
-	else if (redir->infile)
-		redir->fd_in = open(redir->infile, O_RDONLY);
-	if (redir->fd_in < 0 && redir->infile)
+	dup2(redir->pipe_fd[1], STDOUT_FILENO);
+	close(redir->pipe_fd[1]);
+	close(redir->pipe_fd[0]);
+	i = 0;
+	while (true)
 	{
-		printf("infile error\n");
-		exit(1);
+		arr[i] = get_next_line(0);
+		add_galloc(arr[i], sh);
+		if (ft_strncmp(arr[i], redir->infile, ft_strlen(redir->infile)) == 0)
+		{
+			arr[i] = NULL;
+			break ;
+		}
+		i++;
 	}
-	if (redir->infile)
+	i = -1;
+	while (arr[++i])
+		printf("%s", arr[i]);
+	//close(redir->pipe_fd[0]);
+	//close(redir->pipe_fd[1]);
+	terminate(0, sh);
+}
+
+static void	prepare_in_file(t_redir *redir, int flag, t_sh *sh)
+{
+	if (flag)
+	{
+		if (redir->fd_in_red)
+		{//TODO: here_doc
+			here_doc_pipe(redir, sh);
+		}
+		else if (redir->infile)
+			redir->fd_in = open(redir->infile, O_RDONLY);
+		if (redir->fd_in < 0 && redir->infile)
+		{
+			printf("infile error\n");
+			exit(1);
+		}
+		return ;
+	}
+	/*if (redir->infile)
 	{
 		if (redir->next && redir->next->infile)
-			dup2(redir->fd_in, redir->next->fd_in);
+			dup2(redir->next->fd_in, redir->fd_in);
 		else
 		{
-			printf("dup2 strin %i\n", redir->fd_in);
+			write(1, ".", 1);
 			dup2(redir->fd_in, STDIN_FILENO);
-			close(redir->fd_in);
 		}
+		//if (!redir->fd_in_red)
+		close(redir->fd_in);
+	}*/
+}
 
+static void	prepare_out_file(t_redir *redir, int flag)
+{
+	if (flag)
+	{
+		if (redir->fd_out_red)
+			redir->fd_out = open(redir->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else if (redir->outfile)
+			redir->fd_out = open(redir->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (redir->fd_out < 0 && redir->outfile)
+		{
+			printf("outfile error\n");
+			exit(1);
+		}
+		return ;
+	}
+	if (redir->outfile)
+	{
+		if (redir->next && redir->next->outfile)
+			dup2(redir->next->fd_out, redir->fd_out);
+		else
+			dup2(redir->fd_out, STDOUT_FILENO);
+		close(redir->fd_out);
 	}
 }
 
-void	in_file(t_sh *sh)
+void	prepare_file(t_sh *sh)
 {
-	//int		fd_pipe[2];
 	t_redir	*redir;
 
 	redir = sh->cmd_list->redir_list;
 	redir = redir->start;
 	while (redir)
 	{
-		prepare_in_file(redir);
+		prepare_in_file(redir, 1, sh);
+		prepare_out_file(redir, 1);
 		redir = redir->next;
 	}
-}
-
-void	out_file(t_sh *sh)
-{
-	t_cmd	*cmd;
-
-	cmd = sh->cmd_list;
-	if (cmd->redir_list->fd_out_red)
-		cmd->redir_list->fd_out = open(cmd->redir_list->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else if (cmd->redir_list->outfile)
-		cmd->redir_list->fd_out = open(cmd->redir_list->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (cmd->redir_list->fd_out < 0 && cmd->redir_list->outfile)
+	redir = sh->cmd_list->redir_list->start;
+	while (redir)
 	{
-		printf("outfile error\n");
-		exit(1);
+		prepare_in_file(redir, 0, sh);
+		prepare_out_file(redir, 0);
+		redir = redir->next;
 	}
-	if (cmd->redir_list->outfile)
+	redir = sh->cmd_list->redir_list->start;
+	while (redir)
 	{
-		dup2(cmd->redir_list->fd_out, STDOUT_FILENO);
-		close(cmd->redir_list->fd_out);
+		if (redir->fd_in_red)
+		{
+			printf("Helo world\n");
+			here_doc(redir, sh);
+		}
+		redir = redir->next;
 	}
 }
 
