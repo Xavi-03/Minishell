@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:19:24 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/04 00:19:37 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/13 22:59:15 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,30 @@ void	print_env(t_sh *sh)
 
 	env_ptr = sh->env;
 	while (*env_ptr)
-		printf("%s" RESET_COLOR "\n", *env_ptr++);
+		printf("%s\n", *env_ptr++);
+}
+
+void	print_export(t_sh *sh)
+{
+	char	**env_ptr;
+	char	*eq_ptr;
+	char	**var_ptr;
+	char	**var;
+
+	env_ptr = sh->env;
+	while (*env_ptr)
+	{
+		eq_ptr = ft_strchr((const char *)*env_ptr, '=');
+		if (!eq_ptr)
+			return ;
+		var = ft_split((const char *)*env_ptr, '=');
+		printf("declare -x %s=\"%s\"\n", var[0], var[1]);
+		var_ptr = var;
+		while (*var)
+			free(*var++);
+		free(var_ptr);
+		env_ptr++;
+	}
 }
 
 void	export(t_sh *sh)
@@ -30,7 +53,7 @@ void	export(t_sh *sh)
 		sh->env = add_var_env(sh);
 	}
 	else
-		print_env(sh);
+		print_export(sh);
 }
 
 void	unset(t_sh *sh)

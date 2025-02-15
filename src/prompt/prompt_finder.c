@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:30:35 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/04 00:32:12 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/11 19:23:31 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,14 @@ char	*prompt_finder(t_sh *sh)
 	char	*prompt_path;
 	char	*prompt;
 
-	prompt_user = user_finder(getenv("LOGNAME"), getenv("SESSION_MANAGER"), sh);
+	if (!getenv("USER") || !getenv("LOGNAME") || !getenv("SESSION_MANAGER"))
+	{
+		sh->env = env_backup(sh);
+		return ("?$\n> ");
+	}
+	prompt_user = user_finder(getenv("LOGNAME"), \
+		getenv("SESSION_MANAGER"), sh);
 	prompt_path = path_finder(sh);
 	prompt = promptjoin(prompt_user, prompt_path, sh);
-	if (!prompt)
-		return ("?$\n> ");
 	return (prompt);
 }

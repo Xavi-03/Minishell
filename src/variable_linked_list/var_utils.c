@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:33:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/06 20:28:10 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 16:11:19 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	add_var(char *input, t_sh *sh)
 
 /* TODO: Add new splitter */
 
-char	**found_var(char *input, t_sh *sh)
+t_token	**found_var(char *input, t_sh *sh)
 {
 	t_var	*var_iter;
 	char	*value;
@@ -44,7 +44,8 @@ char	**found_var(char *input, t_sh *sh)
 	var_iter = sh->var_list;
 	input++;
 	if (ft_strncmp(input, "?", 1) == 0 && !input[1])
-		return (ft_split(ft_itoa(sh->last_command), ' '));
+		return (NULL);
+		//return (ft_split(ft_itoa(sh->last_command), ' '));
 	while (var_iter)
 	{
 		if (var_iter->var_name)
@@ -56,7 +57,7 @@ char	**found_var(char *input, t_sh *sh)
 		var_iter = var_iter->next;
 	}
 	if (value)
-		return (prepare_cmd_arr(value, sh));
+		return (prepare_token_arr(value, sh));
 	return (NULL);
 }
 //return (ft_split(value, ' '));

@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_everything_else.c                              :+:      :+:    :+:   */
+/*   token_everything_else.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/11 17:14:51 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 16:34:08 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	process_everything_else(t_cmd_arr_args *args, t_sh *sh)
+void	process_everything_else(t_token_arr_args *args, t_sh *sh)
 {
 	size_t	start;
 	char	*str;
-	char	**cmd_arr;
+	t_token	**token_arr;
 
 	start = args->i;
 	str = args->str;
-	cmd_arr = args->cmd_arr;
+	token_arr = args->token_arr;
 	while (!is_in_set(str[args->i], "\'\"|>< ") && str[args->i])
 	{
 		skip_escaped(args, sh);
@@ -35,10 +35,15 @@ void	process_everything_else(t_cmd_arr_args *args, t_sh *sh)
 		}
 		args->i++;
 	}
-	if (cmd_arr)
+	if (token_arr)
 	{
-		cmd_arr[args->n_substr] = (char *)galloc(args->i - start + 1, sh);
-		ft_strlcpy(cmd_arr[args->n_substr], str + start, args->i - start + 1);
+		if (str[start] == '$')
+		{
+			printf("Var detected!\n");
+			token_arr[args->n_tokens]->is_variable = true;
+		}
+		token_arr[args->n_tokens]->str = (char *)galloc(args->i - start + 1, sh);
+		ft_strlcpy(token_arr[args->n_tokens]->str, str + start, args->i - start + 1);
 	}
-	args->n_substr++;
+	args->n_tokens++;
 }

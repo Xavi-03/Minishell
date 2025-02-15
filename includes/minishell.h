@@ -27,7 +27,7 @@ typedef struct	s_sh
 	struct s_var	*var_list;
 	struct s_cmd	*cmd_list;
 	struct s_galloc	*l_galloc;
-	char			**input_arr;
+	struct s_token	**token_arr;
 	char			*line;
 }	t_sh;
 
@@ -71,6 +71,16 @@ typedef struct	s_cmd
 	struct s_cmd	*start;
 }	t_cmd;
 
+typedef struct	s_token
+{
+	char	*str;
+	bool	is_redir;
+	bool	is_variable;
+	bool	is_option;
+	bool	is_command;
+}	t_token;
+
+
 typedef struct	s_var
 {
 	char			*var_name;
@@ -85,16 +95,16 @@ typedef struct s_galloc
 	struct s_galloc	*start;
 }	t_galloc;
 
-typedef struct s_cmd_arr_args
+typedef struct s_token_arr_args
 {
 	char	*str;
-	char	**cmd_arr;
+	t_token	**token_arr;
 	size_t	i;
 	size_t	j;
 	size_t	start;
-	size_t	n_substr;
+	size_t	n_tokens;
 	/* data */
-}				t_cmd_arr_args;
+}				t_token_arr_args;
 
 char	*get_next_line(int fd);
 //55 f 6 s 1 m
@@ -108,6 +118,7 @@ int		exec_built_in(t_sh *sh);
 void	echo(t_sh *sh);
 //	dir_builtins.c									FILE
 void	cd(t_sh *sh);
+void	pwd(void);
 //	env_builtins.c									FILE
 void	print_env(t_sh *sh);
 void	export(t_sh *sh);
@@ -123,6 +134,7 @@ t_cmd	*cmd_addnode(t_sh *sh);
 //cmp_var_names    STATIC
 //dup_modify_env    STATIC
 char	**add_var_env(t_sh *sh);
+char	**env_backup(t_sh *sh);
 //var_in_env    STATIC
 char	**remove_var_env(char *var_name, t_sh *sh);
 
@@ -162,7 +174,7 @@ void	free_str_arr(char **str_arr);
 int		command_builder(char *input, t_sh *sh);
 int		manage_cmd_pipes(t_sh *sh);
 int		cmd_parser(char *input, t_sh *sh);
-void	find_cmd(char **input_arr, t_sh *sh);
+void	find_cmd(t_token **token_arr, t_sh *sh);
 void	parser(t_sh *sh);
 //	parser_utils.c									FILE
 void	parse_file_redir(char *input, t_sh *sh);
@@ -192,7 +204,7 @@ t_redir	*redir_init(t_redir *redir_node, t_sh *sh);
 //./variable_linked_list							FOLDER
 //	var_utils.c										FILE
 void	add_var(char *input, t_sh *sh);
-char	**found_var(char *input, t_sh *sh);
+t_token	**found_var(char *input, t_sh *sh);
 void	var_delnode(char *var_name, t_sh *sh);
 t_var	*var_addnode(t_sh *sh);
 t_var	*var_init(t_var *var_node, t_sh *sh);
@@ -200,17 +212,17 @@ t_var	*var_init(t_var *var_node, t_sh *sh);
 // ./cmd_arr
 //cmd_arr stuff
 int		get_n_cmds(char *str);
-char	**prepare_cmd_arr(char *str, t_sh *sh);
-void	process_redirs(t_cmd_arr_args *args, t_sh *sh);
-void	process_everything_else(t_cmd_arr_args *args, t_sh *sh);
-void	process_double_quotes(t_cmd_arr_args *args, t_sh *sh);
-void	process_single_quotes(t_cmd_arr_args *args, t_sh *sh);
-void	skip_escaped(t_cmd_arr_args *args, t_sh *sh);
+t_token	**prepare_token_arr(char *str, t_sh *sh);
+void	process_redirs(t_token_arr_args *args, t_sh *sh);
+void	process_everything_else(t_token_arr_args *args, t_sh *sh);
+void	process_double_quotes(t_token_arr_args *args, t_sh *sh);
+void	process_single_quotes(t_token_arr_args *args, t_sh *sh);
+void	skip_escaped(t_token_arr_args *args, t_sh *sh);
 char	*extract_between_chars(char *str, char c, t_sh *sh);
 bool	is_in_set(char c, char *set);
-char	**create_cmd_arr(char **cmd_arr, size_t n_substr, t_sh *sh);
-void	cmd_arr_args_init(t_cmd_arr_args *args, char *str);
-void	remove_backslashes(t_cmd_arr_args *args, t_sh *sh);
+t_token	**create_token_arr(t_token **token_arr, size_t n_tokens, t_sh *sh);
+void	token_arr_args_init(t_token_arr_args *args, char *str);
+void	remove_backslashes(t_token_arr_args *args, t_sh *sh);
 #endif
 
 //valgrind --track-origins=yes --trace-children=yes --leak-check=full
@@ -251,7 +263,7 @@ void	free_galloc(t_sh *sh);
 void	*add_galloc(void *mem, t_sh *sh);
 void	*galloc(size_t size, t_sh *sh);
 //parser.c
-void	find_cmd(char **input_arr, t_sh *sh);
+void	find_cmd(char **token_arr, t_sh *sh);
 void	parser(t_sh *sh);
 void	pipe_cleaner(t_sh *sh);
 //execute.h
@@ -286,7 +298,7 @@ t_var	*var_addnode(t_sh *sh);
 // Misc utils
 void	free_str_arr(char **str_arr);
 char	*extract_between_chars(char *str, char c);
-char	**prepare_cmd_arr(char *str);
+char	**prepare_token_arr(char *str);
 char	*get_env_var(char **env, char *env_var);
 
 // Pipe utils

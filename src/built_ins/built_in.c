@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:18:02 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/10 21:57:24 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 17:07:05 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	exec_built_in(t_sh *sh)
 	else if (is_built_in(cmd, "cd"))
 		cd(sh);
 	else if (is_built_in(cmd, "pwd"))
-		printf("pwd\n");//TODO
+		pwd();
 	else if (is_built_in(cmd, "export"))
 		export(sh);
 	else if (is_built_in(cmd, "unset"))
@@ -81,8 +81,9 @@ void	echo(t_sh *sh)
 	if (ft_strncmp(cmd->cmd_arr[1], "-n", 3) == 0)
 		i++;
 	i++;
-	while (cmd->cmd_arr[i])
-		printf("%s", cmd->cmd_arr[i++]);
+	while (cmd->cmd_arr[i] && cmd->cmd_arr[i + 1])
+		printf("%s ", cmd->cmd_arr[i++]);
+	printf("%s", cmd->cmd_arr[i]);
 	if (ft_strncmp(cmd->cmd_arr[1], "-n", 3) != 0)
 		printf("\n");
 }
