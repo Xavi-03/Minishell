@@ -31,6 +31,22 @@ typedef struct	s_sh
 	char			*line;
 }	t_sh;
 
+typedef struct s_redir
+{
+	int				f_next_infile;
+	int				fd_in;
+	int				fd_in_red;
+	int				*pipe_fd;
+	int				pid;
+	char			*infile;
+	int				f_next_outfile;
+	int				fd_out;
+	int				fd_out_red;
+	char			*outfile;
+	struct s_redir	*next;
+	struct s_redir	*start;
+}	t_redir;
+
 typedef struct	s_cmd
 {
 	int				pid;
@@ -40,17 +56,17 @@ typedef struct	s_cmd
 	int				out_pipe;
 	int				in_pipe;
 	int				*fd_pipe;
-	int				f_next_infile;
+	/*int				f_next_infile;
 	int				fd_in;
 	int				fd_in_red;
 	char			*infile;
 	int				f_next_outfile;
 	int				fd_out;
 	int				fd_out_red;
-	char			*outfile;
+	char			*outfile;*/
 	int				built_in;
 	char			**cmd_arr;
-	//struct s_token	*cmd_arr;
+	struct s_redir	*redir_list;
 	struct s_cmd	*next;
 	struct s_cmd	*start;
 }	t_cmd;
@@ -127,8 +143,9 @@ void	subprocess_executer(t_sh *sh);
 void	main_process_executer(t_sh *sh);
 void	execute(t_sh *sh);
 //	execute_utils.c									FILE
-void	in_file(t_sh *sh);
-void	out_file(t_sh *sh);
+//prepare_in_file	STATIC
+//prepare_out_file	STATIC
+void	prepare_file(t_sh *sh);
 t_cmd	*fork_create(t_sh *sh);
 void	prepare_pipe(t_sh *sh);
 void	pipe_cleaner(t_sh *sh);
@@ -177,6 +194,11 @@ void	join_prompt_val(char **prompt, char **val);
 char	*promptjoin(char *user, char *path, t_sh *sh);
 char	*userjoin(char *user, char *pc, t_sh *sh);
 int		ft_lentoc(const char *str, char c);
+
+//./redir_linked_list								FOLDER
+//	redir_utils.c									FILE
+t_redir	*redir_addnode(t_sh *sh);
+t_redir	*redir_init(t_redir *redir_node, t_sh *sh);
 
 //./variable_linked_list							FOLDER
 //	var_utils.c										FILE
