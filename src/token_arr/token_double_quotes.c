@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/15 16:45:10 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 17:04:01 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	process_double_quotes(t_token_arr_args *args, t_sh *sh)
 	size_t	start;
 	char	*str;
 
-	start = args->i;
 	args->i++;
+	start = args->i;
 	str = args->str;
 	while (!is_in_set(str[args->i], "\"|><") && str[args->i])
 	{

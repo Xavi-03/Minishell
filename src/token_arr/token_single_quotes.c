@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/15 16:15:23 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 17:04:17 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	process_single_quotes(t_token_arr_args *args, t_sh *sh)
 	char	*str;
 	t_token	**token_arr;
 
-	start = args->i;
 	args->i++;
+	start = args->i;
 	str = args->str;
 	token_arr = args->token_arr;
 	while (!is_in_set(str[args->i], "\'") && str[args->i])
