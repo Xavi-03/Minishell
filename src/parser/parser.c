@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:35:55 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/15 16:28:22 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 17:47:03 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,18 @@
 int	command_builder(char *input, t_sh *sh)
 {
 	t_cmd	*cmd;
+	char	*exec_path;
 
 	cmd = sh->cmd_list;
 	find_built_in(input, sh);
 	if (sh->cmd_list->cmd_count == 0)
 	{
 		cmd->cmd_arr = galloc(10 * sizeof(char *), sh);
-		if (cmd->built_in)
+		exec_path = get_path(input);
+		if (cmd->built_in || !exec_path)
 			cmd->cmd_arr[cmd->cmd_count] = ft_strdup(input);
 		else
-			cmd->cmd_arr[cmd->cmd_count] = get_path(input);
+			cmd->cmd_arr[cmd->cmd_count] = exec_path;
 		add_galloc(cmd->cmd_arr[cmd->cmd_count], sh);
 	}
 	else
