@@ -95,16 +95,16 @@ typedef struct s_galloc
 	struct s_galloc	*start;
 }	t_galloc;
 
-typedef struct s_cmd_arr_args
+typedef struct s_token_arr_args
 {
 	char	*str;
-	t_token	**cmd_arr;
+	t_token	**token_arr;
 	size_t	i;
 	size_t	j;
 	size_t	start;
 	size_t	n_tokens;
 	/* data */
-}				t_cmd_arr_args;
+}				t_token_arr_args;
 
 char	*get_next_line(int fd);
 //55 f 6 s 1 m
@@ -211,17 +211,17 @@ t_var	*var_init(t_var *var_node, t_sh *sh);
 // ./cmd_arr
 //cmd_arr stuff
 int		get_n_cmds(char *str);
-t_token	**prepare_cmd_arr(char *str, t_sh *sh);
-void	process_redirs(t_cmd_arr_args *args, t_sh *sh);
-void	process_everything_else(t_cmd_arr_args *args, t_sh *sh);
-void	process_double_quotes(t_cmd_arr_args *args, t_sh *sh);
-void	process_single_quotes(t_cmd_arr_args *args, t_sh *sh);
-void	skip_escaped(t_cmd_arr_args *args, t_sh *sh);
+t_token	**prepare_token_arr(char *str, t_sh *sh);
+void	process_redirs(t_token_arr_args *args, t_sh *sh);
+void	process_everything_else(t_token_arr_args *args, t_sh *sh);
+void	process_double_quotes(t_token_arr_args *args, t_sh *sh);
+void	process_single_quotes(t_token_arr_args *args, t_sh *sh);
+void	skip_escaped(t_token_arr_args *args, t_sh *sh);
 char	*extract_between_chars(char *str, char c, t_sh *sh);
 bool	is_in_set(char c, char *set);
-t_token	**create_cmd_arr(t_token **cmd_arr, size_t n_tokens, t_sh *sh);
-void	cmd_arr_args_init(t_cmd_arr_args *args, char *str);
-void	remove_backslashes(t_cmd_arr_args *args, t_sh *sh);
+t_token	**create_token_arr(t_token **token_arr, size_t n_tokens, t_sh *sh);
+void	token_arr_args_init(t_token_arr_args *args, char *str);
+void	remove_backslashes(t_token_arr_args *args, t_sh *sh);
 #endif
 
 //valgrind --track-origins=yes --trace-children=yes --leak-check=full
@@ -297,7 +297,7 @@ t_var	*var_addnode(t_sh *sh);
 // Misc utils
 void	free_str_arr(char **str_arr);
 char	*extract_between_chars(char *str, char c);
-char	**prepare_cmd_arr(char *str);
+char	**prepare_token_arr(char *str);
 char	*get_env_var(char **env, char *env_var);
 
 // Pipe utils

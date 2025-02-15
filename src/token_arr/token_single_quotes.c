@@ -1,45 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_redirs.c                                       :+:      :+:    :+:   */
+/*   token_single_quotes.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/13 23:06:50 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 16:15:23 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static size_t	arrow_parser(char *str, size_t i)
+void	process_single_quotes(t_token_arr_args *args, t_sh *sh)
 {
-	if ((str[i] == '>' && str[i + 1] == '>')
-		|| (str[i] == '<' && str[i + 1] == '<'))
-		i += 2;
-	else if ((str[i] == '>' && str[i + 1] != '>')
-		|| (str[i] == '<' && str[i + 1] != '<'))
-		i++;
-	else if ((str[i] == '|' && str[i + 1] != '|')
-		|| (str[i] == '|' && str[i + 1] != '|'))
-		i++;
-	return (i);
-}
-
-void	process_redirs(t_cmd_arr_args *args, t_sh *sh)
-{
-	t_token	**cmd_arr;
-	char	*str;
 	size_t	start;
+	char	*str;
+	t_token	**token_arr;
 
 	start = args->i;
-	cmd_arr = args->cmd_arr;
+	args->i++;
 	str = args->str;
-	args->i = arrow_parser(str, args->i);
-	if (cmd_arr)
+	token_arr = args->token_arr;
+	while (!is_in_set(str[args->i], "\'") && str[args->i])
 	{
-		cmd_arr[args->n_tokens]->str = (char *)galloc(args->i - start + 1, sh);
-		ft_strlcpy(cmd_arr[args->n_tokens]->str, str + start, args->i - start + 1);
+		skip_escaped(args, sh);
+		args->i++;
+	}
+	if (token_arr)
+	{
+		token_arr[args->n_tokens]->str = (char *)galloc(args->i - start + 2, sh);
+		ft_strlcpy(token_arr[args->n_tokens]->str, str + start, args->i - start + 2);
 	}
 	args->n_tokens++;
+	args->i++;
 }
