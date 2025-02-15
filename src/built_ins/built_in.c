@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:18:02 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/13 22:58:48 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 16:51:36 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	exec_built_in(t_sh *sh)
 	else if (is_built_in(cmd, "cd"))
 		cd(sh);
 	else if (is_built_in(cmd, "pwd"))
-		printf("pwd\n");//TODO
+		pwd();
 	else if (is_built_in(cmd, "export"))
 		export(sh);
 	else if (is_built_in(cmd, "unset"))

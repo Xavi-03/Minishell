@@ -27,7 +27,7 @@ typedef struct	s_sh
 	struct s_var	*var_list;
 	struct s_cmd	*cmd_list;
 	struct s_galloc	*l_galloc;
-	struct s_token	**input_arr;
+	struct s_token	**token_arr;
 	char			*line;
 }	t_sh;
 
@@ -118,6 +118,7 @@ int		exec_built_in(t_sh *sh);
 void	echo(t_sh *sh);
 //	dir_builtins.c									FILE
 void	cd(t_sh *sh);
+void	pwd(void);
 //	env_builtins.c									FILE
 void	print_env(t_sh *sh);
 void	export(t_sh *sh);
@@ -173,7 +174,7 @@ void	free_str_arr(char **str_arr);
 int		command_builder(char *input, t_sh *sh);
 int		manage_cmd_pipes(t_sh *sh);
 int		cmd_parser(char *input, t_sh *sh);
-void	find_cmd(t_token **input_arr, t_sh *sh);
+void	find_cmd(t_token **token_arr, t_sh *sh);
 void	parser(t_sh *sh);
 //	parser_utils.c									FILE
 void	parse_file_redir(char *input, t_sh *sh);
@@ -262,7 +263,7 @@ void	free_galloc(t_sh *sh);
 void	*add_galloc(void *mem, t_sh *sh);
 void	*galloc(size_t size, t_sh *sh);
 //parser.c
-void	find_cmd(char **input_arr, t_sh *sh);
+void	find_cmd(char **token_arr, t_sh *sh);
 void	parser(t_sh *sh);
 void	pipe_cleaner(t_sh *sh);
 //execute.h

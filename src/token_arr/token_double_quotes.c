@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/15 16:14:55 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 16:45:10 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	copy_substr(t_token_arr_args *args, t_sh *sh, size_t start)
 	if (token_arr)
 	{
 		token_arr[args->n_tokens]->str = (char *)galloc(args->i - start + 1, sh);
-		ft_strlcpy(token_arr[args->n_tokens]->str, str + start, args->i - start + 1);
+		ft_strlcpy(token_arr[args->n_tokens]->str,
+			str + start, args->i - start + 1);
 	}
 	args->n_tokens++;
 	args->i++;
@@ -51,6 +52,5 @@ void	process_double_quotes(t_token_arr_args *args, t_sh *sh)
 		}
 		args->i++;
 	}
-	if (str[start] != '\"')
-		copy_substr(args, sh, start);
+	copy_substr(args, sh, start);
 }

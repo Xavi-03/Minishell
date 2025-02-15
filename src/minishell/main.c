@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:24:50 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/15 16:11:19 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 16:28:20 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_sh	*init_sh(char **env)
 	sh->var_list = NULL;
 	sh->var_list = var_init(sh->var_list, sh);
 	sh->cmd_list = NULL;
-	sh->input_arr = NULL;
+	sh->token_arr = NULL;
 	return (sh);
 }
 
@@ -97,7 +97,7 @@ void	prompt_main(t_sh *sh)
 		sh->line = input;
 		if (input[0] != '\0')
 		{
-			sh->input_arr = prepare_token_arr(input, sh);
+			sh->token_arr = prepare_token_arr(input, sh);
 			parser(sh);
 		}
 		gfree(input, sh);
@@ -117,7 +117,7 @@ int	main(int argc, char **argv, char **env)
 		input = arr_to_str(&argv[1]);
 		add_galloc(input, sh);
 		sh->line = input;
-		sh->input_arr = prepare_token_arr(input, sh);
+		sh->token_arr = prepare_token_arr(input, sh);
 		parser(sh);
 		terminate(EXIT_SUCCESS, sh);
 	}

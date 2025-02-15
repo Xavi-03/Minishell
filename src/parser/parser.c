@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:35:55 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/13 23:38:15 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 16:28:22 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,37 +71,37 @@ int	cmd_parser(char *input, t_sh *sh)
 	return (0);
 }
 
-void	find_cmd(t_token **input_arr, t_sh *sh)
+void	find_cmd(t_token **token_arr, t_sh *sh)
 {
 	static int	i = -1;
 	t_token		**var_arr;
 
-	while (input_arr[++i])
+	while (token_arr[++i])
 	{
-		if (input_arr[i]->str[0] != '$')
+		if (!token_arr[i]->is_variable)
 		{
-			cmd_parser(input_arr[i]->str, sh);
+			cmd_parser(token_arr[i]->str, sh);
 			continue ;
 		}
-		var_arr = found_var(input_arr[i]->str, sh);
+		var_arr = found_var(token_arr[i]->str, sh);
 		while (var_arr && *var_arr)
 		{
 			cmd_parser((*var_arr)->str, sh);
 			var_arr++;
 		}
 	}
-	if (!input_arr[i])
+	if (!token_arr[i])
 		i = -1;
 }
 
 void	parser(t_sh *sh)
 {
-	t_token	**input_arr;
+	t_token	**token_arr;
 
 	sh->cmd_list = cmd_init(sh->cmd_list, sh);
 	sh->cmd_list->start = sh->cmd_list;
-	input_arr = sh->input_arr;
-	find_cmd(input_arr, sh);
+	token_arr = sh->token_arr;
+	find_cmd(token_arr, sh);
 	if (!sh->cmd_list->cmd_arr)
 		return ;
 	if (sh->cmd_list->built_in || sh->cmd_list->cmd_arr)
