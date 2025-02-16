@@ -19,7 +19,10 @@ char	*get_curr_dir(void)
 
 	if (!getcwd(cwd, sizeof(cwd)))
 		return (NULL);
-	path = ft_strjoin(cwd, "/");
+	if (ft_strlen(cwd) == 1 && *cwd == '/')
+		path = ft_strdup(cwd);
+	else
+		path = ft_strjoin(cwd, "/");
 	if (!path)
 		return (NULL);
 	return (path);
