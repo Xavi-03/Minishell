@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:30:35 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/11 19:23:31 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:32:49 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,30 @@
 si se ejecuta en otro pc que no sea de 42 el nombre deberia salir entero
 da problemas al recortar el nombre del pc y ejecutar en casa,
 dejo el nombre entero */
+
+char	*get_hostname(void)
+{
+	int		fd;
+	int		b_read;
+	char	hostname[100];
+	char	*str;
+
+	fd = open("/etc/hostname", O_RDONLY);
+	if (fd < 0)
+		return (NULL);
+	b_read = read(fd, hostname, 100);
+	hostname[b_read] = '\0';
+	str = ft_strtrim(hostname, "\n");
+	return (str);
+}
+
 char	*user_finder(char *user, char *pc, t_sh *sh)
 {
 	char	*prompt_user;
 
-	user = ft_substr(getenv("USER"), 0, ft_strlen(getenv("USER")));
+	user = getenv("USER");
 	add_galloc(user, sh);
-	pc = ft_strchr(getenv("SESSION_MANAGER"), '/');
-	pc++;
-	pc = ft_substr(pc, 0, ft_lentoc(pc, ':'));
+	pc = get_hostname();
 	add_galloc(pc, sh);
 	if (!user)
 		user = "?";
