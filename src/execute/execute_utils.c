@@ -72,7 +72,7 @@ static void	here_doc_pipe(t_redir *redir, t_sh *sh)
 	redir->pipe_fd = galloc(2 * sizeof(int), sh);
 	redir->pipe_fd[0] = temp_pipe_fd[0];
 	redir->pipe_fd[1] = temp_pipe_fd[1];
-
+	dup2(redir->fd_in, redir->pipe_fd[1]);
 	//dup2(redir->pipe_fd[0], redir->fd_in);
 	/*dup2(redir->pipe_fd[1], redir->fd_in);
 	close(redir->pipe_fd[0]);
@@ -93,15 +93,23 @@ static void	here_doc(t_redir *redir, t_sh *sh)
 	}
 	else if (redir->pid > 0)
 	{
-		dup2(redir->pipe_fd[0], STDIN_FILENO);
+		if (!redir->next)
+		{
+			write(2, "__\n", 3);
+			dup2(redir->pipe_fd[0], STDIN_FILENO);
+		}
 		close(redir->pipe_fd[0]);
 		close(redir->pipe_fd[1]);
 		waitpid(redir->pid, NULL, 0);
 		return ;
 	}
-	dup2(redir->pipe_fd[1], STDOUT_FILENO);
-	close(redir->pipe_fd[1]);
-	close(redir->pipe_fd[0]);
+	if (!redir->next)
+	{
+		write(2, "..\n", 3);
+		dup2(redir->pipe_fd[1], STDOUT_FILENO);
+	}
+	//close(redir->pipe_fd[1]);
+	//close(redir->pipe_fd[0]);
 	i = 0;
 	while (true)
 	{
@@ -115,10 +123,18 @@ static void	here_doc(t_redir *redir, t_sh *sh)
 		i++;
 	}
 	i = -1;
-	while (arr[++i])
+	while (arr[++i] && !redir->next)
 		printf("%s", arr[i]);
-	//close(redir->pipe_fd[0]);
-	//close(redir->pipe_fd[1]);
+	redir = redir->start;
+	while (redir)
+	{
+		if (redir->fd_in_red)
+		{
+			close(redir->pipe_fd[0]);
+			close(redir->pipe_fd[1]);
+		}
+		redir = redir->next;
+	}
 	terminate(0, sh);
 }
 
@@ -139,18 +155,21 @@ static void	prepare_in_file(t_redir *redir, int flag, t_sh *sh)
 		}
 		return ;
 	}
-	/*if (redir->infile)
+	if (redir->infile)
 	{
 		if (redir->next && redir->next->infile)
-			dup2(redir->next->fd_in, redir->fd_in);
+		{
+			if (!redir->fd_in_red)
+				dup2(redir->next->fd_in, redir->fd_in);
+		}
 		else
 		{
-			write(1, ".", 1);
-			dup2(redir->fd_in, STDIN_FILENO);
+			if (!redir->fd_in_red)
+				dup2(redir->fd_in, STDIN_FILENO);
 		}
-		//if (!redir->fd_in_red)
-		close(redir->fd_in);
-	}*/
+		if (!redir->fd_in_red)
+			close(redir->fd_in);
+	}
 }
 
 static void	prepare_out_file(t_redir *redir, int flag)
@@ -184,6 +203,11 @@ void	prepare_file(t_sh *sh)
 
 	redir = sh->cmd_list->redir_list;
 	redir = redir->start;
+	if (!redir->infile && !redir->outfile)
+	{
+		printf("1\n");
+		return ;
+	}
 	while (redir)
 	{
 		prepare_in_file(redir, 1, sh);
@@ -204,6 +228,16 @@ void	prepare_file(t_sh *sh)
 		{
 			printf("Helo world\n");
 			here_doc(redir, sh);
+		}
+		redir = redir->next;
+	}
+	redir = redir->start;
+	while (redir)
+	{
+		if (redir->fd_in_red)
+		{
+			close(redir->pipe_fd[0]);
+			close(redir->pipe_fd[1]);
 		}
 		redir = redir->next;
 	}
