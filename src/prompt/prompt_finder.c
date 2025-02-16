@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:30:35 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/16 22:36:32 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:48:17 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,19 @@ char	*get_hostname(void)
 	int		fd;
 	int		b_read;
 	char	hostname[100];
+	char	*nl_ptr;
 	char	*str;
 
 	fd = open("/etc/hostname", O_RDONLY);
 	if (fd < 0)
 		return (NULL);
 	b_read = read(fd, hostname, 100);
+	close(fd);
 	hostname[b_read] = '\0';
-	str = ft_strtrim(hostname, "\n");
+	nl_ptr = ft_strchr(hostname, '\n');
+	if (nl_ptr)
+		*nl_ptr = '\0';
+	str = ft_strdup(hostname);
 	return (str);
 }
 

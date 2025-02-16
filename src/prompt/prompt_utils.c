@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:32:30 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/04 00:32:50 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:47:11 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,4 @@ char	*userjoin(char *user, char *pc, t_sh *sh)
 	join_prompt_val(&prompt, &div1);
 	join_prompt_val(&prompt, &pc);
 	return (prompt);
-}
-
-// strlen till the char
-int	ft_lentoc(const char *str, char c)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != c)
-		i++;
-	return (i);
 }
