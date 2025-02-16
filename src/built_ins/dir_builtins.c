@@ -19,16 +19,14 @@ void	cd(t_sh *sh)
 	t_cmd	*cmd;
 
 	cmd = sh->cmd_list;
-	home_path = getenv("HOME");
-	if (!home_path)
-		return ;
-	if (cmd->cmd_count == 1)
+	home_path = ft_get_env("HOME", sh);
+	if (cmd->cmd_count == 1 && home_path)
 	{
 		chdir(home_path);
 		return ;
 	}
 	path = cmd->cmd_arr[1];
-	if (path[0] == '~')
+	if (path[0] == '~' && home_path)
 	{
 		if (ft_strlen(path) > 1)
 			home_path = ft_strjoin(home_path, path + 1);

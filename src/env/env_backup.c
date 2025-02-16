@@ -4,13 +4,19 @@ char	*ft_get_env(char *env_var, t_sh *sh)
 {
 	int		i;
 	char	**env;
+	char	*value;
 
 	env = sh->env;
 	i = -1;
 	while (env[++i])
 	{
 		if (ft_strncmp(env_var, env[i], ft_strlen(env_var)) == 0)
-			return (add_galloc(ft_strdup(ft_strchr(env[i], '=')), sh));
+		{
+			value = ft_strdup(ft_strchr(env[i], '='));
+			add_galloc(value, sh);
+			value++;
+			return (value);
+		}
 	}
 	return (NULL);
 }

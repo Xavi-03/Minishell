@@ -56,6 +56,9 @@ t_token	**found_var(char *input, t_sh *sh)
 		}
 		var_iter = var_iter->next;
 	}
+	if (!value)
+		value = ft_get_env(input, sh);
+	printf("%s\n", value);
 	if (value)
 		return (prepare_token_arr(value, sh));
 	return (NULL);

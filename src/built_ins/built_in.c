@@ -77,12 +77,17 @@ void	echo(t_sh *sh)
 	cmd = sh->cmd_list;
 	i = 0;
 	if (cmd->cmd_count == 1)
+	{
 		printf("\n");
-	if (ft_strncmp(cmd->cmd_arr[1], "-n", 3) == 0)
-		i++;
+		return ;
+	}
 	i++;
+	while (ft_strncmp(cmd->cmd_arr[i], "-n", 3) == 0)
+		i++;
 	while (cmd->cmd_arr[i] && cmd->cmd_arr[i + 1])
+	{
 		printf("%s ", cmd->cmd_arr[i++]);
+	}
 	printf("%s", cmd->cmd_arr[i]);
 	if (ft_strncmp(cmd->cmd_arr[1], "-n", 3) != 0)
 		printf("\n");

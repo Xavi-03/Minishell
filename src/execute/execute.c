@@ -33,12 +33,12 @@ void	subprocess_executer(t_sh *sh)
 //	bzero(&act, sizeof(act));
 //	act.sa_handler = &sigquit_handler;
 //	sigaction(SIGINT, &act, 0);
+	prepare_file(sh);
 	prepare_pipe(sh);
 	//if (sh->cmd_list->redir_list->infile)
 	//in_file(sh);
 	//if (sh->cmd_list->redir_list->outfile)
 	//out_file(sh);
-	prepare_file(sh);
 	if (sh->cmd_list->built_in)
 	{
 		if (exec_built_in(sh))

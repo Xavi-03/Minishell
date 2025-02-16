@@ -137,6 +137,8 @@ char	**add_var_env(t_sh *sh);
 char	**env_backup(t_sh *sh);
 //var_in_env    STATIC
 char	**remove_var_env(char *var_name, t_sh *sh);
+//	env_var_utils2.c								FILE
+char	*ft_get_env(char *env_var, t_sh *sh);
 
 //./execute											FOLDER
 //	execute.c										FILE
