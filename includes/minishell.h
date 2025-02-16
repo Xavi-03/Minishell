@@ -223,6 +223,9 @@ bool	is_in_set(char c, char *set);
 t_token	**create_token_arr(t_token **token_arr, size_t n_tokens, t_sh *sh);
 void	token_arr_args_init(t_token_arr_args *args, char *str);
 void	remove_backslashes(t_token_arr_args *args, t_sh *sh);
+
+// ./heredoc
+void	heredoc(t_redir *redir, t_sh *sh);
 #endif
 
 //valgrind --track-origins=yes --trace-children=yes --leak-check=full
