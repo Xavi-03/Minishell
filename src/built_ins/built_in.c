@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:18:02 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/15 17:07:05 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/16 20:48:05 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,33 @@ int	exec_built_in(t_sh *sh)
 	else if (is_built_in(cmd, "env"))
 		print_env(sh);
 	else if (is_built_in(cmd, "exit"))
-		terminate(EXIT_SUCCESS, sh);
+		exit_builtin(sh);
 	else
 		return (1);
 	return (0);
+}
+
+void	exit_builtin(t_sh *sh)
+{
+	char	**cmd_arr;
+	int		n_cmd;
+
+	cmd_arr = sh->cmd_list->cmd_arr;
+	n_cmd = sh->cmd_list->cmd_count;
+	if (n_cmd == 1)
+		terminate(0, sh);
+	if (n_cmd > 2)
+	{
+		printf("exit: too many arguments\n");
+		sh->last_command = 1;
+		return ;
+	}
+	if (!is_number(cmd_arr[1]))
+	{
+		printf("exit: %s: numeric argument required\n", cmd_arr[1]);
+		terminate(2, sh);
+	}
+	terminate(atoi(cmd_arr[1]), sh);
 }
 
 void	echo(t_sh *sh)

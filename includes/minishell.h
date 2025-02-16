@@ -116,6 +116,7 @@ char	*get_next_line(int fd);
 void	find_built_in(char *input, t_sh *sh);
 int		exec_built_in(t_sh *sh);
 void	echo(t_sh *sh);
+void	exit_builtin(t_sh *sh);
 //	dir_builtins.c									FILE
 void	cd(t_sh *sh);
 void	pwd(void);
@@ -162,6 +163,7 @@ void	*galloc(size_t size, t_sh *sh);
 //./minishell										FOLDER
 //	main.c											FILE
 void	sig_handler(int signum);
+void	sigabrt_handler(int signal);
 char	*arr_to_str(char **arr);
 t_sh	*init_sh(char **env);
 void	prompt_main(t_sh *sh);
@@ -226,6 +228,9 @@ void	remove_backslashes(t_token_arr_args *args, t_sh *sh);
 
 // ./heredoc
 void	heredoc(t_redir *redir, t_sh *sh);
+
+// ./misc
+bool	is_number(char *str);
 #endif
 
 //valgrind --track-origins=yes --trace-children=yes --leak-check=full
