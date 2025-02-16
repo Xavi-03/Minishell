@@ -27,9 +27,25 @@ typedef struct	s_sh
 	struct s_var	*var_list;
 	struct s_cmd	*cmd_list;
 	struct s_galloc	*l_galloc;
-	char			**input_arr;
+	struct s_token	**token_arr;
 	char			*line;
 }	t_sh;
+
+typedef struct s_redir
+{
+	int				f_next_infile;
+	int				fd_in;
+	int				fd_in_red;
+	int				*pipe_fd;
+	int				pid;
+	char			*infile;
+	int				f_next_outfile;
+	int				fd_out;
+	int				fd_out_red;
+	char			*outfile;
+	struct s_redir	*next;
+	struct s_redir	*start;
+}	t_redir;
 
 typedef struct	s_cmd
 {
@@ -40,19 +56,30 @@ typedef struct	s_cmd
 	int				out_pipe;
 	int				in_pipe;
 	int				*fd_pipe;
-	int				f_next_infile;
+	/*int				f_next_infile;
 	int				fd_in;
 	int				fd_in_red;
 	char			*infile;
 	int				f_next_outfile;
 	int				fd_out;
 	int				fd_out_red;
-	char			*outfile;
+	char			*outfile;*/
 	int				built_in;
 	char			**cmd_arr;
+	struct s_redir	*redir_list;
 	struct s_cmd	*next;
 	struct s_cmd	*start;
 }	t_cmd;
+
+typedef struct	s_token
+{
+	char	*str;
+	bool	is_redir;
+	bool	is_variable;
+	bool	is_option;
+	bool	is_command;
+}	t_token;
+
 
 typedef struct	s_var
 {
@@ -68,16 +95,16 @@ typedef struct s_galloc
 	struct s_galloc	*start;
 }	t_galloc;
 
-typedef struct s_cmd_arr_args
+typedef struct s_token_arr_args
 {
 	char	*str;
-	char	**cmd_arr;
+	t_token	**token_arr;
 	size_t	i;
 	size_t	j;
 	size_t	start;
-	size_t	n_substr;
+	size_t	n_tokens;
 	/* data */
-}				t_cmd_arr_args;
+}				t_token_arr_args;
 
 char	*get_next_line(int fd);
 //55 f 6 s 1 m
@@ -91,6 +118,7 @@ int		exec_built_in(t_sh *sh);
 void	echo(t_sh *sh);
 //	dir_builtins.c									FILE
 void	cd(t_sh *sh);
+void	pwd(void);
 //	env_builtins.c									FILE
 void	print_env(t_sh *sh);
 void	export(t_sh *sh);
@@ -116,8 +144,9 @@ void	subprocess_executer(t_sh *sh);
 void	main_process_executer(t_sh *sh);
 void	execute(t_sh *sh);
 //	execute_utils.c									FILE
-void	in_file(t_sh *sh);
-void	out_file(t_sh *sh);
+//prepare_in_file	STATIC
+//prepare_out_file	STATIC
+void	prepare_file(t_sh *sh);
 t_cmd	*fork_create(t_sh *sh);
 void	prepare_pipe(t_sh *sh);
 void	pipe_cleaner(t_sh *sh);
@@ -145,7 +174,7 @@ void	free_str_arr(char **str_arr);
 int		command_builder(char *input, t_sh *sh);
 int		manage_cmd_pipes(t_sh *sh);
 int		cmd_parser(char *input, t_sh *sh);
-void	find_cmd(char **input_arr, t_sh *sh);
+void	find_cmd(t_token **token_arr, t_sh *sh);
 void	parser(t_sh *sh);
 //	parser_utils.c									FILE
 void	parse_file_redir(char *input, t_sh *sh);
@@ -167,10 +196,15 @@ char	*promptjoin(char *user, char *path, t_sh *sh);
 char	*userjoin(char *user, char *pc, t_sh *sh);
 int		ft_lentoc(const char *str, char c);
 
+//./redir_linked_list								FOLDER
+//	redir_utils.c									FILE
+t_redir	*redir_addnode(t_sh *sh);
+t_redir	*redir_init(t_redir *redir_node, t_sh *sh);
+
 //./variable_linked_list							FOLDER
 //	var_utils.c										FILE
 void	add_var(char *input, t_sh *sh);
-char	**found_var(char *input, t_sh *sh);
+t_token	**found_var(char *input, t_sh *sh);
 void	var_delnode(char *var_name, t_sh *sh);
 t_var	*var_addnode(t_sh *sh);
 t_var	*var_init(t_var *var_node, t_sh *sh);
@@ -178,17 +212,20 @@ t_var	*var_init(t_var *var_node, t_sh *sh);
 // ./cmd_arr
 //cmd_arr stuff
 int		get_n_cmds(char *str);
-char	**prepare_cmd_arr(char *str, t_sh *sh);
-void	process_redirs(t_cmd_arr_args *args, t_sh *sh);
-void	process_everything_else(t_cmd_arr_args *args, t_sh *sh);
-void	process_double_quotes(t_cmd_arr_args *args, t_sh *sh);
-void	process_single_quotes(t_cmd_arr_args *args, t_sh *sh);
-void	skip_escaped(t_cmd_arr_args *args, t_sh *sh);
+t_token	**prepare_token_arr(char *str, t_sh *sh);
+void	process_redirs(t_token_arr_args *args, t_sh *sh);
+void	process_everything_else(t_token_arr_args *args, t_sh *sh);
+void	process_double_quotes(t_token_arr_args *args, t_sh *sh);
+void	process_single_quotes(t_token_arr_args *args, t_sh *sh);
+void	skip_escaped(t_token_arr_args *args, t_sh *sh);
 char	*extract_between_chars(char *str, char c, t_sh *sh);
 bool	is_in_set(char c, char *set);
-char	**create_cmd_arr(char **cmd_arr, size_t n_substr, t_sh *sh);
-void	cmd_arr_args_init(t_cmd_arr_args *args, char *str);
-void	remove_backslashes(t_cmd_arr_args *args, t_sh *sh);
+t_token	**create_token_arr(t_token **token_arr, size_t n_tokens, t_sh *sh);
+void	token_arr_args_init(t_token_arr_args *args, char *str);
+void	remove_backslashes(t_token_arr_args *args, t_sh *sh);
+
+// ./heredoc
+void	heredoc(t_redir *redir, t_sh *sh);
 #endif
 
 //valgrind --track-origins=yes --trace-children=yes --leak-check=full
@@ -229,7 +266,7 @@ void	free_galloc(t_sh *sh);
 void	*add_galloc(void *mem, t_sh *sh);
 void	*galloc(size_t size, t_sh *sh);
 //parser.c
-void	find_cmd(char **input_arr, t_sh *sh);
+void	find_cmd(char **token_arr, t_sh *sh);
 void	parser(t_sh *sh);
 void	pipe_cleaner(t_sh *sh);
 //execute.h
@@ -264,7 +301,7 @@ t_var	*var_addnode(t_sh *sh);
 // Misc utils
 void	free_str_arr(char **str_arr);
 char	*extract_between_chars(char *str, char c);
-char	**prepare_cmd_arr(char *str);
+char	**prepare_token_arr(char *str);
 char	*get_env_var(char **env, char *env_var);
 
 // Pipe utils

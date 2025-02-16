@@ -1,36 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_skip_escaped.c                                 :+:      :+:    :+:   */
+/*   token_skip_escaped.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/11 17:55:49 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 16:14:15 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	remove_backslashes(t_cmd_arr_args *args, t_sh *sh)
+void	remove_backslashes(t_token_arr_args *args, t_sh *sh)
 {
-	char	**cmd_arr;
+	t_token	**token_arr;
 	size_t	i;
 	size_t	j;
 
 	(void) sh;
-	cmd_arr = args->cmd_arr;
+	token_arr = args->token_arr;
 	i = 0;
-	while (cmd_arr[i])
+	while (token_arr[i])
 	{
 		j = 0;
-		while (cmd_arr[i][j])
+		while (token_arr[i]->str[j])
 		{
-			if (cmd_arr[i][j] == '\\' && cmd_arr[i][j] \
-				&& cmd_arr[i][j + 1] && cmd_arr[i][j + 1] != ' ')
+			if (token_arr[i]->str[j] == '\\' && token_arr[i]->str[j] \
+				&& token_arr[i]->str[j + 1] && token_arr[i]->str[j + 1] != ' ')
 			{
-				ft_strlcpy(cmd_arr[i] + j, cmd_arr[i] + j + 1, \
-					ft_strlen(cmd_arr[i] + j + 1));
+				ft_strlcpy(token_arr[i]->str + j, token_arr[i]->str + j + 1, \
+					ft_strlen(token_arr[i]->str + j + 1));
 			}
 			j++;
 		}
@@ -38,7 +38,7 @@ void	remove_backslashes(t_cmd_arr_args *args, t_sh *sh)
 	}
 }
 
-void	skip_escaped(t_cmd_arr_args *args, t_sh *sh)
+void	skip_escaped(t_token_arr_args *args, t_sh *sh)
 {
 	char	*str;
 

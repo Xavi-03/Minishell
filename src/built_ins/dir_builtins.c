@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:18:02 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/11 19:15:56 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 16:51:26 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,13 @@ void	cd(t_sh *sh)
 		free(home_path);
 	}
 	chdir(path);
+}
+
+void	pwd(void)
+{
+	char	*cwd;
+
+	cwd = get_curr_dir();
+	printf("%s\n", cwd);
+	free(cwd);
 }

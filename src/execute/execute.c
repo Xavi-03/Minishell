@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:20:12 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/04 00:20:13 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/15 17:47:27 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ void	subprocess_executer(t_sh *sh)
 //	act.sa_handler = &sigquit_handler;
 //	sigaction(SIGINT, &act, 0);
 	prepare_pipe(sh);
-	if (sh->cmd_list->infile)
-		in_file(sh);
-	if (sh->cmd_list->outfile)
-		out_file(sh);
+	//if (sh->cmd_list->redir_list->infile)
+	//in_file(sh);
+	//if (sh->cmd_list->redir_list->outfile)
+	//out_file(sh);
+	prepare_file(sh);
 	if (sh->cmd_list->built_in)
 	{
 		if (exec_built_in(sh))
