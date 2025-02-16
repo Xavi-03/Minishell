@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:30:35 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/16 22:32:49 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:36:32 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*user_finder(char *user, char *pc, t_sh *sh)
 	char	*prompt_user;
 
 	user = getenv("USER");
-	add_galloc(user, sh);
 	pc = get_hostname();
 	add_galloc(pc, sh);
 	if (!user)
