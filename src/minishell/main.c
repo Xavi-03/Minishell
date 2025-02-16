@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:24:50 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/16 22:04:37 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:44:41 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	prompt_main(t_sh *sh)
 			sh->token_arr = prepare_token_arr(input, sh);
 			parser(sh);
 		}
-		gfree(input, sh);
 	}
 }
 
