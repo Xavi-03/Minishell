@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:24:50 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/16 20:56:33 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:04:37 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	main(int argc, char **argv, char **env)
 		parser(sh);
 		terminate(EXIT_SUCCESS, sh);
 	}
-	signal(SIGABRT, sigabrt_handler);
+	//signal(SIGABRT, sigabrt_handler);
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
 

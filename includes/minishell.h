@@ -231,6 +231,8 @@ void	heredoc(t_redir *redir, t_sh *sh);
 
 // ./misc
 bool	is_number(char *str);
+
+void	increase_shlvl(char **env);
 #endif
 
 //valgrind --track-origins=yes --trace-children=yes --leak-check=full
