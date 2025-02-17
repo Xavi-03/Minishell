@@ -93,6 +93,6 @@ void	execute(t_sh *sh)
 	cmd = sh->cmd_list;
 	increase_shlvl(sh->env);
 	execve(cmd->cmd_arr[0], cmd->cmd_arr, sh->env);
-	printf("minishell: Command not Found\n");
+	ft_putstr_fd("minishell: Command not Found\n", 2);
 	terminate(1, sh);
 }

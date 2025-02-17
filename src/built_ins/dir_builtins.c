@@ -12,6 +12,32 @@
 
 #include "../../includes/minishell.h"
 
+static void	update_pwd_env(t_sh *sh)
+{
+	char	*new_var;
+
+	sh->cmd_list->cmd_arr = galloc(3 * sizeof(char *), sh);
+	new_var = ft_strjoin("OLDPWD=", ft_get_env("PWD", sh));
+	printf("OLD %s\n", new_var);
+	add_galloc(new_var, sh);
+	sh->cmd_list->cmd_arr[0] = NULL;
+	sh->cmd_list->cmd_arr[1] = ft_strdup(new_var);
+	add_galloc(sh->cmd_list->cmd_arr[0], sh);
+	sh->cmd_list->cmd_arr[2] = NULL;
+	add_var_env(sh);
+	printf("2\n");
+	new_var = ft_strjoin("PWD=", get_curr_dir());
+	printf("PWD %s\n", new_var);
+	add_galloc(new_var, sh);
+	sh->cmd_list->cmd_arr[0] = NULL;
+	sh->cmd_list->cmd_arr[1] = ft_strdup(new_var);
+	add_galloc(sh->cmd_list->cmd_arr[0], sh);
+	sh->cmd_list->cmd_arr[2] = NULL;
+	add_var_env(sh);
+	printf("3\n");
+}
+
+
 void	cd(t_sh *sh)
 {
 	char	*home_path;
@@ -36,6 +62,7 @@ void	cd(t_sh *sh)
 		free(home_path);
 	}
 	chdir(path);
+	update_pwd_env(sh);
 }
 
 void	pwd(void)

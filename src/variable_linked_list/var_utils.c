@@ -44,7 +44,7 @@ t_token	**found_var(char *input, t_sh *sh)
 	var_iter = sh->var_list;
 	input++;
 	if (ft_strncmp(input, "?", 1) == 0 && !input[1])
-		return (NULL);
+		return (prepare_token_arr(ft_itoa(sh->last_command), sh));
 		//return (ft_split(ft_itoa(sh->last_command), ' '));
 	while (var_iter)
 	{
