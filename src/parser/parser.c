@@ -105,7 +105,8 @@ void	parser(t_sh *sh)
 	find_cmd(token_arr, sh);
 	if (!sh->cmd_list->cmd_arr)
 	{
-		check_redirs(sh);
+		if (check_redirs(sh))// || sh->syntaxerror)
+			ft_putstr_fd("Syntax Error\n", 2);
 		return ;
 	}
 	if (sh->cmd_list->built_in || sh->cmd_list->cmd_arr)

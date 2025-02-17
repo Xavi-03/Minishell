@@ -42,14 +42,14 @@ t_redir	*redir_init(t_redir *redir_node, t_sh *sh)
 	return (redir_node);
 }
 
-void	check_redirs(t_sh *sh)
+int	check_redirs(t_sh *sh)
 {
 	t_redir	*redir;
 	int		pid;
 
 	redir = sh->cmd_list->redir_list;
-	if (!redir)
-		return ;
+	if (!redir->infile && !redir->outfile)
+		return (1);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -63,9 +63,10 @@ void	check_redirs(t_sh *sh)
 			sh->last_command = 128 + WTERMSIG(sh->last_command);
 		else if (WIFEXITED(sh->last_command))
 			sh->last_command = WEXITSTATUS(sh->last_command);
-		return ;
+		return (0);
 	}
 	prepare_file(1, sh);
 	prepare_file(0, sh);
 	terminate(0, sh);
+	return (0);
 }

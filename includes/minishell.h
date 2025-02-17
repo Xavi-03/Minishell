@@ -208,7 +208,7 @@ int		ft_lentoc(const char *str, char c);
 //	redir_utils.c									FILE
 t_redir	*redir_addnode(t_sh *sh);
 t_redir	*redir_init(t_redir *redir_node, t_sh *sh);
-void	check_redirs(t_sh *sh);
+int		check_redirs(t_sh *sh);
 
 //./variable_linked_list							FOLDER
 //	var_utils.c										FILE
@@ -242,5 +242,4 @@ size_t	count_chars(char *str, char c);
 
 void	increase_shlvl(char **env);
 #endif
-/* valgrind --track-origins=yes --trace-children=yes \
---leak-check=full ./minishell */
+/* valgrind --track-origins=yes --trace-children=yes --leak-check=full ./minishell */
