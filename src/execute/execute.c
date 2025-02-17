@@ -12,15 +12,11 @@
 
 #include "../../includes/minishell.h"
 
-void	sigler(int signum)
+/*void	sigler(int signum)
 {
 	(void)signum;
-	/*if (signum == SIGINT)
-	{
-		printf("Hola\n");
-		exit(42);
-	}*/
 }
+
 void	sigquit_handler(int signal)
 {
 	if (signal == SIGINT)
@@ -31,21 +27,13 @@ void	sigabrt_handler(int signal)
 {
 	if (signal == SIGABRT)
 		printf("Quit (core dumped)\n");
-}
-
+		}*/
 
 void	subprocess_executer(t_sh *sh)
 {
-//	struct sigaction act;
-//	bzero(&act, sizeof(act));
-//	act.sa_handler = &sigquit_handler;
-//	sigaction(SIGINT, &act, 0);
-	prepare_file(sh);
+	prepare_file(1, sh);
 	prepare_pipe(sh);
-	//if (sh->cmd_list->redir_list->infile)
-	//in_file(sh);
-	//if (sh->cmd_list->redir_list->outfile)
-	//out_file(sh);
+	prepare_file(0, sh);
 	if (sh->cmd_list->built_in)
 	{
 		if (exec_built_in(sh))
@@ -59,6 +47,7 @@ void	subprocess_executer(t_sh *sh)
 void	main_process_executer(t_sh *sh)
 {
 	t_cmd	*temp_cmd;
+
 	sh->cmd_list = sh->cmd_list->start;
 	temp_cmd = sh->cmd_list;
 	while (temp_cmd)
@@ -80,8 +69,6 @@ void	main_process_executer(t_sh *sh)
 			sh->last_command = WEXITSTATUS(sh->last_command);
 		if (temp_cmd->not_found)
 			sh->last_command = 127;
-		/*if (sh->last_command == 2)
-			sh->last_command = 130;*/
 		temp_cmd = temp_cmd->next;
 	}
 }

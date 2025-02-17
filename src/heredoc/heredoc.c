@@ -25,11 +25,13 @@ void	heredoc(t_redir *redir, t_sh *sh)
 	remove(filename);
 	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	line = readline("> ");
-	while (ft_strncmp(line, redir->infile, strlen(redir->infile)))
+	add_galloc(line, sh);
+	while (ft_strncmp(line, redir->infile, strlen(line)))
 	{
 		ft_putstr_fd(line, fd);
 		ft_putchar_fd('\n', fd);
 		line = readline("> ");
+		add_galloc(line, sh);
 	}
 	redir->fd_in = fd;
 	redir->fd_in_red = 0;

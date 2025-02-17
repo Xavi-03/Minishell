@@ -29,8 +29,7 @@ void	sig_handler(int signum)
 	}
 }
 
-/* Aqui hago malloc porque estoy guardando con add_galloc en find_cmd */
-char	*arr_to_str(char **arr)
+char	*arr_to_str(char **arr, t_sh *sh)
 {
 	int		i;
 	int		j;
@@ -44,9 +43,7 @@ char	*arr_to_str(char **arr)
 		if (arr[i + 1])
 			j += 1;
 	}
-	new_str = malloc((j + 1) * sizeof(char));
-	if (!new_str)
-		return (NULL);
+	new_str = galloc((j + 1) * sizeof(char), sh);
 	new_str[0] = '\0';
 	i = -1;
 	j = -1;
@@ -103,8 +100,6 @@ void	prompt_main(t_sh *sh)
 	}
 }
 
-
-/* TODO: Handle argv */
 int	main(int argc, char **argv, char **env)
 {
 	t_sh		*sh;
@@ -113,18 +108,14 @@ int	main(int argc, char **argv, char **env)
 	sh = init_sh(env);
 	if (argc != 1)
 	{
-		input = arr_to_str(&argv[1]);
-		add_galloc(input, sh);
+		input = arr_to_str(&argv[1], sh);
 		sh->line = input;
 		sh->token_arr = prepare_token_arr(input, sh);
 		parser(sh);
 		terminate(EXIT_SUCCESS, sh);
 	}
-	//signal(SIGABRT, sigabrt_handler);
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
-
-	//sigaction(SIGINT, &act, 0);
 	prompt_main(sh);
 	terminate (EXIT_SUCCESS, sh);
 }

@@ -55,7 +55,7 @@ int	exec_built_in(t_sh *sh)
 	else if (is_built_in(cmd, "cd"))
 		cd(sh);
 	else if (is_built_in(cmd, "pwd"))
-		pwd();
+		pwd(sh);
 	else if (is_built_in(cmd, "export"))
 		export(sh);
 	else if (is_built_in(cmd, "unset"))

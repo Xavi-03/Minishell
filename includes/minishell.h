@@ -6,21 +6,21 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <string.h> //idk if this is used
+# include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
 # include <fcntl.h>
-# include <sys/time.h>//debug
-# include <signal.h> // for history
+# include <signal.h>
+# include <sys/time.h>
 # define SINGLE_REDIR 1
 # define DOUBLE_REDIR 2
 # define NO_REDIR 0
 # define RESET_COLOR "\033[0m"
 
-typedef struct	s_sh
+typedef struct s_sh
 {
 	int				last_command;
 	char			**env;
@@ -47,7 +47,7 @@ typedef struct s_redir
 	struct s_redir	*start;
 }	t_redir;
 
-typedef struct	s_cmd
+typedef struct s_cmd
 {
 	int				pid;
 	int				not_found;
@@ -56,14 +56,6 @@ typedef struct	s_cmd
 	int				out_pipe;
 	int				in_pipe;
 	int				*fd_pipe;
-	/*int				f_next_infile;
-	int				fd_in;
-	int				fd_in_red;
-	char			*infile;
-	int				f_next_outfile;
-	int				fd_out;
-	int				fd_out_red;
-	char			*outfile;*/
 	int				built_in;
 	char			**cmd_arr;
 	struct s_redir	*redir_list;
@@ -71,7 +63,7 @@ typedef struct	s_cmd
 	struct s_cmd	*start;
 }	t_cmd;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	char	*str;
 	bool	is_redir;
@@ -80,8 +72,7 @@ typedef struct	s_token
 	bool	is_command;
 }	t_token;
 
-
-typedef struct	s_var
+typedef struct s_var
 {
 	char			*var_name;
 	char			*value;
@@ -107,7 +98,6 @@ typedef struct s_token_arr_args
 }				t_token_arr_args;
 
 char	*get_next_line(int fd);
-//55 f 6 s 1 m
 
 //./buil_ins										FOLDER
 //	built_in.c										FILE
@@ -119,7 +109,7 @@ void	echo(t_sh *sh);
 void	exit_builtin(t_sh *sh);
 //	dir_builtins.c									FILE
 void	cd(t_sh *sh);
-void	pwd(void);
+void	pwd(t_sh *sh);
 //	env_builtins.c									FILE
 void	print_env(t_sh *sh);
 void	export(t_sh *sh);
@@ -149,7 +139,7 @@ void	execute(t_sh *sh);
 //	execute_utils.c									FILE
 //prepare_in_file	STATIC
 //prepare_out_file	STATIC
-void	prepare_file(t_sh *sh);
+void	prepare_file(int flag, t_sh *sh);
 t_cmd	*fork_create(t_sh *sh);
 void	prepare_pipe(t_sh *sh);
 void	pipe_cleaner(t_sh *sh);
@@ -166,7 +156,7 @@ void	*galloc(size_t size, t_sh *sh);
 //	main.c											FILE
 void	sig_handler(int signum);
 void	sigabrt_handler(int signal);
-char	*arr_to_str(char **arr);
+char	*arr_to_str(char **arr, t_sh *sh);
 t_sh	*init_sh(char **env);
 void	prompt_main(t_sh *sh);
 //int	main(int argc, char **argv, char **env)		MAIN
@@ -185,7 +175,7 @@ void	parse_file_redir(char *input, t_sh *sh);
 void	check_in_out_file(char *input, t_sh *sh);
 int		check_std_redir(char *input, t_sh *sh);
 //	path_utils.c									FILE
-char	*get_curr_dir(void);
+char	*get_curr_dir(t_sh *sh);
 //pathfinder    STATIC
 char	*get_path(char *command, t_sh *sh);
 
@@ -204,6 +194,7 @@ int		ft_lentoc(const char *str, char c);
 //	redir_utils.c									FILE
 t_redir	*redir_addnode(t_sh *sh);
 t_redir	*redir_init(t_redir *redir_node, t_sh *sh);
+void	check_redirs(t_sh *sh);
 
 //./variable_linked_list							FOLDER
 //	var_utils.c										FILE
@@ -236,85 +227,4 @@ bool	is_number(char *str);
 
 void	increase_shlvl(char **env);
 #endif
-
-//valgrind --track-origins=yes --trace-children=yes --leak-check=full
-// for check memory leaks with subprocess
-
-/* DUDAS
-Como reconocer commandos, y < > | u otros simbolos y no confundirlos con commandos,
-entiendo que "< infile cmd1 | cm2 > outfile" infile se reconoce por que le precede
-< pero no conozco todas las posibilidades ni como de lioso se pues poner
-
-"infile < ls" mal
-"< infile cat" bien
-
-
-
-
-COSAS a revisar
-Cuanto el ENV falla, debemos buscar una alternativa por ejemplo "unseth PATH"
-
-*/
-
-
-/*
-//utils.c
-//line_finder.c
-char	*user_finder(char *user, char *pc, t_sh *sh);
-char	*path_finder(t_sh *sh);
-char	*prompt_finder(t_sh *sh);
-char	*get_path(char *command);
-//prompte_utils.c
-int		ft_lentoc(const char *str, char c);
-char	*promptjoin(char *user, char *path, t_sh *sh);
-char	*userjoin(char *user, char *pc, t_sh *sh);
-//galloc.c
-void	gfree(void *ptr, t_sh *sh);
-void	terminate(t_sh *sh);
-void	free_galloc(t_sh *sh);
-void	*add_galloc(void *mem, t_sh *sh);
-void	*galloc(size_t size, t_sh *sh);
-//parser.c
-void	find_cmd(char **token_arr, t_sh *sh);
-void	parser(t_sh *sh);
-void	pipe_cleaner(t_sh *sh);
-//execute.h
-void	in_file(t_sh *sh);
-void	out_file(t_sh *sh);
-void	prepare_pipe(t_sh *sh);
-t_cmd	*fork_create(t_sh *sh);
-void	execute(t_sh *sh);
-//built_ins.c
-int		exec_built_in(t_sh *sh);
-void	find_built_in(char *input, t_sh *sh);
-void	cd(t_sh *sh);
-void	echo(t_sh *sh);
-void	export(t_sh *sh);
-void	unset(t_sh *sh);
-void	executer_built_in(t_sh *sh);
-void	print_env(t_sh *sh);
-//built_in_utils.c
-char	**add_var_env(t_sh *sh);
-char	**remove_var_env(char *var_name, t_sh *sh);
-//cmd_utils.c
-t_cmd	*cmd_addnode(t_sh *sh);
-t_cmd	*cmd_init(t_cmd *cmd_list, t_sh *sh);
-//var_utils.c
-void	var_delnode(char *var_name, t_sh *sh);
-//char	*add_var(char *input, int input_idx, t_sh *sh); // merge pol
-void	add_var(char *input, t_sh *sh); // merge javi
-char	**found_var(char *input, t_sh *sh);
-t_var	*var_init(t_var *var, t_sh *sh);
-t_var	*var_addnode(t_sh *sh);
-
-// Misc utils
-void	free_str_arr(char **str_arr);
-char	*extract_between_chars(char *str, char c);
-char	**prepare_token_arr(char *str);
-char	*get_env_var(char **env, char *env_var);
-
-// Pipe utils
-void	pipe_cleaner(t_sh *sh);
-
-void	main_process_executer(t_sh *sh);
-*/
+//valgrind --track-origins=yes --trace-children=yes --leak-check=full ./minishell

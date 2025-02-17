@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-char	*get_curr_dir(void)
+char	*get_curr_dir(t_sh *sh)
 {
 	char	cwd[4096];
 	char	*path;
@@ -23,21 +23,21 @@ char	*get_curr_dir(void)
 		path = ft_strdup(cwd);
 	else
 		path = ft_strjoin(cwd, "/");
+	add_galloc(path, sh);
 	if (!path)
 		return (NULL);
 	return (path);
 }
 
-static char	*pathfinder(char **paths, char *command)
+static char	*pathfinder(char **paths, char *command, t_sh *sh)
 {
 	char	*filepath;
 	char	*path;
 	char	*cwd_command;
 	char	*cwd;
 
-	cwd = get_curr_dir();
+	cwd = get_curr_dir(sh);
 	cwd_command = ft_strjoin(cwd, command);
-	free(cwd);
 	if (!cwd_command)
 		return (NULL);
 	if (access(cwd_command, X_OK) == 0)
@@ -66,7 +66,7 @@ char	*get_path(char *command, t_sh *sh)
 	if (!env_path)
 		return (NULL);
 	paths = ft_split(env_path, ':');
-	path = pathfinder(paths, command);
+	path = pathfinder(paths, command, sh);
 	free_str_arr(paths);
 	return (path);
 }

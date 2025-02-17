@@ -18,25 +18,20 @@ static void	update_pwd_env(t_sh *sh)
 
 	sh->cmd_list->cmd_arr = galloc(3 * sizeof(char *), sh);
 	new_var = ft_strjoin("OLDPWD=", ft_get_env("PWD", sh));
-	printf("OLD %s\n", new_var);
 	add_galloc(new_var, sh);
 	sh->cmd_list->cmd_arr[0] = NULL;
 	sh->cmd_list->cmd_arr[1] = ft_strdup(new_var);
-	add_galloc(sh->cmd_list->cmd_arr[0], sh);
+	add_galloc(sh->cmd_list->cmd_arr[1], sh);
 	sh->cmd_list->cmd_arr[2] = NULL;
-	add_var_env(sh);
-	printf("2\n");
-	new_var = ft_strjoin("PWD=", get_curr_dir());
-	printf("PWD %s\n", new_var);
+	sh->env = add_var_env(sh);
+	new_var = ft_strjoin("PWD=", get_curr_dir(sh));
 	add_galloc(new_var, sh);
 	sh->cmd_list->cmd_arr[0] = NULL;
 	sh->cmd_list->cmd_arr[1] = ft_strdup(new_var);
-	add_galloc(sh->cmd_list->cmd_arr[0], sh);
+	add_galloc(sh->cmd_list->cmd_arr[1], sh);
 	sh->cmd_list->cmd_arr[2] = NULL;
-	add_var_env(sh);
-	printf("3\n");
+	sh->env = add_var_env(sh);
 }
-
 
 void	cd(t_sh *sh)
 {
@@ -49,6 +44,7 @@ void	cd(t_sh *sh)
 	if (cmd->cmd_count == 1 && home_path)
 	{
 		chdir(home_path);
+		update_pwd_env(sh);
 		return ;
 	}
 	path = cmd->cmd_arr[1];
@@ -65,11 +61,10 @@ void	cd(t_sh *sh)
 	update_pwd_env(sh);
 }
 
-void	pwd(void)
+void	pwd(t_sh *sh)
 {
 	char	*cwd;
 
-	cwd = get_curr_dir();
+	cwd = get_curr_dir(sh);
 	printf("%s\n", cwd);
-	free(cwd);
 }

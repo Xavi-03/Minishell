@@ -104,7 +104,10 @@ void	parser(t_sh *sh)
 	token_arr = sh->token_arr;
 	find_cmd(token_arr, sh);
 	if (!sh->cmd_list->cmd_arr)
+	{
+		check_redirs(sh);
 		return ;
+	}
 	if (sh->cmd_list->built_in || sh->cmd_list->cmd_arr)
 		sh->cmd_list = fork_create(sh);
 	if (sh->cmd_list->pid == -1 && !sh->cmd_list->main_process)
