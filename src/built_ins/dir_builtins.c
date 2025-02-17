@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:18:02 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/15 16:51:26 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 23:07:20 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,45 @@ static void	update_pwd_env(t_sh *sh)
 	sh->env = add_var_env(sh);
 }
 
+static bool	cd_home(char *home_path, t_sh *sh)
+{
+	if (sh->cmd_list->cmd_count == 1 && home_path)
+	{
+		chdir(home_path);
+		update_pwd_env(sh);
+		return (true);
+	}
+	return (false);
+}
+
+static bool	cd_olddir(char *path, t_sh *sh)
+{
+	char	*oldpwd;
+
+	if (ft_strlen(path) == 1 && *path == '-')
+	{
+		oldpwd = ft_get_env("OLDPWD", sh);
+		if (oldpwd)
+		{
+			chdir(oldpwd);
+			return (true);
+		}
+
+	}
+	return (false);
+}
+
 void	cd(t_sh *sh)
 {
 	char	*home_path;
 	char	*path;
-	t_cmd	*cmd;
 
-	cmd = sh->cmd_list;
 	home_path = ft_get_env("HOME", sh);
-	if (cmd->cmd_count == 1 && home_path)
-	{
-		chdir(home_path);
-		update_pwd_env(sh);
+	path = sh->cmd_list->cmd_arr[1];
+	if (cd_home(home_path, sh))
 		return ;
-	}
-	path = cmd->cmd_arr[1];
+	if (cd_olddir(path, sh))
+		return ;
 	if (path[0] == '~' && home_path)
 	{
 		if (ft_strlen(path) > 1)

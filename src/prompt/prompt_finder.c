@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:30:35 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 20:42:45 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 22:47:52 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ char	*prompt_finder(t_sh *sh)
 	if (!ft_get_env("USER", sh) || !ft_get_env("LOGNAME", sh) \
 		|| !ft_get_env("SESSION_MANAGER", sh))
 	{
-		sh->env = env_backup(sh);
-		return ("?$\n> ");
+		return ("> ");
 	}
 	prompt_user = user_finder(ft_get_env("LOGNAME", sh), \
 		ft_get_env("SESSION_MANAGER", sh), sh);

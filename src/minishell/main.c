@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:24:50 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 21:23:03 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 22:52:50 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ t_sh	*init_sh(char **env)
 	if (!sh)
 		return (NULL);
 	sh->l_galloc = NULL;
-	sh->env = env;
+	if (!*env)
+		sh->env = env_backup(sh);
+	else
+		sh->env = env;
 	sh->last_command = 0;
 	sh->var_list = NULL;
 	sh->var_list = var_init(sh->var_list, sh);
@@ -82,10 +85,7 @@ void	prompt_main(t_sh *sh)
 
 	while (true)
 	{
-		if (!sh->env)
-			prompt = "minishell> ";
-		else
-			prompt = prompt_finder(sh);
+		prompt = prompt_finder(sh);
 		input = readline(prompt);
 		if (!input)
 			terminate(EXIT_FAILURE, sh);
