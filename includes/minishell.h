@@ -76,7 +76,7 @@ typedef struct	s_token
 	char	*str;
 	bool	is_redir;
 	bool	is_variable;
-	bool	is_option;
+	bool	is_in_quotes;
 	bool	is_command;
 }	t_token;
 
@@ -233,6 +233,7 @@ void	heredoc(t_redir *redir, t_sh *sh);
 
 // ./misc
 bool	is_number(char *str);
+size_t	count_chars(char *str, char c);
 
 void	increase_shlvl(char **env);
 #endif

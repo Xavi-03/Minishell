@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/15 16:34:08 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 19:25:23 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,7 @@ void	process_everything_else(t_token_arr_args *args, t_sh *sh)
 	if (token_arr)
 	{
 		if (str[start] == '$')
-		{
-			printf("Var detected!\n"); //debugger
 			token_arr[args->n_tokens]->is_variable = true;
-		}
 		token_arr[args->n_tokens]->str = (char *)galloc(args->i - start + 1, sh);
 		ft_strlcpy(token_arr[args->n_tokens]->str, str + start, args->i - start + 1);
 	}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_number.c                                        :+:      :+:    :+:   */
+/*   misc_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 18:44:30 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/16 20:47:39 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:47:19 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,18 @@ bool	is_number(char *str)
 		str++;
 	}
 	return (true);
+}
+
+size_t	count_chars(char *str, char c)
+{
+	size_t	n_chars;
+
+	n_chars = 0;
+	while (*str)
+	{
+		if (*str == c)
+			n_chars++;
+		str++;
+	}
+	return (n_chars);
 }
