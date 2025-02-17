@@ -6,21 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 21:23:15 by pohernan         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../../includes/minishell.h"
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   token_everything_else.c                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 20:21:10 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:28:37 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +61,13 @@ static void	copy_substr(t_token_arr_args *args, t_sh *sh, size_t start)
 void	process_double_quotes(t_token_arr_args *args, t_sh *sh)
 {
 	size_t	start;
-	char	*str;
 
 	args->i++;
 	start = args->i;
-	str = args->str;
-	while (!is_in_set(str[args->i], "\"") && str[args->i])
+	while (!is_in_set(args->str[args->i], "\"") && args->str[args->i])
 	{
 		skip_escaped(args, sh);
-		if (str[args->i] && str[args->i] == '$')
+		if (args->str[args->i] && args->str[args->i] == '$')
 		{
 			if (args->i > start)
 			{
