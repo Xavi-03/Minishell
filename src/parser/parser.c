@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:35:55 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 21:57:41 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 23:32:58 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,14 @@ void	parser(t_sh *sh)
 	sh->cmd_list->start = sh->cmd_list;
 	token_arr = sh->token_arr;
 	find_cmd(token_arr, sh);
+	/*
 	if (!sh->cmd_list->cmd_arr)
 	{
 		if (check_redirs(sh))
 			ft_putstr_fd("Syntax Error\n", 2);
 		return ;
 	}
+	*/
 	if (sh->syntax_error)
 	{
 		sh->syntax_error = false;

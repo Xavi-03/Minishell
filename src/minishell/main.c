@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:24:50 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 22:52:50 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 23:24:35 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,34 +27,6 @@ void	sig_handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-}
-
-char	*arr_to_str(char **arr, t_sh *sh)
-{
-	int		i;
-	int		j;
-	char	*new_str;
-
-	i = -1;
-	j = 0;
-	while (arr[++i])
-	{
-		j += ft_strlen(arr[i]);
-		if (arr[i + 1])
-			j += 1;
-	}
-	new_str = galloc((j + 1) * sizeof(char), sh);
-	new_str[0] = '\0';
-	i = -1;
-	j = -1;
-	while (*arr)
-	{
-		ft_strlcat(new_str, *arr, ft_strlen(new_str) + 2 + ft_strlen(*arr));
-		if (arr[1])
-			ft_strlcat(new_str, " ", ft_strlen(new_str) + 2);
-		arr++;
-	}
-	return (new_str);
 }
 
 t_sh	*init_sh(char **env)

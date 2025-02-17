@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 18:44:30 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 21:46:09 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 23:24:25 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,3 +57,32 @@ int	count_tokens(t_token **token_arr)
 		;
 	return (i);
 }
+
+char	*arr_to_str(char **arr, t_sh *sh)
+{
+	int		i;
+	int		j;
+	char	*new_str;
+
+	i = -1;
+	j = 0;
+	while (arr[++i])
+	{
+		j += ft_strlen(arr[i]);
+		if (arr[i + 1])
+			j += 1;
+	}
+	new_str = galloc((j + 1) * sizeof(char), sh);
+	new_str[0] = '\0';
+	i = -1;
+	j = -1;
+	while (*arr)
+	{
+		ft_strlcat(new_str, *arr, ft_strlen(new_str) + 2 + ft_strlen(*arr));
+		if (arr[1])
+			ft_strlcat(new_str, " ", ft_strlen(new_str) + 2);
+		arr++;
+	}
+	return (new_str);
+}
+
