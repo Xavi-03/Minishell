@@ -56,13 +56,13 @@ static char	*pathfinder(char **paths, char *command)
 	return (NULL);
 }
 
-char	*get_path(char *command)
+char	*get_path(char *command, t_sh *sh)
 {
 	char	*env_path;
 	char	**paths;
 	char	*path;
 
-	env_path = getenv("PATH");
+	env_path = ft_get_env("PATH", sh);
 	if (!env_path)
 		return (NULL);
 	paths = ft_split(env_path, ':');

@@ -187,7 +187,7 @@ int		check_std_redir(char *input, t_sh *sh);
 //	path_utils.c									FILE
 char	*get_curr_dir(void);
 //pathfinder    STATIC
-char	*get_path(char *command);
+char	*get_path(char *command, t_sh *sh);
 
 //./prompt											FOLDER
 //	prompt_finder.c									FILE

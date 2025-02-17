@@ -22,7 +22,7 @@ int	command_builder(char *input, t_sh *sh)
 	if (sh->cmd_list->cmd_count == 0)
 	{
 		cmd->cmd_arr = galloc(10 * sizeof(char *), sh);
-		exec_path = get_path(input);
+		exec_path = get_path(input, sh);
 		if (cmd->built_in || !exec_path)
 			cmd->cmd_arr[cmd->cmd_count] = ft_strdup(input);
 		else
@@ -59,7 +59,6 @@ int	manage_cmd_pipes(t_sh *sh)
 	return (1);
 }
 
-//command compare
 int	cmd_parser(char *input, t_sh *sh)
 {
 	if (ft_strchr(input, '='))
@@ -117,43 +116,3 @@ void	parser(t_sh *sh)
 		subprocess_executer(sh);
 	main_process_executer(sh);
 }
-
-/*
-char *input_cleaner(char *input, t_sh *sh)
-{
-	char	*input_clean;
-	int		i;
-	int		need_space;
-	int 	j;
-
-	need_space = 0;
-	i = -1;
-	j = 0;
-	while(input[++i])
-	{
-		if (input[i] == '<' || input[i] == '>' || input[i] == '|')
-		{
-			if (i > 0 && input[i - 1] != ' ' && input[i - 1] != input[i])
-				need_space += 1;
-			if (input[i + 1] && input[i + 1] != ' ' && input[i + 1] != input[i])
-				need_space += 1;
-		}
-	}
-	input_clean = galloc((i + need_space + 1) * sizeof(char), sh);
-	i = -1;
-	while(input[++i])
-	{
-		if (input[i] == '<' || input[i] == '>' || input[i] == '|')
-		{
-			if (i > 0 && input[i - 1] != ' ' && input[i - 1] != input[i])
-				input_clean[j] = ' ';
-			if (input[i + 1] && input[i + 1] != ' ' && input[i + 1] != input[i])
-				input_clean[j] = ' ';
-		}
-		input_clean[j++] = input[i];
-	}
-	input_clean[j] = '\0';
-	printf("%s\n");
-	return (input);
-}
-*/

@@ -21,7 +21,6 @@ t_cmd	*cmd_addnode(t_sh *sh)
 	new_node->start = sh->cmd_list->start;
 	sh->cmd_list->next = new_node;
 	sh->cmd_list = new_node;
-	printf("redir_inir\n");
 	sh->cmd_list->redir_list = redir_init(sh->cmd_list->redir_list, sh);
 	sh->cmd_list->redir_list->start = sh->cmd_list->redir_list;
 	return (new_node);

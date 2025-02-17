@@ -39,7 +39,7 @@ void	process_everything_else(t_token_arr_args *args, t_sh *sh)
 	{
 		if (str[start] == '$')
 		{
-			printf("Var detected!\n");
+			printf("Var detected!\n"); //debugger
 			token_arr[args->n_tokens]->is_variable = true;
 		}
 		token_arr[args->n_tokens]->str = (char *)galloc(args->i - start + 1, sh);

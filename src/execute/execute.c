@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:20:12 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/16 22:06:21 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:56:00 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,6 @@ void	execute(t_sh *sh)
 	cmd = sh->cmd_list;
 	increase_shlvl(sh->env);
 	execve(cmd->cmd_arr[0], cmd->cmd_arr, sh->env);
-	printf("minishell: Command not Found\n");
+	ft_putstr_fd("minishell: Command not Found\n", 2);
 	terminate(1, sh);
 }

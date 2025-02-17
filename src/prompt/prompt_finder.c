@@ -42,7 +42,7 @@ char	*user_finder(char *user, char *pc, t_sh *sh)
 {
 	char	*prompt_user;
 
-	user = getenv("USER");
+	user = ft_get_env("USER", sh);
 	pc = get_hostname();
 	add_galloc(pc, sh);
 	if (!user)
@@ -65,9 +65,9 @@ char	*path_finder(t_sh *sh)
 	prompt_path = galloc((strlen(cwd) + 1) * sizeof(char), sh);
 	prompt_path = ft_substr(cwd, 0, ft_strlen(cwd));
 	add_galloc(prompt_path, sh);
-	if (ft_strncmp(getenv("HOME"), prompt_path, ft_strlen(getenv("HOME"))) == 0)
+	if (ft_strncmp(ft_get_env("HOME", sh), prompt_path, ft_strlen(ft_get_env("HOME", sh))) == 0)
 	{
-		home_len = ft_strlen(getenv("HOME"));
+		home_len = ft_strlen(ft_get_env("HOME", sh));
 		prompt_path = ft_substr(cwd, home_len - 1, \
 			ft_strlen(cwd) - home_len + 1);
 		prompt_path[0] = '~';
@@ -82,13 +82,13 @@ char	*prompt_finder(t_sh *sh)
 	char	*prompt_path;
 	char	*prompt;
 
-	if (!getenv("USER") || !getenv("LOGNAME") || !getenv("SESSION_MANAGER"))
+	if (!ft_get_env("USER", sh) || !ft_get_env("LOGNAME", sh) || !ft_get_env("SESSION_MANAGER", sh))
 	{
 		sh->env = env_backup(sh);
 		return ("?$\n> ");
 	}
-	prompt_user = user_finder(getenv("LOGNAME"), \
-		getenv("SESSION_MANAGER"), sh);
+	prompt_user = user_finder(ft_get_env("LOGNAME", sh), \
+		ft_get_env("SESSION_MANAGER", sh), sh);
 	prompt_path = path_finder(sh);
 	prompt = promptjoin(prompt_user, prompt_path, sh);
 	return (prompt);
