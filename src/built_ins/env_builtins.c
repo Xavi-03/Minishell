@@ -17,6 +17,8 @@ void	print_env(t_sh *sh)
 	char	**env_ptr;
 
 	env_ptr = sh->env;
+	if (!env_ptr)
+		return ;
 	while (*env_ptr)
 		printf("%s\n", *env_ptr++);
 }

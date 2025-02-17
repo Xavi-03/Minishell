@@ -41,7 +41,6 @@ char	**env_backup(t_sh *sh)
 	env = galloc(4 * sizeof(char *), sh);
 	pwd = get_curr_dir(sh);
 	env[0] = ft_strjoin("PWD=", pwd);
-	free(pwd);
 	add_galloc(env[0], sh);
 	env[1] = ft_strdup("SHLVL=1");
 	add_galloc(env[1], sh);

@@ -59,16 +59,16 @@ int	manage_cmd_pipes(t_sh *sh)
 	return (1);
 }
 
-int	cmd_parser(char *input, t_sh *sh)
+int	cmd_parser(t_token *token, t_sh *sh)
 {
-	if (ft_strchr(input, '='))
-		add_var(input, sh);
-	else if (check_std_redir(input, sh))
-		check_in_out_file(input, sh);
-	else if (ft_strncmp(input, "|", 2) == 0)
+	if (ft_strchr(token->str, '='))
+		add_var(token->str, sh);
+	else if (check_std_redir(token->str, sh) && !token->is_in_quotes)
+		check_in_out_file(token->str, sh);
+	else if (ft_strncmp(token->str, "|", 2) == 0 && !token->is_in_quotes)
 		manage_cmd_pipes(sh);
 	else
-		command_builder(input, sh);
+		command_builder(token->str, sh);
 	return (0);
 }
 
@@ -81,13 +81,13 @@ void	find_cmd(t_token **token_arr, t_sh *sh)
 	{
 		if (!token_arr[i]->is_variable)
 		{
-			cmd_parser(token_arr[i]->str, sh);
+			cmd_parser(token_arr[i], sh);
 			continue ;
 		}
 		var_arr = found_var(token_arr[i]->str, sh);
 		while (var_arr && *var_arr)
 		{
-			cmd_parser((*var_arr)->str, sh);
+			cmd_parser((*var_arr), sh);
 			var_arr++;
 		}
 	}

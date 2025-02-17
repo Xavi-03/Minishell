@@ -66,7 +66,6 @@ t_token	**found_var(char *input, t_sh *sh)
 	if (ft_strncmp(input, "?", 1) == 0 && !input[1])
 		return (prepare_token_arr(ft_itoa(sh->last_command), sh));
 	value = get_value(var_iter, input, sh);
-	printf("%s\n", value);
 	if (value)
 		return (prepare_token_arr(value, sh));
 	return (NULL);

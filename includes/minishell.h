@@ -179,7 +179,7 @@ void	free_str_arr(char **str_arr);
 //	parser.c										FILE
 int		command_builder(char *input, t_sh *sh);
 int		manage_cmd_pipes(t_sh *sh);
-int		cmd_parser(char *input, t_sh *sh);
+int		cmd_parser(t_token *token, t_sh *sh);
 void	find_cmd(t_token **token_arr, t_sh *sh);
 void	parser(t_sh *sh);
 //	parser_utils.c									FILE
