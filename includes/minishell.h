@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 21:04:37 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 21:21:58 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:45:15 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,7 @@ void	heredoc(t_redir *redir, t_sh *sh);
 // ./misc
 bool	is_number(char *str);
 size_t	count_chars(char *str, char c);
-int		count_tokens(t_token *token_arr);
+int		count_tokens(t_token **token_arr);
 
 void	increase_shlvl(char **env);
 #endif

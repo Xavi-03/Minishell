@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 18:44:30 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 20:44:21 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:46:09 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ bool	is_in_set(char c, char *set)
 	return (false);
 }
 
-int	count_tokens(t_token *token_arr)
+int	count_tokens(t_token **token_arr)
 {
 	int	i;
 
 	i = -1;
-	while(token_arr[++i])
+	while (token_arr[++i])
 		;
 	return (i);
 }
