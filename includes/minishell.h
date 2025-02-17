@@ -71,6 +71,7 @@ typedef struct s_cmd
 	int				*fd_pipe;
 	int				built_in;
 	char			**cmd_arr;
+	int				toke_len;
 	struct s_redir	*redir_list;
 	struct s_cmd	*next;
 	struct s_cmd	*start;
@@ -239,6 +240,7 @@ void	heredoc(t_redir *redir, t_sh *sh);
 // ./misc
 bool	is_number(char *str);
 size_t	count_chars(char *str, char c);
+int		count_tokens(t_token *token_arr);
 
 void	increase_shlvl(char **env);
 #endif
