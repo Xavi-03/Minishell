@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:24:50 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/16 23:44:41 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:23:03 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_sh	*init_sh(char **env)
 	sh->var_list = var_init(sh->var_list, sh);
 	sh->cmd_list = NULL;
 	sh->token_arr = NULL;
+	sh->syntax_error = false;
 	return (sh);
 }
 

@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:04:34 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 20:44:44 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:17:19 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	token_arr_args_init(t_token_arr_args *args, char *str)
 	args->j = 0;
 	args->token_arr = NULL;
 	args->str = str;
+	args->arr_len = ft_strlen(str);
 }
 
 /*

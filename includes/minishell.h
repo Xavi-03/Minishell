@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 21:04:37 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 21:05:35 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:21:58 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_sh
 	struct s_galloc	*l_galloc;
 	struct s_token	**token_arr;
 	char			*line;
+	bool			syntax_error;
 }	t_sh;
 
 typedef struct s_redir
@@ -106,6 +107,7 @@ typedef struct s_token_arr_args
 	size_t	j;
 	size_t	start;
 	size_t	n_tokens;
+	size_t	arr_len;
 	/* data */
 }				t_token_arr_args;
 

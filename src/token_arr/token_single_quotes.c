@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 20:43:31 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:23:13 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	process_single_quotes(t_token_arr_args *args, t_sh *sh)
 		skip_escaped(args, sh);
 		args->i++;
 	}
+	if (args->i == args->arr_len)
+		sh->syntax_error = true;
 	if (token_arr)
 	{
 		token_arr[args->n_tokens]->is_in_quotes = true;
