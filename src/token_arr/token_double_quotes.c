@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/15 17:04:01 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 19:24:53 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ void	process_double_quotes(t_token_arr_args *args, t_sh *sh)
 			process_everything_else(args, sh);
 			start = args->i;
 		}
-		args->i++;
+		else
+			args->i++;
 	}
-	copy_substr(args, sh, start);
+	if (start != args->i)
+		copy_substr(args, sh, start);
 }

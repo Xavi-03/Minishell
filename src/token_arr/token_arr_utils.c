@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:04:34 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/15 16:14:17 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 19:25:18 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_token	*init_token(t_sh *sh)
 	token->is_command = false;
 	token->is_variable = false;
 	token->is_redir = false;
-	token->is_option = false;
 	return (token);
 }
 
