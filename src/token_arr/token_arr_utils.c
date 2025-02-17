@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:04:34 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 19:25:18 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 20:44:44 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,6 @@ t_token	*init_token(t_sh *sh)
 	return (token);
 }
 
-bool	is_in_set(char c, char *set)
-{
-	while (*set)
-	{
-		if (c == *set)
-			return (true);
-		set++;
-	}
-	return (false);
-}
-
 t_token	**create_token_arr(t_token **token_arr, size_t n_tokens, t_sh *sh)
 {
 	size_t	i;
@@ -85,7 +74,7 @@ void	token_arr_args_init(t_token_arr_args *args, char *str)
 	args->str = str;
 }
 
-//Debug
+/*
 void	print_token_arr(t_token **token_arr)
 {
 	int	i;
@@ -97,7 +86,7 @@ void	print_token_arr(t_token **token_arr)
 		i++;
 	}
 }
-
+*/
 t_token	**prepare_token_arr(char *str, t_sh *sh)
 {
 	t_token_arr_args	args;
@@ -124,8 +113,5 @@ t_token	**prepare_token_arr(char *str, t_sh *sh)
 		args.j++;
 	}
 	remove_backslashes(&args, sh);
-	print_token_arr(args.token_arr);
 	return (args.token_arr);
 }
-
-

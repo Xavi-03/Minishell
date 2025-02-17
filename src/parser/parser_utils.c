@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 20:39:38 by pohernan          #+#    #+#             */
+/*   Updated: 2025/02/17 20:39:45 by pohernan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 void	parse_file_redir(char *input, t_sh *sh)
@@ -28,8 +40,6 @@ void	check_in_out_file(char *input, t_sh *sh)
 	t_redir	*redir;
 
 	redir = sh->cmd_list->redir_list;
-
-
 	if (redir->infile || redir->outfile)
 		redir = redir_addnode(sh);
 	if (ft_strncmp(input, "<", 2) == 0)

@@ -6,13 +6,55 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 19:24:53 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 20:44:53 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	copy_substr(t_token_arr_args *args, t_sh *sh, size_t start)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token_everything_else.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
+/*   Updated: 2025/02/17 20:21:10 by pohernan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/minishell.h"
+
+static void	process_inside_quotes(t_token_arr_args *args, t_sh *sh)
+{
+	size_t	start;
+
+	start = args->i;
+	while (!is_in_set(args->str[args->i], "\'\"") && args->str[args->i])
+	{
+		if (args->str[args->i] == '$')
+		{
+			while (!is_in_set(args->str[args->i], "\'\" "))
+				args->i++;
+			break ;
+		}
+		skip_escaped(args, sh);
+		args->i++;
+	}
+	if (args->token_arr)
+	{
+		args->token_arr[args->n_tokens]->is_in_quotes = true;
+		if (args->str[start] == '$')
+			args->token_arr[args->n_tokens]->is_variable = true;
+		args->token_arr[args->n_tokens]->str = galloc(args->i - start + 1, sh);
+		ft_strlcpy(args->token_arr[args->n_tokens]->str, \
+			args->str + start, args->i - start + 1);
+	}
+	args->n_tokens++;
+}
+
+static void	copy_substr(t_token_arr_args *args, t_sh *sh, size_t start)
 {
 	t_token	**token_arr;
 	char	*str;
@@ -21,9 +63,10 @@ void	copy_substr(t_token_arr_args *args, t_sh *sh, size_t start)
 	str = args->str;
 	if (token_arr)
 	{
-		token_arr[args->n_tokens]->str = (char *)galloc(args->i - start + 1, sh);
+		token_arr[args->n_tokens]->str = galloc(args->i - start + 1, sh);
 		ft_strlcpy(token_arr[args->n_tokens]->str,
 			str + start, args->i - start + 1);
+		token_arr[args->n_tokens]->is_in_quotes = true;
 	}
 	args->n_tokens++;
 	args->i++;
@@ -37,7 +80,7 @@ void	process_double_quotes(t_token_arr_args *args, t_sh *sh)
 	args->i++;
 	start = args->i;
 	str = args->str;
-	while (!is_in_set(str[args->i], "\"|><") && str[args->i])
+	while (!is_in_set(str[args->i], "\"") && str[args->i])
 	{
 		skip_escaped(args, sh);
 		if (str[args->i] && str[args->i] == '$')
@@ -47,7 +90,7 @@ void	process_double_quotes(t_token_arr_args *args, t_sh *sh)
 				copy_substr(args, sh, start);
 				args->i--;
 			}
-			process_everything_else(args, sh);
+			process_inside_quotes(args, sh);
 			start = args->i;
 		}
 		else

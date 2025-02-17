@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir_prepare.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 20:47:22 by pohernan          #+#    #+#             */
+/*   Updated: 2025/02/17 20:47:36 by pohernan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static void	prepare_in_file(t_redir *redir, int flag, t_sh *sh)
@@ -30,9 +42,11 @@ static void	prepare_out_file(t_redir *redir, int flag)
 	if (flag)
 	{
 		if (redir->fd_out_red)
-			redir->fd_out = open(redir->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			redir->fd_out = open(redir->outfile, \
+				O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else if (redir->outfile)
-			redir->fd_out = open(redir->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			redir->fd_out = open(redir->outfile, \
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (redir->fd_out < 0 && redir->outfile)
 		{
 			ft_putstr_fd("outfile error\n", 2);

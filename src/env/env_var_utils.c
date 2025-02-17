@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 23:56:01 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/16 22:10:26 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 20:41:40 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,20 +102,4 @@ char	**remove_var_env(char *var_name, t_sh *sh)
 	}
 	new_env[++j] = NULL;
 	return (new_env);
-}
-
-void	increase_shlvl(char **env)
-{
-	char	*sh_lvl;
-
-	while(*env)
-	{
-		if(ft_strncmp(*env, "SHLVL=", 6) == 0 && ft_strlen(*env) > 6)
-		{
-			sh_lvl = ft_itoa(ft_atoi(*env + 6) + 1);
-			*env = ft_strjoin("SHLVL=", sh_lvl);
-			free(sh_lvl);
-		}
-		env++;
-	}
 }

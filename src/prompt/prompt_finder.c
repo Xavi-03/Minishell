@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:30:35 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/16 23:48:17 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 20:42:45 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ char	*path_finder(t_sh *sh)
 	prompt_path = galloc((strlen(cwd) + 1) * sizeof(char), sh);
 	prompt_path = ft_substr(cwd, 0, ft_strlen(cwd));
 	add_galloc(prompt_path, sh);
-	if (ft_strncmp(ft_get_env("HOME", sh), prompt_path, ft_strlen(ft_get_env("HOME", sh))) == 0)
+	if (ft_strncmp(ft_get_env("HOME", sh), prompt_path, \
+		ft_strlen(ft_get_env("HOME", sh))) == 0)
 	{
 		home_len = ft_strlen(ft_get_env("HOME", sh));
 		prompt_path = ft_substr(cwd, home_len - 1, \
@@ -82,7 +83,8 @@ char	*prompt_finder(t_sh *sh)
 	char	*prompt_path;
 	char	*prompt;
 
-	if (!ft_get_env("USER", sh) || !ft_get_env("LOGNAME", sh) || !ft_get_env("SESSION_MANAGER", sh))
+	if (!ft_get_env("USER", sh) || !ft_get_env("LOGNAME", sh) \
+		|| !ft_get_env("SESSION_MANAGER", sh))
 	{
 		sh->env = env_backup(sh);
 		return ("?$\n> ");

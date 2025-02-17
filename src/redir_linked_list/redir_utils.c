@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 20:47:47 by pohernan          #+#    #+#             */
+/*   Updated: 2025/02/17 20:47:54 by pohernan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 t_redir	*redir_addnode(t_sh *sh)
@@ -30,7 +42,6 @@ t_redir	*redir_init(t_redir *redir_node, t_sh *sh)
 	return (redir_node);
 }
 
-
 void	check_redirs(t_sh *sh)
 {
 	t_redir	*redir;
@@ -39,7 +50,7 @@ void	check_redirs(t_sh *sh)
 	redir = sh->cmd_list->redir_list;
 	if (!redir)
 		return ;
-	pid	= fork();
+	pid = fork();
 	if (pid < 0)
 	{
 		ft_putstr_fd("Fork Error\n", 2);

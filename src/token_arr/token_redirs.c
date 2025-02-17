@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 19:09:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/15 16:15:42 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/17 20:43:15 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ void	process_redirs(t_token_arr_args *args, t_sh *sh)
 	args->i = arrow_parser(str, args->i);
 	if (token_arr)
 	{
-		token_arr[args->n_tokens]->str = (char *)galloc(args->i - start + 1, sh);
-		ft_strlcpy(token_arr[args->n_tokens]->str, str + start, args->i - start + 1);
+		token_arr[args->n_tokens]->str = galloc(args->i - start + 1, sh);
+		ft_strlcpy(token_arr[args->n_tokens]->str, \
+			str + start, args->i - start + 1);
 	}
 	args->n_tokens++;
 }

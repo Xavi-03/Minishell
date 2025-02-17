@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 21:04:37 by pohernan          #+#    #+#             */
+/*   Updated: 2025/02/17 21:05:35 by pohernan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -228,4 +240,5 @@ size_t	count_chars(char *str, char c);
 
 void	increase_shlvl(char **env);
 #endif
-//valgrind --track-origins=yes --trace-children=yes --leak-check=full ./minishell
+/* valgrind --track-origins=yes --trace-children=yes \
+--leak-check=full ./minishell */
