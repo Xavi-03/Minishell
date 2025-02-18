@@ -12,10 +12,12 @@
 
 #include "../../includes/minishell.h"
 
-static void	var_iterator(t_var	*var, char *var_name, char **value)
+static void	var_iterator(t_var	*var, char *var_name, char **value, t_sh *sh)
 {
 	char	*old_value;
 
+	old_value = ft_strdup("");
+	add_galloc(old_value, sh);
 	while (var)
 	{
 		if (var->var_name)
@@ -23,9 +25,8 @@ static void	var_iterator(t_var	*var, char *var_name, char **value)
 			if (ft_strncmp(var_name, var->var_name, \
 				ft_strlen(var_name) + ft_strlen(var->var_name)) == 0)
 			{
-				old_value = *value;
 				*value = ft_strjoin(old_value, var->value);
-				free(old_value);
+				add_galloc(*value, sh);
 				return ;
 			}
 		}
@@ -33,23 +34,27 @@ static void	var_iterator(t_var	*var, char *var_name, char **value)
 	}
 }
 
-static char	*get_value(t_var *var_iter, char *input, t_sh *sh)
+char	*get_value(t_var *var_iter, char *input, t_sh *sh)
 {
 	char	*value;
 	char	*old_value;
 	char	**var_names;
 
 	var_names = ft_split(input, '$');
+	old_value = ft_strdup("");
+	add_galloc(old_value, sh);
+	add_galloc(var_names, sh);
 	value = ft_strdup("");
+	add_galloc(value, sh);
 	while (*var_names)
 	{
+		add_galloc(*var_names, sh);
 		if (ft_get_env(*var_names, sh))
 		{
-			old_value = value;
 			value = ft_strjoin(old_value, ft_get_env(*var_names, sh));
-			free(old_value);
+			add_galloc(value, sh);
 		}
-		var_iterator(var_iter, *var_names, &value);
+		var_iterator(var_iter, *var_names, &value, sh);
 		var_names++;
 	}
 	return (value);

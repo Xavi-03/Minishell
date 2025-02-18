@@ -85,9 +85,7 @@ char	*prompt_finder(t_sh *sh)
 
 	if (!ft_get_env("USER", sh) || !ft_get_env("LOGNAME", sh) \
 		|| !ft_get_env("SESSION_MANAGER", sh))
-	{
 		return ("> ");
-	}
 	prompt_user = user_finder(ft_get_env("LOGNAME", sh), \
 		ft_get_env("SESSION_MANAGER", sh), sh);
 	prompt_path = path_finder(sh);

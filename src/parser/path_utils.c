@@ -38,19 +38,19 @@ static char	*pathfinder(char **paths, char *command, t_sh *sh)
 
 	cwd = get_curr_dir(sh);
 	cwd_command = ft_strjoin(cwd, command);
+	add_galloc(cwd_command, sh);
 	if (!cwd_command)
 		return (NULL);
 	if (access(cwd_command, X_OK) == 0)
 		return (cwd_command);
-	free(cwd_command);
 	while (*paths)
 	{
 		path = ft_strjoin(*paths, "/");
+		add_galloc(path, sh);
 		filepath = ft_strjoin(path, command);
-		free(path);
+		add_galloc(filepath, sh);
 		if (access(filepath, X_OK) == 0)
 			return (filepath);
-		free(filepath);
 		paths++;
 	}
 	return (NULL);

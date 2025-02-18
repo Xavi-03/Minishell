@@ -21,12 +21,12 @@ int	command_builder(char *input, t_sh *sh)
 	find_built_in(input, sh);
 	if (sh->cmd_list->cmd_count == 0)
 	{
-		cmd->cmd_arr = galloc(10 * sizeof(char *), sh);
+		cmd->cmd_arr = galloc((count_tokens(sh->token_arr) + 2) * sizeof(char *), sh);
 		exec_path = get_path(input, sh);
 		if (cmd->built_in || !exec_path)
 			cmd->cmd_arr[cmd->cmd_count] = ft_strdup(input);
 		else
-			cmd->cmd_arr[cmd->cmd_count] = exec_path;
+			cmd->cmd_arr[cmd->cmd_count] = ft_strdup(exec_path);
 		add_galloc(cmd->cmd_arr[cmd->cmd_count], sh);
 	}
 	else
@@ -62,7 +62,12 @@ int	manage_cmd_pipes(t_sh *sh)
 int	cmd_parser(t_token *token, t_sh *sh)
 {
 	if (ft_strchr(token->str, '='))
+	{
 		add_var(token->str, sh);
+		if (sh->cmd_list->cmd_arr && ft_strncmp(sh->cmd_list->cmd_arr[0], \
+			"export", ft_strlen(sh->cmd_list->cmd_arr[0])) == 0)
+			command_builder(token->str, sh);
+	}
 	else if (check_std_redir(token->str, sh) && !token->is_in_quotes)
 		check_in_out_file(token->str, sh);
 	else if (ft_strncmp(token->str, "|", 2) == 0 && !token->is_in_quotes)
@@ -103,16 +108,10 @@ void	parser(t_sh *sh)
 	sh->cmd_list->start = sh->cmd_list;
 	token_arr = sh->token_arr;
 	find_cmd(token_arr, sh);
-	/*
-	if (!sh->cmd_list->cmd_arr)
+	if (!sh->cmd_list->cmd_arr || sh->syntax_error)
 	{
-		if (check_redirs(sh))
-			ft_putstr_fd("Syntax Error\n", 2);
-		return ;
-	}
-	*/
-	if (sh->syntax_error)
-	{
+		if ((!check_redirs(sh) && !sh->cmd_list->cmd_arr) || ft_strchr(token_arr[0]->str, '='))
+			return ;
 		sh->syntax_error = false;
 		sh->last_command = 1;
 		ft_putstr_fd("Syntax Error\n", 2);

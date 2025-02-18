@@ -85,4 +85,3 @@ char	*arr_to_str(char **arr, t_sh *sh)
 	}
 	return (new_str);
 }
-

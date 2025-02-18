@@ -16,9 +16,9 @@ void	print_env(t_sh *sh)
 {
 	char	**env_ptr;
 
-	env_ptr = sh->env;
-	if (!env_ptr)
+	if (!sh->env)
 		return ;
+	env_ptr = sh->env;
 	while (*env_ptr)
 		printf("%s\n", *env_ptr++);
 }
@@ -48,12 +48,23 @@ void	print_export(t_sh *sh)
 
 void	export(t_sh *sh)
 {
+	char	*temp;
+
+	if (sh->cmd_list->cmd_arr[1])
+	{
+		temp = get_value(sh->var_list, sh->cmd_list->cmd_arr[1], sh);
+		if (temp)
+		{
+			temp = ft_strjoin("=", temp);
+			add_galloc(temp, sh);
+			sh->cmd_list->cmd_arr[1] = ft_strjoin(sh->cmd_list->cmd_arr[1], temp);
+			add_galloc(sh->cmd_list->cmd_arr[1], sh);
+		}
+	}
 	if (sh->cmd_list->cmd_arr[1] && !ft_strchr(sh->cmd_list->cmd_arr[1], '='))
 		return ;
 	if (sh->cmd_list->cmd_arr[1])
-	{
 		sh->env = add_var_env(sh);
-	}
 	else
 		print_export(sh);
 }
@@ -67,7 +78,6 @@ void	unset(t_sh *sh)
 	if (!var_name)
 		return ;
 	new_env = remove_var_env(var_name, sh);
-	if (new_env)
-		sh->env = new_env;
+	sh->env = new_env;
 	var_delnode(var_name, sh);
 }
