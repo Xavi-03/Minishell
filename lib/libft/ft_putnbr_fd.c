@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arr_utils.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 19:27:29 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 17:55:15 by pohernan         ###   ########.fr       */
+/*   Created: 2024/09/19 16:57:15 by pohernan          #+#    #+#             */
+/*   Updated: 2024/11/18 18:55:05 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-void	free_str_arr(char **str_arr)
+void	ft_putnbr_fd(int n, int fd)
 {
-	char	**ptr;
+	char	*str;
 
-	if (!str_arr)
+	if (n == INT_MIN)
+	{
+		ft_putstr_fd("-2147483648", fd);
 		return ;
-	ptr = str_arr;
-	while (*ptr)
-		free(*ptr++);
-	free(str_arr);
+	}
+	str = ft_itoa(n);
+	if (!str)
+		return ;
+	ft_putstr_fd(str, fd);
+	free(str);
 }

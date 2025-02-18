@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arr_utils.c                                        :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 19:27:29 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 17:55:15 by pohernan         ###   ########.fr       */
+/*   Created: 2024/09/13 15:47:56 by pohernan          #+#    #+#             */
+/*   Updated: 2024/11/18 18:29:32 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-void	free_str_arr(char **str_arr)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	char	**ptr;
+	char	*ptr;
 
-	if (!str_arr)
-		return ;
-	ptr = str_arr;
-	while (*ptr)
-		free(*ptr++);
-	free(str_arr);
+	ptr = (char *) s;
+	while (n--)
+		*ptr++ = c;
+	return (s);
 }

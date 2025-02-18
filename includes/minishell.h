@@ -6,15 +6,14 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 21:04:37 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/17 21:45:15 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:58:26 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/libft.h"
-# include "get_next_line.h"
+# include "../lib/libft/libft.h"
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -111,8 +110,6 @@ typedef struct s_token_arr_args
 	size_t	arr_len;
 	/* data */
 }				t_token_arr_args;
-
-char	*get_next_line(int fd);
 
 //./buil_ins										FOLDER
 //	built_in.c										FILE

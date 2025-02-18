@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arr_utils.c                                        :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 19:27:29 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 17:55:15 by pohernan         ###   ########.fr       */
+/*   Created: 2024/11/18 18:22:08 by pohernan          #+#    #+#             */
+/*   Updated: 2024/11/19 18:50:03 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-void	free_str_arr(char **str_arr)
+int	ft_lstsize(t_list *lst)
 {
-	char	**ptr;
+	int	n;
 
-	if (!str_arr)
-		return ;
-	ptr = str_arr;
-	while (*ptr)
-		free(*ptr++);
-	free(str_arr);
+	if (!lst)
+		return (0);
+	n = 1;
+	while (lst->next)
+	{
+		n++;
+		lst = lst->next;
+	}
+	return (n);
 }

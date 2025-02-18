@@ -6,11 +6,11 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 18:49:38 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/15 17:44:56 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:55:24 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 char	*get_curr_dir(t_sh *sh)
 {

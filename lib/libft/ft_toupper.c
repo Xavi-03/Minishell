@@ -1,25 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arr_utils.c                                        :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pohernan <pohernan@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 19:27:29 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 17:55:15 by pohernan         ###   ########.fr       */
+/*   Created: 2024/09/13 22:27:27 by pohernan          #+#    #+#             */
+/*   Updated: 2024/09/25 21:51:27 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../../includes/minishell.h"
-
-void	free_str_arr(char **str_arr)
+int	ft_toupper(int c)
 {
-	char	**ptr;
-
-	if (!str_arr)
-		return ;
-	ptr = str_arr;
-	while (*ptr)
-		free(*ptr++);
-	free(str_arr);
+	if (c >= 'a' && c <= 'z')
+		return (c - 32);
+	return (c);
 }

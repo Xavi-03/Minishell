@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arr_utils.c                                        :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 19:27:29 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 17:55:15 by pohernan         ###   ########.fr       */
+/*   Created: 2024/09/23 16:44:33 by pohernan          #+#    #+#             */
+/*   Updated: 2024/11/18 18:55:39 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-void	free_str_arr(char **str_arr)
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	char	**ptr;
+	size_t	src_len;
 
-	if (!str_arr)
-		return ;
-	ptr = str_arr;
-	while (*ptr)
-		free(*ptr++);
-	free(str_arr);
+	src_len = ft_strlen((char *)src);
+	if (!size)
+		return (src_len);
+	size--;
+	while (*src && size--)
+		*dst++ = *src++;
+	*dst = '\0';
+	return (src_len);
 }

@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arr_utils.c                                        :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 19:27:29 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 17:55:15 by pohernan         ###   ########.fr       */
+/*   Created: 2024/09/14 17:23:49 by pohernan          #+#    #+#             */
+/*   Updated: 2024/11/18 18:33:53 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-void	free_str_arr(char **str_arr)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	char	**ptr;
+	unsigned char	*s_ptr;
+	size_t			i;
 
-	if (!str_arr)
-		return ;
-	ptr = str_arr;
-	while (*ptr)
-		free(*ptr++);
-	free(str_arr);
+	s_ptr = (unsigned char *)s;
+	i = 0;
+	while (i < n)
+	{
+		if (s_ptr[i] == (unsigned char)c)
+			return ((void *)(s_ptr + i));
+		i++;
+	}
+	return (0);
 }

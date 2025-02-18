@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arr_utils.c                                        :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 19:27:29 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 17:55:15 by pohernan         ###   ########.fr       */
+/*   Created: 2024/09/13 16:56:16 by pohernan          #+#    #+#             */
+/*   Updated: 2024/11/18 18:54:46 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-void	free_str_arr(char **str_arr)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	char	**ptr;
+	char	*ptr_src;
+	char	*ptr_dest;
 
-	if (!str_arr)
-		return ;
-	ptr = str_arr;
-	while (*ptr)
-		free(*ptr++);
-	free(str_arr);
+	if (!dest && !src)
+		return (0);
+	ptr_src = (char *)src;
+	ptr_dest = (char *)dest;
+	if (dest <= src)
+	{
+		while (n--)
+			*ptr_dest++ = *ptr_src++;
+	}
+	else
+	{
+		ptr_dest += n - 1;
+		ptr_src += n - 1;
+		while (n--)
+			*ptr_dest-- = *ptr_src--;
+	}
+	return (dest);
 }

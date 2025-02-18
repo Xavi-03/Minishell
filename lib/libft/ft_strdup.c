@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arr_utils.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 19:27:29 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 17:55:15 by pohernan         ###   ########.fr       */
+/*   Created: 2024/09/16 19:05:42 by pohernan          #+#    #+#             */
+/*   Updated: 2024/11/18 18:31:00 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-void	free_str_arr(char **str_arr)
+char	*ft_strdup(const char *s)
 {
-	char	**ptr;
+	char	*dups;
+	size_t	s_len;
 
-	if (!str_arr)
-		return ;
-	ptr = str_arr;
-	while (*ptr)
-		free(*ptr++);
-	free(str_arr);
+	s_len = ft_strlen((char *)s);
+	dups = (char *)malloc(s_len * sizeof(unsigned char) + 1);
+	if (!dups)
+		return (0);
+	ft_memcpy(dups, s, s_len + 1);
+	return (dups);
 }

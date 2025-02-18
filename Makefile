@@ -1,53 +1,62 @@
-NAME = minishell
-CC = cc
-RM = rm -f
-FLAGS = -Wall -Wextra -Werror -g -I env
-LIBFTDIR = libft/
-OBJ_DIR = obj/
+NAME	:= minishell
+CFLAGS	:= -Wextra -Wall -Werror -g
+LIBFT	:= ./lib/libft
+INCLUDE	:= -I ./includes -I $(LIBFT)
+HEADERS	:= ./includes/minishell.h \
+./lib/libft/libft.h
+LIBS	:= -L $(LIBFT) -lft -lreadline
+SRCS	:= ./src/built_ins/built_in.c \
+./src/built_ins/echo.c \
+./src/built_ins/env_builtins.c \
+./src/built_ins/dir_builtins.c \
+./src/cmd_linked_list/cmd_utils.c \
+./src/execute/execute.c \
+./src/execute/execute_utils.c \
+./src/galloc/galloc.c \
+./src/minishell/main.c \
+./src/parser/arr_utils.c \
+./src/parser/parser_utils.c \
+./src/parser/path_utils.c \
+./src/parser/parser.c \
+./src/variable_linked_list/var_nodes.c \
+./src/variable_linked_list/var_utils.c \
+./src/env/env_shlvl.c \
+./src/env/env_backup.c \
+./src/env/env_var_utils.c \
+./src/prompt/prompt_finder.c \
+./src/prompt/prompt_utils.c \
+./src/heredoc/heredoc.c \
+./src/token_arr/token_skip_escaped.c \
+./src/token_arr/token_arr_utils.c \
+./src/token_arr/token_double_quotes.c \
+./src/token_arr/token_single_quotes.c \
+./src/token_arr/token_everything_else.c \
+./src/token_arr/token_redirs.c \
+./src/misc/misc_utils.c \
+./src/redir_linked_list/redir_prepare.c \
+./src/redir_linked_list/redir_utils.c
 
-# Source files (recursive search)
-SRC = $(shell find src -name '*.c')
-# Object files (mirror directory structure in OBJ_DIR)
-OBJ = $(SRC:src/%.c=$(OBJ_DIR)%.o)
+OBJS	:= ${SRCS:.c=.o}
 
-# Include and library paths
-INCLUDES = -Iincludes -I$(LIBFTDIR)
-LIBS = -L$(LIBFTDIR) -lft -lreadline
+all: libft $(NAME)
 
-# Colors for better output
-GREEN = \033[0;32m
-RED = \033[0;31m
-NC = \033[0m
+libft:
+	@make -C $(LIBFT)
 
-# Build libft first
-$(LIBFTDIR)libft.a:
-	@make -C $(LIBFTDIR)
+%.o: %.c $(HEADERS) Makefile
+	@$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDE)
 
-# Rule to compile object files
-$(OBJ_DIR)%.o: src/%.c includes/minishell.h | $(LIBFTDIR)libft.a
-	@mkdir -p $(dir $@)
-	@echo "$(GREEN)Compiling$(NC) $<"
-	@$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
-
-# Main build rule
-$(NAME): $(OBJ)
-	@echo "$(GREEN)Linking$(NC) $@"
-	@$(CC) $(FLAGS) $^ -o $@ $(LIBS)
-	@echo "$(GREEN)Build completed!$(NC)"
-
-# Standard targets
-all: $(NAME)
+$(NAME): libft $(OBJS)
+	@$(CC) $(OBJS) $(LIBS) $(INCLUDE) -o $(NAME)
 
 clean:
-	@$(RM) -r $(OBJ_DIR)
-	@make -C $(LIBFTDIR) clean
-	@echo "$(RED)Cleaned object files$(NC)"
+	@rm -rf $(OBJS)
+	@make -C $(LIBFT) clean
 
 fclean: clean
-	@$(RM) $(NAME)
-	@make -C $(LIBFTDIR) fclean
-	@echo "$(RED)Removed executable$(NC)"
+	@rm -rf $(NAME)
+	@make -C $(LIBFT) fclean
 
-re: fclean all
+re: clean all
 
-.PHONY: all clean fclean re
+.PHONY: all, clean, fclean, re

@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arr_utils.c                                        :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 19:27:29 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 17:55:15 by pohernan         ###   ########.fr       */
+/*   Created: 2024/11/18 19:07:27 by pohernan          #+#    #+#             */
+/*   Updated: 2024/11/19 20:26:54 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-void	free_str_arr(char **str_arr)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	char	**ptr;
+	t_list	*ptr;
+	t_list	*ptr_next;
 
-	if (!str_arr)
+	if (!lst || !*lst || !del)
 		return ;
-	ptr = str_arr;
-	while (*ptr)
-		free(*ptr++);
-	free(str_arr);
+	ptr = *lst;
+	while (ptr)
+	{
+		del(ptr->content);
+		ptr_next = ptr->next;
+		free(ptr);
+		ptr = ptr_next;
+	}
+	*lst = NULL;
 }

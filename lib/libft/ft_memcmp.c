@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arr_utils.c                                        :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 19:27:29 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 17:55:15 by pohernan         ###   ########.fr       */
+/*   Created: 2024/09/14 15:51:32 by pohernan          #+#    #+#             */
+/*   Updated: 2024/11/18 18:33:33 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-void	free_str_arr(char **str_arr)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	char	**ptr;
+	unsigned char	*ptr_s1;
+	unsigned char	*ptr_s2;
 
-	if (!str_arr)
-		return ;
-	ptr = str_arr;
-	while (*ptr)
-		free(*ptr++);
-	free(str_arr);
+	ptr_s1 = (unsigned char *)s1;
+	ptr_s2 = (unsigned char *)s2;
+	while (n && *ptr_s1 == *ptr_s2)
+	{
+		ptr_s1++;
+		ptr_s2++;
+		n--;
+	}
+	if (!n)
+		return (0);
+	return (*ptr_s1 - *ptr_s2);
 }

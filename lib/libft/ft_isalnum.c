@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arr_utils.c                                        :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pohernan <pohernan@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 19:27:29 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 17:55:15 by pohernan         ###   ########.fr       */
+/*   Created: 2024/09/13 13:06:04 by pohernan          #+#    #+#             */
+/*   Updated: 2024/10/02 17:24:31 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#include "../../includes/minishell.h"
-
-void	free_str_arr(char **str_arr)
+int	ft_isalnum(int c)
 {
-	char	**ptr;
-
-	if (!str_arr)
-		return ;
-	ptr = str_arr;
-	while (*ptr)
-		free(*ptr++);
-	free(str_arr);
+	if (ft_isalpha(c) || ft_isdigit(c))
+		return (8);
+	return (0);
 }
