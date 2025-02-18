@@ -41,21 +41,21 @@ OBJS	:= ${SRCS:.c=.o}
 all: libft $(NAME)
 
 libft:
-	@make -C $(LIBFT)
+	@make -s -C $(LIBFT)
 
-%.o: %.c $(HEADERS) Makefile
-	@$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDE)
+%.o: %.c $(HEADERS) $(LIBFT)/Makefile Makefile
+	$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDE)
 
-$(NAME): libft $(OBJS)
-	@$(CC) $(OBJS) $(LIBS) $(INCLUDE) -o $(NAME)
+$(NAME): $(OBJS)
+	$(CC) $(OBJS) $(LIBS) $(INCLUDE) -o $(NAME)
 
 clean:
-	@rm -rf $(OBJS)
-	@make -C $(LIBFT) clean
+	rm -rf $(OBJS)
+	make -C $(LIBFT) clean
 
 fclean: clean
-	@rm -rf $(NAME)
-	@make -C $(LIBFT) fclean
+	rm -rf $(NAME)
+	make -C $(LIBFT) fclean
 
 re: clean all
 
