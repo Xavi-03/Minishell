@@ -57,7 +57,8 @@ void	export(t_sh *sh)
 		{
 			temp = ft_strjoin("=", temp);
 			add_galloc(temp, sh);
-			sh->cmd_list->cmd_arr[1] = ft_strjoin(sh->cmd_list->cmd_arr[1], temp);
+			sh->cmd_list->cmd_arr[1] = \
+				ft_strjoin(sh->cmd_list->cmd_arr[1], temp);
 			add_galloc(sh->cmd_list->cmd_arr[1], sh);
 		}
 	}

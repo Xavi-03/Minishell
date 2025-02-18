@@ -21,7 +21,8 @@ int	command_builder(char *input, t_sh *sh)
 	find_built_in(input, sh);
 	if (sh->cmd_list->cmd_count == 0)
 	{
-		cmd->cmd_arr = galloc((count_tokens(sh->token_arr) + 2) * sizeof(char *), sh);
+		cmd->cmd_arr = galloc((count_tokens(sh->token_arr) + 3) \
+			* sizeof(char *), sh);
 		exec_path = get_path(input, sh);
 		if (cmd->built_in || !exec_path)
 			cmd->cmd_arr[cmd->cmd_count] = ft_strdup(input);
@@ -102,15 +103,13 @@ void	find_cmd(t_token **token_arr, t_sh *sh)
 
 void	parser(t_sh *sh)
 {
-	t_token	**token_arr;
-
 	sh->cmd_list = cmd_init(sh->cmd_list, sh);
 	sh->cmd_list->start = sh->cmd_list;
-	token_arr = sh->token_arr;
-	find_cmd(token_arr, sh);
+	find_cmd(sh->token_arr, sh);
 	if (!sh->cmd_list->cmd_arr || sh->syntax_error)
 	{
-		if ((!check_redirs(sh) && !sh->cmd_list->cmd_arr) || ft_strchr(token_arr[0]->str, '='))
+		if ((!check_redirs(sh) && !sh->cmd_list->cmd_arr) \
+			|| ft_strchr(sh->token_arr[0]->str, '='))
 			return ;
 		sh->syntax_error = false;
 		sh->last_command = 1;
