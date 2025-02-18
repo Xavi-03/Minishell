@@ -65,7 +65,6 @@ static bool	cd_olddir(char *path, t_sh *sh)
 			update_pwd_env(sh);
 			return (true);
 		}
-
 	}
 	return (false);
 }

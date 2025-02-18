@@ -12,23 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-/*void	sigler(int signum)
-{
-	(void)signum;
-}
-
-void	sigquit_handler(int signal)
-{
-	if (signal == SIGINT)
-  		printf("\nIntercepted SIGINT!\n");
-}
-
-void	sigabrt_handler(int signal)
-{
-	if (signal == SIGABRT)
-		printf("Quit (core dumped)\n");
-		}*/
-
 void	subprocess_executer(t_sh *sh)
 {
 	prepare_file(1, sh);
@@ -78,7 +61,7 @@ void	execute(t_sh *sh)
 	t_cmd	*cmd;
 
 	cmd = sh->cmd_list;
-	increase_shlvl(sh->env);
+	increase_shlvl(sh->env, sh);
 	execve(cmd->cmd_arr[0], cmd->cmd_arr, sh->env);
 	ft_putstr_fd("minishell: Command not Found\n", 2);
 	terminate(1, sh);

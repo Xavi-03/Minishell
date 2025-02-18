@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-void	increase_shlvl(char **env)
+void	increase_shlvl(char **env, t_sh *sh)
 {
 	char	*sh_lvl;
 
@@ -23,6 +23,7 @@ void	increase_shlvl(char **env)
 		{
 			sh_lvl = ft_itoa(ft_atoi(*env + 6) + 1);
 			*env = ft_strjoin("SHLVL=", sh_lvl);
+			add_galloc(*env, sh);
 			free(sh_lvl);
 		}
 		env++;

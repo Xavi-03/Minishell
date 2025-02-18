@@ -20,6 +20,8 @@ char	*ft_get_env(char *env_var, t_sh *sh)
 
 	env = sh->env;
 	i = -1;
+	if (!env)
+		return (NULL);
 	while (env[++i])
 	{
 		if (ft_strncmp(env_var, env[i], ft_strlen(env_var)) == 0)

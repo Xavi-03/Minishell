@@ -218,6 +218,7 @@ t_token	**found_var(char *input, t_sh *sh);
 void	var_delnode(char *var_name, t_sh *sh);
 t_var	*var_addnode(t_sh *sh);
 t_var	*var_init(t_var *var_node, t_sh *sh);
+char	*get_value(t_var *var_iter, char *input, t_sh *sh);
 
 // ./cmd_arr
 //cmd_arr stuff
@@ -242,6 +243,6 @@ bool	is_number(char *str);
 size_t	count_chars(char *str, char c);
 int		count_tokens(t_token **token_arr);
 
-void	increase_shlvl(char **env);
+void	increase_shlvl(char **env, t_sh *sh);
 #endif
-/* valgrind --track-origins=yes --trace-children=yes --leak-check=full ./minishell */
+//valgrind --track-origins=yes --trace-children=yes --leak-check=full

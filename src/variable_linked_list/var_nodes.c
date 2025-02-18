@@ -45,9 +45,9 @@ void	var_delnode(char *var_name, t_sh *sh)
 		if (iter_node->var_name && \
 			ft_strncmp(var_name, iter_node->var_name, ft_strlen(var_name)) == 0)
 		{
-			gfree(iter_node->var_name, sh);
-			gfree(iter_node->value, sh);
-			gfree(iter_node, sh);
+			//gfree(iter_node->var_name, sh);
+			//gfree(iter_node->value, sh);
+			//gfree(iter_node, sh);
 			if (prev_node)
 				prev_node->next = prev_node->next->next;
 			else
