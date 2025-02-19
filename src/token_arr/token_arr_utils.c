@@ -113,6 +113,5 @@ t_token	**prepare_token_arr(char *str, t_sh *sh)
 		args.token_arr = create_token_arr(args.token_arr, args.n_tokens, sh);
 		args.j++;
 	}
-	remove_backslashes(&args, sh);
 	return (args.token_arr);
 }

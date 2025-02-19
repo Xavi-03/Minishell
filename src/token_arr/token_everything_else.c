@@ -14,10 +14,10 @@
 
 static void	process_after_equal(t_token_arr_args *args, t_sh *sh)
 {
+	(void)sh;
 	args->i += 3;
 	while (!is_in_set(args->str[args->i], "\'\"") && args->str[args->i])
 	{
-		skip_escaped(args, sh);
 		args->i++;
 	}
 }
@@ -33,7 +33,6 @@ void	process_everything_else(t_token_arr_args *args, t_sh *sh)
 	token_arr = args->token_arr;
 	while (!is_in_set(str[args->i], "\'\"|>< ") && str[args->i])
 	{
-		skip_escaped(args, sh);
 		if (str[args->i + 1] == '=' && is_in_set(str[args->i + 2], "\"\'"))
 			process_after_equal(args, sh);
 		args->i++;

@@ -17,10 +17,8 @@ void	heredoc(t_redir *redir, t_sh *sh)
 	char	*line;
 	int		fd;
 	char	*filename;
-	char	nl;
 
 	(void)sh;
-	nl = '\n';
 	filename = "/tmp/heredoc";
 	remove(filename);
 	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);

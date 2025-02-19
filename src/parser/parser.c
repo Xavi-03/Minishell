@@ -109,7 +109,7 @@ void	parser(t_sh *sh)
 	if (!sh->cmd_list->cmd_arr || sh->syntax_error)
 	{
 		if ((!check_redirs(sh) && !sh->cmd_list->cmd_arr) \
-			|| ft_strchr(sh->token_arr[0]->str, '='))
+			|| sh->token_arr || ft_strchr(sh->token_arr[0]->str, '='))
 			return ;
 		sh->syntax_error = false;
 		sh->last_command = 1;

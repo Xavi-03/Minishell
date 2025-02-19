@@ -25,7 +25,6 @@ static void	process_inside_quotes(t_token_arr_args *args, t_sh *sh)
 				args->i++;
 			break ;
 		}
-		skip_escaped(args, sh);
 		args->i++;
 	}
 	if (args->token_arr)
@@ -66,7 +65,6 @@ void	process_double_quotes(t_token_arr_args *args, t_sh *sh)
 	start = args->i;
 	while (!is_in_set(args->str[args->i], "\"") && args->str[args->i])
 	{
-		skip_escaped(args, sh);
 		if (args->str[args->i] && args->str[args->i] == '$')
 		{
 			if (args->i > start)

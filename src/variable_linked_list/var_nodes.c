@@ -13,20 +13,43 @@
 #include "../../includes/minishell.h"
 
 /* TODO: check code for leaks and use galloc */
+static char	*get_var_name(char **input, t_sh *sh)
+{
+	char	*var_name;
+	size_t	i;
+
+	i = 0;
+	var_name = galloc(((ft_strlen(*input) - \
+	ft_strlen(ft_strchr(*input, '='))) + 1) * sizeof(char), sh);
+	while (**input && **input != '=')
+		var_name[i++] = *(*input)++;
+	(*input)++;
+	return (var_name);
+}
+
 void	add_var(char *input, t_sh *sh)
 {
 	t_var	*var_node;
-	int		i;
+	char	*var_name;
 
+	var_node = sh->var_list;
 	if (*input == '=')
 		return ;
-	var_node = var_addnode(sh);
-	var_node->var_name = galloc(((ft_strlen(input) - \
-		ft_strlen(ft_strchr(input, '='))) + 1) * sizeof(char), sh);
-	i = 0;
-	while (*input && *input != '=')
-		var_node->var_name[i++] = *(input++);
-	input++;
+	var_name = get_var_name(&input, sh);
+	while (var_node)
+	{
+		if (var_node->var_name && ft_strncmp(var_name, var_node->var_name, \
+				ft_strlen(var_name) + ft_strlen(var_node->var_name)) == 0)
+			break ;
+		var_node = var_node->next;
+	}
+	if (!var_node)
+	{
+		var_node = var_addnode(sh);
+		var_node->var_name = var_name;
+	}
+	else
+		free(var_node->value);
 	if (ft_strchr(input, '"') || ft_strchr(input, '\''))
 		var_node->value = extract_between_chars(sh->line, '\"', sh);
 	else

@@ -1,3 +1,4 @@
+CC		:= clang
 NAME	:= minishell
 CFLAGS	:= -Wextra -Wall -Werror -g
 LIBFT	:= ./lib/libft
@@ -26,7 +27,6 @@ SRCS	:= ./src/built_ins/built_in.c \
 ./src/prompt/prompt_finder.c \
 ./src/prompt/prompt_utils.c \
 ./src/heredoc/heredoc.c \
-./src/token_arr/token_skip_escaped.c \
 ./src/token_arr/token_arr_utils.c \
 ./src/token_arr/token_double_quotes.c \
 ./src/token_arr/token_single_quotes.c \

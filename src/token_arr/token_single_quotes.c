@@ -24,7 +24,6 @@ void	process_single_quotes(t_token_arr_args *args, t_sh *sh)
 	token_arr = args->token_arr;
 	while (!is_in_set(str[args->i], "\'") && str[args->i])
 	{
-		skip_escaped(args, sh);
 		args->i++;
 	}
 	if (args->i == args->arr_len)
