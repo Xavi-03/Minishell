@@ -1,6 +1,6 @@
 CC		:= clang
 NAME	:= minishell
-CFLAGS	:= -Wextra -Wall -Werror -g
+CFLAGS	:= -Wextra -Wall -Werror -g -fsanitize=address
 LIBFT	:= ./lib/libft
 INCLUDE	:= -I ./includes -I $(LIBFT)
 HEADERS	:= ./includes/minishell.h \
@@ -47,7 +47,7 @@ libft:
 	$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDE)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) $(LIBS) $(INCLUDE) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(INCLUDE) -o $(NAME)
 
 clean:
 	rm -rf $(OBJS)

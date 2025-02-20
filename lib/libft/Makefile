@@ -44,7 +44,7 @@ ft_lstiter.c \
 ft_lstmap.c
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 NAME = libft.a
 INCLUDE = libft.h
 

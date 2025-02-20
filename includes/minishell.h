@@ -193,7 +193,7 @@ char	*get_path(char *command, t_sh *sh);
 
 //./prompt											FOLDER
 //	prompt_finder.c									FILE
-char	*user_finder(char *user, char *pc, t_sh *sh);
+char	*user_finder(char *user, t_sh *sh);
 char	*path_finder(t_sh *sh);
 char	*prompt_finder(t_sh *sh);
 //	promp_utils.c									FILE

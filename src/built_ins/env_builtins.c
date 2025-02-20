@@ -49,25 +49,43 @@ void	print_export(t_sh *sh)
 void	export(t_sh *sh)
 {
 	char	*temp;
+	char	*temp_var;
+	char	temp_char[2];
+	int		i;
 
-	if (sh->cmd_list->cmd_arr[1])
+	i = 0;
+	if (sh->cmd_list->cmd_count == 1)
 	{
-		temp = get_value(sh->var_list, sh->cmd_list->cmd_arr[1], sh);
-		if (temp)
+		print_export(sh);
+		return ;
+	}
+	while (sh->cmd_list->cmd_arr[++i])
+	{
+		temp = get_value(sh->var_list, sh->cmd_list->cmd_arr[i], sh);
+		if (!*temp && !ft_strchr(sh->cmd_list->cmd_arr[i], '='))
+			break ;
+		if (*temp)
 		{
 			temp = ft_strjoin("=", temp);
 			add_galloc(temp, sh);
 			sh->cmd_list->cmd_arr[1] = \
-				ft_strjoin(sh->cmd_list->cmd_arr[1], temp);
+				ft_strjoin(sh->cmd_list->cmd_arr[i], temp);
 			add_galloc(sh->cmd_list->cmd_arr[1], sh);
 		}
-	}
-	if (sh->cmd_list->cmd_arr[1] && !ft_strchr(sh->cmd_list->cmd_arr[1], '='))
-		return ;
-	if (sh->cmd_list->cmd_arr[1])
+		else if (sh->cmd_list->cmd_arr[i][ft_strlen(sh->cmd_list->cmd_arr[i]) - 1] == '\"')
+		{
+			temp_var = ft_strchr(sh->cmd_list->cmd_arr[i], '=');
+			temp_var++;
+			temp = ft_strdup(temp_var);
+			add_galloc(temp, sh);
+			*temp_var = '\0';
+			temp_char[0] = *temp;
+			temp_char[1] = '\0';
+			sh->cmd_list->cmd_arr[1] = ft_strjoin(sh->cmd_list->cmd_arr[i], ft_strtrim(temp, temp_char));
+			add_galloc(sh->cmd_list->cmd_arr[1], sh);
+		}
 		sh->env = add_var_env(sh);
-	else
-		print_export(sh);
+	}
 }
 
 void	unset(t_sh *sh)

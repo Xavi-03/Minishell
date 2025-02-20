@@ -12,11 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-/* ahora el nombre esta recortado de cXrXXsX.42barcelona.com a cXrXsX
-si se ejecuta en otro pc que no sea de 42 el nombre deberia salir entero
-da problemas al recortar el nombre del pc y ejecutar en casa,
-dejo el nombre entero */
-
 char	*get_hostname(void)
 {
 	int		fd;
@@ -38,20 +33,17 @@ char	*get_hostname(void)
 	return (str);
 }
 
-char	*user_finder(char *user, char *pc, t_sh *sh)
+char	*user_finder(char *user, t_sh *sh)
 {
 	char	*prompt_user;
+	char	*pc;
 
 	user = ft_get_env("USER", sh);
 	pc = get_hostname();
 	add_galloc(pc, sh);
-	if (!user)
-		user = "?";
 	if (!pc)
-		pc = "?";
+		pc = "TempleOS";
 	prompt_user = userjoin(user, pc, sh);
-	if (!prompt_user)
-		return ("?");
 	return (prompt_user);
 }
 
@@ -83,11 +75,9 @@ char	*prompt_finder(t_sh *sh)
 	char	*prompt_path;
 	char	*prompt;
 
-	if (!ft_get_env("USER", sh) || !ft_get_env("LOGNAME", sh) \
-		|| !ft_get_env("SESSION_MANAGER", sh))
+	if (!ft_get_env("USER", sh))
 		return ("> ");
-	prompt_user = user_finder(ft_get_env("LOGNAME", sh), \
-		ft_get_env("SESSION_MANAGER", sh), sh);
+	prompt_user = user_finder(ft_get_env("USER", sh), sh);
 	prompt_path = path_finder(sh);
 	prompt = promptjoin(prompt_user, prompt_path, sh);
 	return (prompt);
