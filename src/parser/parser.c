@@ -85,17 +85,17 @@ void	find_cmd(t_token **token_arr, t_sh *sh)
 
 	while (token_arr[++i])
 	{
-		if (!token_arr[i]->is_variable)
+		if (token_arr[i]->is_variable)
 		{
+			var_arr = found_var(token_arr[i]->str, sh);
+			while (var_arr && *var_arr)
+			{
+				cmd_parser((*var_arr), sh);
+				var_arr++;
+			}
+		}
+		else
 			cmd_parser(token_arr[i], sh);
-			continue ;
-		}
-		var_arr = found_var(token_arr[i]->str, sh);
-		while (var_arr && *var_arr)
-		{
-			cmd_parser((*var_arr), sh);
-			var_arr++;
-		}
 	}
 	if (!token_arr[i])
 		i = -1;

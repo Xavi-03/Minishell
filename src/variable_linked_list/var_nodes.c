@@ -49,7 +49,11 @@ void	add_var(char *input, t_sh *sh)
 		var_node->var_name = var_name;
 	}
 	if (ft_strchr(input, '"') || ft_strchr(input, '\''))
+	{
 		var_node->value = extract_between_chars(sh->line, '\"', sh);
+		if (!var_node->value)
+			var_node->value = galloc(1, sh);
+	}
 	else
 	{
 		var_node->value = ft_strdup(input);

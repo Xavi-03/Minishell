@@ -75,7 +75,7 @@ void	token_arr_args_init(t_token_arr_args *args, char *str)
 	args->arr_len = ft_strlen(str);
 }
 
-/*
+
 void	print_token_arr(t_token **token_arr)
 {
 	int	i;
@@ -87,7 +87,7 @@ void	print_token_arr(t_token **token_arr)
 		i++;
 	}
 }
-*/
+
 t_token	**prepare_token_arr(char *str, t_sh *sh)
 {
 	t_token_arr_args	args;
@@ -97,7 +97,7 @@ t_token	**prepare_token_arr(char *str, t_sh *sh)
 	{
 		args.i = 0;
 		args.n_tokens = 0;
-		while (str[args.i])
+		while (args.i < args.arr_len && str[args.i])
 		{
 			if (is_in_set(str[args.i], "|><"))
 				process_redirs(&args, sh);
@@ -113,5 +113,6 @@ t_token	**prepare_token_arr(char *str, t_sh *sh)
 		args.token_arr = create_token_arr(args.token_arr, args.n_tokens, sh);
 		args.j++;
 	}
+	print_token_arr(args.token_arr);
 	return (args.token_arr);
 }

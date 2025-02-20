@@ -17,11 +17,12 @@ static void	process_inside_quotes(t_token_arr_args *args, t_sh *sh)
 	size_t	start;
 
 	start = args->i;
-	while (!is_in_set(args->str[args->i], "\'\"") && args->str[args->i])
+	while (args->i < args->arr_len && !is_in_set(args->str[args->i], "\'\""))
 	{
 		if (args->str[args->i] == '$')
 		{
-			while (!is_in_set(args->str[args->i], "\'\" "))
+			while (args->i < args->arr_len && \
+				!is_in_set(args->str[args->i], "\'\" "))
 				args->i++;
 			break ;
 		}
@@ -63,9 +64,9 @@ void	process_double_quotes(t_token_arr_args *args, t_sh *sh)
 
 	args->i++;
 	start = args->i;
-	while (!is_in_set(args->str[args->i], "\"") && args->str[args->i])
+	while (args->i < args->arr_len && !is_in_set(args->str[args->i], "\""))
 	{
-		if (args->str[args->i] && args->str[args->i] == '$')
+		if (args->i < args->arr_len && args->str[args->i] == '$')
 		{
 			if (args->i > start)
 			{
@@ -78,8 +79,9 @@ void	process_double_quotes(t_token_arr_args *args, t_sh *sh)
 		else
 			args->i++;
 	}
-	if (args->i == args->arr_len)
+	if (args->i == args->arr_len && args->str[args->i] != '"')
 		sh->syntax_error = true;
 	if (start != args->i)
 		copy_substr(args, sh, start);
+	args->i++;
 }
