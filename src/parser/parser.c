@@ -108,8 +108,10 @@ void	parser(t_sh *sh)
 	find_cmd(sh->token_arr, sh);
 	if (!sh->cmd_list->cmd_arr || sh->syntax_error)
 	{
-		if ((!check_redirs(sh) && !sh->cmd_list->cmd_arr) \
-			|| sh->token_arr || ft_strchr(sh->token_arr[0]->str, '='))
+		if (!sh->token_arr[0] || (sh->token_arr[0]->str
+				&& ft_strchr(sh->token_arr[0]->str, '=')))
+			return ;
+		if (sh->cmd_list->cmd_arr && !sh->syntax_error && !check_redirs(sh))
 			return ;
 		sh->syntax_error = false;
 		sh->last_command = 1;

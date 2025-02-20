@@ -39,16 +39,20 @@ void	check_in_out_file(char *input, t_sh *sh)
 {
 	t_redir	*redir;
 
+	printf("input: %s\n", input);
 	redir = sh->cmd_list->redir_list;
+	if ((*input == '<' || *input == '>') \
+		&& (redir->f_next_infile || redir->f_next_outfile))
+		sh->syntax_error = 1;
 	if (redir->infile || redir->outfile)
 		redir = redir_addnode(sh);
-	if (ft_strncmp(input, "<", 2) == 0)
+	if (ft_strncmp(input, "<", ft_strlen(input)) == 0)
 		redir->f_next_infile = SINGLE_REDIR;
-	else if (ft_strncmp(input, "<<", 3) == 0)
+	else if (ft_strncmp(input, "<<", ft_strlen(input)) == 0)
 		redir->f_next_infile = DOUBLE_REDIR;
-	else if (ft_strncmp(input, ">", 2) == 0)
+	else if (ft_strncmp(input, ">", ft_strlen(input)) == 0)
 		redir->f_next_outfile = SINGLE_REDIR;
-	else if (ft_strncmp(input, ">>", 3) == 0)
+	else if (ft_strncmp(input, ">>", ft_strlen(input)) == 0)
 		redir->f_next_outfile = DOUBLE_REDIR;
 	else
 		parse_file_redir(input, sh);

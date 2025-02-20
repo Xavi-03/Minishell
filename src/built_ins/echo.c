@@ -12,21 +12,36 @@
 
 #include "../../includes/minishell.h"
 
+static int	echo_flag(t_cmd	*cmd, int *i)
+{
+	int	j;
+	int	flag;
+
+	flag = 0;
+	while (ft_strncmp(cmd->cmd_arr[++(*i)], "-n", 2) == 0)
+	{
+		j = 0;
+		while (cmd->cmd_arr[*i][++j])
+		{
+			if (cmd->cmd_arr[*i][j] != 'n')
+				return (flag);
+		}
+		flag = 1;
+	}
+	return (flag);
+}
+
 void	echo(t_sh *sh)
 {
 	int		i;
 	t_cmd	*cmd;
+	int		flag;
 
 	cmd = sh->cmd_list;
 	i = 0;
 	if (cmd->cmd_count == 1)
-	{
-		printf("\n");
-		return ;
-	}
-	i++;
-	while (ft_strncmp(cmd->cmd_arr[i], "-n", 3) == 0)
-		i++;
+		return ((void)printf("\n"));
+	flag = echo_flag(cmd, &i);
 	while (cmd->cmd_arr[i] && cmd->cmd_arr[i + 1])
 	{
 		if (cmd->cmd_arr[i + 1][0] == ' ')
@@ -35,6 +50,6 @@ void	echo(t_sh *sh)
 			printf("%s ", cmd->cmd_arr[i++]);
 	}
 	printf("%s", cmd->cmd_arr[i]);
-	if (ft_strncmp(cmd->cmd_arr[1], "-n", 3) != 0)
+	if (!flag)
 		printf("\n");
 }

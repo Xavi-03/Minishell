@@ -48,12 +48,13 @@ void	add_var(char *input, t_sh *sh)
 		var_node = var_addnode(sh);
 		var_node->var_name = var_name;
 	}
-	else
-		free(var_node->value);
 	if (ft_strchr(input, '"') || ft_strchr(input, '\''))
 		var_node->value = extract_between_chars(sh->line, '\"', sh);
 	else
+	{
 		var_node->value = ft_strdup(input);
+		add_galloc(var_node->value, sh);
+	}
 }
 
 void	var_delnode(char *var_name, t_sh *sh)

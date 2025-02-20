@@ -56,17 +56,16 @@ int	check_redirs(t_sh *sh)
 		ft_putstr_fd("Fork Error\n", 2);
 		terminate(EXIT_FAILURE, sh);
 	}
-	if (pid > 0)
+	if (pid == 0)
 	{
-		waitpid(pid, &sh->last_command, 0);
-		if (WIFSIGNALED(sh->last_command))
-			sh->last_command = 128 + WTERMSIG(sh->last_command);
-		else if (WIFEXITED(sh->last_command))
-			sh->last_command = WEXITSTATUS(sh->last_command);
-		return (0);
+		prepare_file(1, sh);
+		prepare_file(0, sh);
+		terminate(0, sh);
 	}
-	prepare_file(1, sh);
-	prepare_file(0, sh);
-	terminate(0, sh);
+	waitpid(pid, &sh->last_command, 0);
+	if (WIFSIGNALED(sh->last_command))
+		sh->last_command = 128 + WTERMSIG(sh->last_command);
+	else if (WIFEXITED(sh->last_command))
+		sh->last_command = WEXITSTATUS(sh->last_command);
 	return (0);
 }
