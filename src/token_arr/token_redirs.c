@@ -38,7 +38,7 @@ void	process_redirs(t_token_arr_args *args, t_sh *sh)
 	args->i = arrow_parser(str, args->i);
 	if (token_arr)
 	{
-		token_arr[args->n_tokens]->str = galloc(args->i - start + 1, sh);
+		token_arr[args->n_tokens]->str = galloc(args->i - start + 1, 1, sh);
 		ft_strlcpy(token_arr[args->n_tokens]->str, \
 			str + start, args->i - start + 1);
 	}

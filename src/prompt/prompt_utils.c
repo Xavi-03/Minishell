@@ -30,7 +30,7 @@ char	*promptjoin(char *user, char *path, t_sh *sh)
 	div1 = ":";
 	div2 = "$\n> ";
 	prompt = galloc((ft_strlen(user) + ft_strlen(div1) + \
-		ft_strlen(path) + ft_strlen(div2) + 1), sh);
+		ft_strlen(path) + ft_strlen(div2) + 1), 1, sh);
 	prompt[0] = '\0';
 	join_prompt_val(&prompt, &user);
 	join_prompt_val(&prompt, &div1);
@@ -50,7 +50,7 @@ char	*userjoin(char *user, char *pc, t_sh *sh)
 		pc = "?";
 	div1 = "@";
 	prompt = galloc((ft_strlen(user) + ft_strlen(div1) + \
-		ft_strlen(pc) + 1), sh);
+		ft_strlen(pc) + 1), 1, sh);
 	prompt[0] = '\0';
 	join_prompt_val(&prompt, &user);
 	join_prompt_val(&prompt, &div1);

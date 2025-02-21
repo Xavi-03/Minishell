@@ -22,18 +22,18 @@ int	command_builder(char *input, t_sh *sh)
 	if (sh->cmd_list->cmd_count == 0)
 	{
 		cmd->cmd_arr = galloc((count_tokens(sh->token_arr) + 3) \
-			* sizeof(char *), sh);
+			* sizeof(char *), 1, sh);
 		exec_path = get_path(input, sh);
 		if (cmd->built_in || !exec_path)
 			cmd->cmd_arr[cmd->cmd_count] = ft_strdup(input);
 		else
 			cmd->cmd_arr[cmd->cmd_count] = ft_strdup(exec_path);
-		add_galloc(cmd->cmd_arr[cmd->cmd_count], sh);
+		add_galloc(cmd->cmd_arr[cmd->cmd_count], 1, sh);
 	}
 	else
 	{
 		cmd->cmd_arr[cmd->cmd_count] = ft_strdup(input);
-		add_galloc(cmd->cmd_arr[cmd->cmd_count], sh);
+		add_galloc(cmd->cmd_arr[cmd->cmd_count], 1, sh);
 	}
 	cmd->cmd_count += 1;
 	cmd->cmd_arr[cmd->cmd_count] = NULL;
@@ -54,7 +54,7 @@ int	manage_cmd_pipes(t_sh *sh)
 		terminate(EXIT_FAILURE, sh);
 	}
 	cmd->in_pipe = 1;
-	cmd->fd_pipe = galloc(2 * sizeof(int), sh);
+	cmd->fd_pipe = galloc(2 * sizeof(int), 0, sh);
 	cmd->fd_pipe[0] = fd_pipe[0];
 	cmd->fd_pipe[1] = fd_pipe[1];
 	return (1);
@@ -111,7 +111,7 @@ void	parser(t_sh *sh)
 		if (!sh->token_arr[0] || (sh->token_arr[0]->str
 				&& ft_strchr(sh->token_arr[0]->str, '=')))
 			return ;
-		if (sh->cmd_list->cmd_arr && !sh->syntax_error && !check_redirs(sh))
+		if (!sh->cmd_list->cmd_arr && !sh->syntax_error && !check_redirs(sh))
 			return ;
 		sh->syntax_error = false;
 		sh->last_command = 1;

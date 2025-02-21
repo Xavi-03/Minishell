@@ -36,17 +36,19 @@ t_sh	*init_sh(char **env)
 	sh = malloc(sizeof(t_sh));
 	if (!sh)
 		return (NULL);
+	sh->env = NULL;
 	sh->l_galloc = NULL;
+	sh->last_command = 0;
+	sh->var_list = NULL;
+	sh->cmd_list = NULL;
+	sh->token_arr = NULL;
+	sh->syntax_error = false;
+	init_galloc(sh);
+	sh->var_list = var_init(sh->var_list, sh);
 	if (!*env)
 		sh->env = env_backup(sh);
 	else
 		sh->env = env;
-	sh->last_command = 0;
-	sh->var_list = NULL;
-	sh->var_list = var_init(sh->var_list, sh);
-	sh->cmd_list = NULL;
-	sh->token_arr = NULL;
-	sh->syntax_error = false;
 	return (sh);
 }
 
@@ -63,13 +65,14 @@ void	prompt_main(t_sh *sh)
 			terminate(EXIT_FAILURE, sh);
 		else
 			add_history(input);
-		add_galloc(input, sh);
+		add_galloc(input, 1, sh);
 		sh->line = input;
 		if (input[0] != '\0')
 		{
 			sh->token_arr = prepare_token_arr(input, sh);
 			parser(sh);
 		}
+		free_galloc(1, sh);
 	}
 }
 

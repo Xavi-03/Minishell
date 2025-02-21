@@ -72,7 +72,7 @@ char	*arr_to_str(char **arr, t_sh *sh)
 		if (arr[i + 1])
 			j += 1;
 	}
-	new_str = galloc((j + 1) * sizeof(char), sh);
+	new_str = galloc((j + 1) * sizeof(char), 1, sh);
 	new_str[0] = '\0';
 	i = -1;
 	j = -1;

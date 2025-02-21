@@ -23,7 +23,7 @@ void	increase_shlvl(char **env, t_sh *sh)
 		{
 			sh_lvl = ft_itoa(ft_atoi(*env + 6) + 1);
 			*env = ft_strjoin("SHLVL=", sh_lvl);
-			add_galloc(*env, sh);
+			add_galloc(*env, 0, sh);
 			free(sh_lvl);
 		}
 		env++;

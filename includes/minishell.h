@@ -95,6 +95,7 @@ typedef struct s_var
 typedef struct s_galloc
 {
 	void			*mem;
+	int				level;
 	struct s_galloc	*next;
 	struct s_galloc	*start;
 }	t_galloc;
@@ -159,10 +160,11 @@ void	pipe_cleaner(t_sh *sh);
 //./galloc											FOLDER
 //	galloc.c										FILE
 void	terminate(int exit_value, t_sh *sh);
-void	free_galloc(t_sh *sh);
-void	*add_galloc(void *mem, t_sh *sh);
+void	free_galloc(int level, t_sh *sh);
+void	*add_galloc(void *mem, int level, t_sh *sh);
 void	gfree(void *ptr, t_sh *sh);
-void	*galloc(size_t size, t_sh *sh);
+void	init_galloc(t_sh *sh);
+void	*galloc(size_t size, int level, t_sh *sh);
 
 //./minishell										FOLDER
 //	main.c											FILE

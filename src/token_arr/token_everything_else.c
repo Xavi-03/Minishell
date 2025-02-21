@@ -41,7 +41,7 @@ void	process_everything_else(t_token_arr_args *args, t_sh *sh)
 	{
 		if (str[start] == '$')
 			token_arr[args->n_tokens]->is_variable = true;
-		token_arr[args->n_tokens]->str = galloc(args->i - start + 1, sh);
+		token_arr[args->n_tokens]->str = galloc(args->i - start + 1, 1, sh);
 		ft_strlcpy(token_arr[args->n_tokens]->str, \
 			str + start, args->i - start + 1);
 	}

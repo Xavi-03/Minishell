@@ -23,7 +23,7 @@ char	*get_curr_dir(t_sh *sh)
 		path = ft_strdup(cwd);
 	else
 		path = ft_strjoin(cwd, "/");
-	add_galloc(path, sh);
+	add_galloc(path, 1, sh);
 	if (!path)
 		return (NULL);
 	return (path);
@@ -38,7 +38,7 @@ static char	*pathfinder(char **paths, char *command, t_sh *sh)
 
 	cwd = get_curr_dir(sh);
 	cwd_command = ft_strjoin(cwd, command);
-	add_galloc(cwd_command, sh);
+	add_galloc(cwd_command, 1, sh);
 	if (!cwd_command)
 		return (NULL);
 	if (access(cwd_command, X_OK) == 0)
@@ -46,9 +46,9 @@ static char	*pathfinder(char **paths, char *command, t_sh *sh)
 	while (*paths)
 	{
 		path = ft_strjoin(*paths, "/");
-		add_galloc(path, sh);
+		add_galloc(path, 1, sh);
 		filepath = ft_strjoin(path, command);
-		add_galloc(filepath, sh);
+		add_galloc(filepath, 1, sh);
 		if (access(filepath, X_OK) == 0)
 			return (filepath);
 		paths++;

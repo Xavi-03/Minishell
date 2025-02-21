@@ -44,7 +44,7 @@ ft_lstiter.c \
 ft_lstmap.c
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 NAME = libft.a
 INCLUDE = libft.h
 
@@ -71,4 +71,3 @@ bonus: $(NAME) $(OBJS_BONUS) $(INCLUDE)
 	ar rcs $(NAME) $(OBJS_BONUS)
 
 .PHONY:  all clean fclean re bonus
-

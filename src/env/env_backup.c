@@ -27,7 +27,7 @@ char	*ft_get_env(char *env_var, t_sh *sh)
 		if (ft_strncmp(env_var, env[i], ft_strlen(env_var)) == 0)
 		{
 			value = ft_strdup(ft_strchr(env[i], '='));
-			add_galloc(value, sh);
+			add_galloc(value, 0, sh);
 			value++;
 			return (value);
 		}
@@ -40,14 +40,14 @@ char	**env_backup(t_sh *sh)
 	char	**env;
 	char	*pwd;
 
-	env = galloc(4 * sizeof(char *), sh);
+	env = galloc(4 * sizeof(char *), 0, sh);
 	pwd = get_curr_dir(sh);
 	env[0] = ft_strjoin("PWD=", pwd);
-	add_galloc(env[0], sh);
+	add_galloc(env[0], 0, sh);
 	env[1] = ft_strdup("SHLVL=1");
-	add_galloc(env[1], sh);
+	add_galloc(env[1], 0, sh);
 	env[2] = ft_strdup("_=/usr/bin/env");
-	add_galloc(env[2], sh);
+	add_galloc(env[2], 0, sh);
 	env[3] = NULL;
 	return (env);
 }

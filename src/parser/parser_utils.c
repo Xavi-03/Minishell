@@ -23,7 +23,7 @@ void	parse_file_redir(char *input, t_sh *sh)
 			redir->fd_in_red = 1;
 		redir->f_next_infile = 0;
 		redir->infile = ft_strdup(input);
-		add_galloc(redir->infile, sh);
+		add_galloc(redir->infile, 0, sh);
 	}
 	else if (redir->f_next_outfile > 0)
 	{
@@ -31,7 +31,7 @@ void	parse_file_redir(char *input, t_sh *sh)
 			redir->fd_out_red = 1;
 		redir->f_next_outfile = 0;
 		redir->outfile = ft_strdup(input);
-		add_galloc(redir->outfile, sh);
+		add_galloc(redir->outfile, 0, sh);
 	}
 }
 

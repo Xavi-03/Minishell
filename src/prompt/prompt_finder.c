@@ -40,7 +40,7 @@ char	*user_finder(char *user, t_sh *sh)
 
 	user = ft_get_env("USER", sh);
 	pc = get_hostname();
-	add_galloc(pc, sh);
+	add_galloc(pc, 1, sh);
 	if (!pc)
 		pc = "TempleOS";
 	prompt_user = userjoin(user, pc, sh);
@@ -54,9 +54,9 @@ char	*path_finder(t_sh *sh)
 	char	cwd[4096];
 
 	getcwd(cwd, sizeof(cwd));
-	prompt_path = galloc((strlen(cwd) + 1) * sizeof(char), sh);
+	prompt_path = galloc((strlen(cwd) + 1) * sizeof(char), 1, sh);
 	prompt_path = ft_substr(cwd, 0, ft_strlen(cwd));
-	add_galloc(prompt_path, sh);
+	add_galloc(prompt_path, 1, sh);
 	if (ft_strncmp(ft_get_env("HOME", sh), prompt_path, \
 		ft_strlen(ft_get_env("HOME", sh))) == 0)
 	{
@@ -64,7 +64,7 @@ char	*path_finder(t_sh *sh)
 		prompt_path = ft_substr(cwd, home_len - 1, \
 			ft_strlen(cwd) - home_len + 1);
 		prompt_path[0] = '~';
-		add_galloc(prompt_path, sh);
+		add_galloc(prompt_path, 1, sh);
 	}
 	return (prompt_path);
 }

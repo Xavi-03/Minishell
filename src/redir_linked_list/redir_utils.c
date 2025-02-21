@@ -26,7 +26,7 @@ t_redir	*redir_addnode(t_sh *sh)
 
 t_redir	*redir_init(t_redir *redir_node, t_sh *sh)
 {
-	redir_node = galloc(sizeof(t_redir), sh);
+	redir_node = galloc(sizeof(t_redir), 1, sh);
 	redir_node->f_next_infile = 0;
 	redir_node->fd_in = 0;
 	redir_node->fd_in_red = 0;

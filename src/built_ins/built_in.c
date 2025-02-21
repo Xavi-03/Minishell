@@ -77,7 +77,9 @@ void	exit_builtin(t_sh *sh)
 	cmd_arr = sh->cmd_list->cmd_arr;
 	n_cmd = sh->cmd_list->cmd_count;
 	if (n_cmd == 1)
+	{
 		terminate(0, sh);
+	}
 	if (n_cmd > 2)
 	{
 		printf("exit: too many arguments\n");

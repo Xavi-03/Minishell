@@ -33,7 +33,7 @@ static void	process_inside_quotes(t_token_arr_args *args, t_sh *sh)
 		args->token_arr[args->n_tokens]->is_in_quotes = true;
 		if (args->str[start] == '$')
 			args->token_arr[args->n_tokens]->is_variable = true;
-		args->token_arr[args->n_tokens]->str = galloc(args->i - start + 1, sh);
+		args->token_arr[args->n_tokens]->str = galloc(args->i - start + 1, 1, sh);
 		ft_strlcpy(args->token_arr[args->n_tokens]->str, \
 			args->str + start, args->i - start + 1);
 	}
@@ -49,7 +49,7 @@ static void	copy_substr(t_token_arr_args *args, t_sh *sh, size_t start)
 	str = args->str;
 	if (token_arr)
 	{
-		token_arr[args->n_tokens]->str = galloc(args->i - start + 1, sh);
+		token_arr[args->n_tokens]->str = galloc(args->i - start + 1, 1, sh);
 		ft_strlcpy(token_arr[args->n_tokens]->str,
 			str + start, args->i - start + 1);
 		token_arr[args->n_tokens]->is_in_quotes = true;

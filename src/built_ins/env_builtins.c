@@ -69,10 +69,10 @@ void	export(t_sh *sh)
 		if (temp && *temp)
 		{
 			temp = ft_strjoin("=", temp);
-			add_galloc(temp, sh);
+			add_galloc(temp, 1, sh);
 			sh->cmd_list->cmd_arr[1] = \
 				ft_strjoin(sh->cmd_list->cmd_arr[i], temp);
-			add_galloc(sh->cmd_list->cmd_arr[1], sh);
+			add_galloc(sh->cmd_list->cmd_arr[1], 0, sh);
 		}
 		else if (sh->cmd_list->cmd_arr[i][ft_strlen(sh->cmd_list->cmd_arr[i]) - 1] == '\"'
 			|| sh->cmd_list->cmd_arr[i][ft_strlen(sh->cmd_list->cmd_arr[i]) - 1] == '\'')
@@ -80,14 +80,14 @@ void	export(t_sh *sh)
 			temp_var = ft_strchr(sh->cmd_list->cmd_arr[i], '=');
 			temp_var++;
 			temp = ft_strdup(temp_var);
-			add_galloc(temp, sh);
+			add_galloc(temp, 1, sh);
 			*temp_var = '\0';
 			temp_char[0] = *temp;
 			temp_char[1] = '\0';
 			temp = ft_strtrim(temp, temp_char);
-			add_galloc(temp, sh);
+			add_galloc(temp, 1, sh);
 			sh->cmd_list->cmd_arr[1] = ft_strjoin(sh->cmd_list->cmd_arr[i], temp);
-			add_galloc(sh->cmd_list->cmd_arr[1], sh);
+			add_galloc(sh->cmd_list->cmd_arr[1], 0, sh);
 		}
 		sh->env = add_var_env(sh);
 	}
@@ -102,6 +102,7 @@ void	unset(t_sh *sh)
 	if (!var_name)
 		return ;
 	new_env = remove_var_env(var_name, sh);
-	sh->env = new_env;
+	if (new_env)
+		sh->env = new_env;
 	var_delnode(var_name, sh);
 }

@@ -20,7 +20,7 @@ static char	*get_var_name(char **input, t_sh *sh)
 
 	i = 0;
 	var_name = galloc(((ft_strlen(*input) - \
-	ft_strlen(ft_strchr(*input, '='))) + 1) * sizeof(char), sh);
+	ft_strlen(ft_strchr(*input, '='))) + 1) * sizeof(char), 0, sh);
 	while (**input && **input != '=')
 		var_name[i++] = *(*input)++;
 	(*input)++;
@@ -52,12 +52,12 @@ void	add_var(char *input, t_sh *sh)
 	{
 		var_node->value = extract_between_chars(sh->line, '\"', sh);
 		if (!var_node->value)
-			var_node->value = galloc(1, sh);
+			var_node->value = galloc(1, 0, sh);
 	}
 	else
 	{
 		var_node->value = ft_strdup(input);
-		add_galloc(var_node->value, sh);
+		add_galloc(var_node->value, 0, sh);
 	}
 }
 
@@ -99,7 +99,7 @@ t_var	*var_addnode(t_sh *sh)
 
 t_var	*var_init(t_var *var_node, t_sh *sh)
 {
-	var_node = galloc(sizeof(t_var), sh);
+	var_node = galloc(sizeof(t_var), 0, sh);
 	var_node->next = NULL;
 	var_node->var_name = NULL;
 	var_node->value = NULL;

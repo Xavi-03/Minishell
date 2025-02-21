@@ -16,22 +16,22 @@ static void	update_pwd_env(t_sh *sh)
 {
 	char	*new_var;
 
-	sh->cmd_list->cmd_arr = galloc(3 * sizeof(char *), sh);
+	sh->cmd_list->cmd_arr = galloc(3 * sizeof(char *), 1, sh);
 	new_var = ft_get_env("PWD", sh);
 	if (!new_var)
 		new_var = get_curr_dir(sh);
 	new_var = ft_strjoin("OLDPWD=", new_var);
-	add_galloc(new_var, sh);
+	add_galloc(new_var, 1, sh);
 	sh->cmd_list->cmd_arr[0] = NULL;
 	sh->cmd_list->cmd_arr[1] = ft_strdup(new_var);
-	add_galloc(sh->cmd_list->cmd_arr[1], sh);
+	add_galloc(sh->cmd_list->cmd_arr[1], 1, sh);
 	sh->cmd_list->cmd_arr[2] = NULL;
 	sh->env = add_var_env(sh);
 	new_var = ft_strjoin("PWD=", get_curr_dir(sh));
-	add_galloc(new_var, sh);
+	add_galloc(new_var, 1, sh);
 	sh->cmd_list->cmd_arr[0] = NULL;
 	sh->cmd_list->cmd_arr[1] = ft_strdup(new_var);
-	add_galloc(sh->cmd_list->cmd_arr[1], sh);
+	add_galloc(sh->cmd_list->cmd_arr[1], 1, sh);
 	sh->cmd_list->cmd_arr[2] = NULL;
 	sh->env = add_var_env(sh);
 }

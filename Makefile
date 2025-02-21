@@ -1,6 +1,6 @@
 CC		:= clang
 NAME	:= minishell
-CFLAGS	:= -Wextra -Wall -Werror -g -fsanitize=address
+CFLAGS	:= -Wextra -Wall -Werror -g
 LIBFT	:= ./lib/libft
 INCLUDE	:= -I ./includes -I $(LIBFT)
 HEADERS	:= ./includes/minishell.h \

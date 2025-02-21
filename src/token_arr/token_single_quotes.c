@@ -31,7 +31,7 @@ void	process_single_quotes(t_token_arr_args *args, t_sh *sh)
 	if (token_arr)
 	{
 		token_arr[args->n_tokens]->is_in_quotes = true;
-		token_arr[args->n_tokens]->str = galloc(args->i - start + 1, sh);
+		token_arr[args->n_tokens]->str = galloc(args->i - start + 1, 1, sh);
 		ft_strlcpy(token_arr[args->n_tokens]->str, \
 			str + start, args->i - start + 1);
 	}

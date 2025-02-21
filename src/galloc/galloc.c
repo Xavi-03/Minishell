@@ -14,12 +14,12 @@
 
 void	terminate(int exit_value, t_sh *sh)
 {
-	free_galloc(sh);
+	free_galloc(0, sh);
 	free(sh);
 	exit(exit_value);
 }
 
-void	free_galloc(t_sh *sh)
+void	free_galloc(int level, t_sh *sh)
 {
 	t_galloc	*temp_galloc;
 	t_galloc	*list_galloc;
@@ -29,34 +29,29 @@ void	free_galloc(t_sh *sh)
 	{
 		temp_galloc = list_galloc;
 		list_galloc = list_galloc->next;
-		if (temp_galloc->mem)
+		if (temp_galloc && temp_galloc->mem && temp_galloc->level >= level)
+		{
 			free(temp_galloc->mem);
-		if (temp_galloc)
+			temp_galloc->mem = NULL;
+		}
+		if (temp_galloc && 0 == level)
 			free(temp_galloc);
 	}
 }
 
 /*TODO Implement terminate and check if galloc fails*/
 
-void	*add_galloc(void *mem, t_sh *sh)
+void	*add_galloc(void *mem, int level, t_sh *sh)
 {
 	t_galloc	*new_node;
 
 	if (!mem)
 		return (NULL);
-	if (!sh->l_galloc)
-	{
-		sh->l_galloc = malloc(sizeof(t_galloc));
-		if (!sh->l_galloc)
-			exit(EXIT_FAILURE);
-		sh->l_galloc->next = NULL;
-		sh->l_galloc->mem = NULL;
-		sh->l_galloc->start = sh->l_galloc;
-	}
 	new_node = malloc(sizeof(t_galloc));
 	if (!new_node)
 		terminate(EXIT_FAILURE, sh);
 	new_node->mem = mem;
+	new_node->level = level;
 	new_node->next = NULL;
 	new_node->start = sh->l_galloc->start;
 	sh->l_galloc->next = new_node;
@@ -88,23 +83,25 @@ void	gfree(void *ptr, t_sh *sh)
 	}
 }
 
+void	init_galloc(t_sh *sh)
+{
+	sh->l_galloc = malloc(sizeof(t_galloc));
+	if (!sh->l_galloc)
+		exit(EXIT_FAILURE);
+	sh->l_galloc->next = NULL;
+	sh->l_galloc->mem = NULL;
+	sh->l_galloc->level = 0;
+	sh->l_galloc->start = sh->l_galloc;
+}
+
 /*TODO Implement terminate and check if galloc fails*/
 
-void	*galloc(size_t size, t_sh *sh)
+void	*galloc(size_t size, int level, t_sh *sh)
 {
 	t_galloc	*new_node;
 	void		*mem;
 
 	new_node = NULL;
-	if (!sh->l_galloc)
-	{
-		sh->l_galloc = malloc(sizeof(t_galloc));
-		if (!sh->l_galloc)
-			exit(EXIT_FAILURE);
-		sh->l_galloc->next = NULL;
-		sh->l_galloc->mem = NULL;
-		sh->l_galloc->start = sh->l_galloc;
-	}
 	new_node = malloc(sizeof(t_galloc));
 	if (!new_node)
 		terminate(EXIT_FAILURE, sh);
@@ -112,6 +109,7 @@ void	*galloc(size_t size, t_sh *sh)
 	if (!mem)
 		terminate(EXIT_FAILURE, sh);
 	new_node->mem = mem;
+	new_node->level = level;
 	new_node->next = NULL;
 	new_node->start = sh->l_galloc->start;
 	sh->l_galloc->next = new_node;

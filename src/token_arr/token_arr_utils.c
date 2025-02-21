@@ -30,7 +30,7 @@ char	*extract_between_chars(char *str, char c, t_sh *sh)
 		return (NULL);
 	ptr_second_c++;
 	substr_len = ptr_second_c - ptr_first_c;
-	substr = galloc(substr_len + 1, sh);
+	substr = galloc(substr_len + 1, 0, sh);
 	ft_strlcpy(substr, ptr_first_c, substr_len);
 	return (substr);
 }
@@ -39,7 +39,7 @@ t_token	*init_token(t_sh *sh)
 {
 	t_token	*token;
 
-	token = galloc(sizeof(t_token), sh);
+	token = galloc(sizeof(t_token), 1, sh);
 	if (!token)
 		return (NULL);
 	token->str = NULL;
@@ -55,7 +55,7 @@ t_token	**create_token_arr(t_token **token_arr, size_t n_tokens, t_sh *sh)
 
 	if (!token_arr)
 	{
-		token_arr = (t_token **)galloc((n_tokens + 1) * sizeof(t_token *), sh);
+		token_arr = (t_token **)galloc((n_tokens + 1) * sizeof(t_token *), 1, sh);
 		i = 0;
 		while (i < n_tokens)
 		{

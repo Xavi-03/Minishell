@@ -36,13 +36,13 @@ static char	**dup_modify_env(t_sh *sh, char *var_str, char **new_arr)
 		}
 		else
 			new_arr[i] = ft_strdup(sh->env[i]);
-		add_galloc(new_arr[i], sh);
+		add_galloc(new_arr[i], 0, sh);
 		i++;
 	}
 	if (!var_exists)
 	{
 		new_arr[i] = ft_strdup(var_str);
-		add_galloc(new_arr[i], sh);
+		add_galloc(new_arr[i], 0, sh);
 		i++;
 	}
 	new_arr[i] = NULL;
@@ -59,7 +59,7 @@ char	**add_var_env(t_sh *sh)
 	var_str = sh->cmd_list->cmd_arr[1];
 	while (sh->env && sh->env[++i])
 		;
-	new_arr = galloc((i + 3) * sizeof(char *), sh);
+	new_arr = galloc((i + 3) * sizeof(char *), 0, sh);
 	new_arr = dup_modify_env(sh, var_str, new_arr);
 	return (new_arr);
 }
@@ -92,7 +92,7 @@ char	**remove_var_env(char *var_name, t_sh *sh)
 	env_len = var_in_env(var_name, sh);
 	if (!env_len || env_len == 1)
 		return (NULL);
-	new_env = galloc(env_len * sizeof(char *), sh);
+	new_env = galloc(env_len * sizeof(char *), 0, sh);
 	i = -1;
 	j = -1;
 	while (sh->env[++i])
@@ -100,7 +100,7 @@ char	**remove_var_env(char *var_name, t_sh *sh)
 		if (ft_strncmp(var_name, sh->env[i], ft_strlen(var_name)) == 0)
 			continue ;
 		new_env[++j] = ft_strdup(sh->env[i]);
-		add_galloc(new_env[j], sh);
+		add_galloc(new_env[j], 0, sh);
 	}
 	new_env[++j] = NULL;
 	return (new_env);
