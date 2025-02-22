@@ -60,6 +60,49 @@ char	*get_value(t_var *var_iter, char *input, t_sh *sh)
 	return (value);
 }
 
+/*static void	cmd_arr_realloc(t_sh *sh)
+{
+	char	**arr;
+	char	**new_arr;
+	int		count;
+	int		i;
+	int		j;
+
+	i = -1;
+	j = -1;
+	count = 0;
+	arr = sh->cmd_list->cmd_arr;
+	while (arr[++i])
+	{
+		if (ft_strncmp(arr[++i], "?", 1) == 0)
+			count += 1;
+	}
+	new_arr = galloc((i + count) * sizeof(char *), 1, sh);
+	i = -1;
+	while (arr[++i])
+	{
+		if (ft_strncmp(arr[++i], "?", 1) == 0)
+		{
+			new_arr[++j] = ft_substr(arr[i], 0, 1);
+			new_arr[++j] = ft_substr(arr[i], 1, ft_strlen(arr[i] - 1));
+		}
+		else
+			new_arr[++j] = arr[i];
+	}
+}*/
+
+static char	*var_return_cat(char *input, char *value, t_sh *sh)
+{
+	char	*return_str;
+	char	*temp;
+
+	temp = ft_substr(input, 1, ft_strlen(input) - 1);
+	add_galloc(temp, 1, sh);
+	return_str = ft_strjoin(value, temp);
+	add_galloc(return_str, 1, sh);
+	return (return_str);
+}
+
 t_token	**found_var(char *input, t_sh *sh)
 {
 	t_var	*var_iter;
@@ -69,10 +112,14 @@ t_token	**found_var(char *input, t_sh *sh)
 	value = NULL;
 	var_iter = sh->var_list;
 	input++;
-	if (ft_strncmp(input, "?", 1) == 0 && !input[1])
+	if (ft_strncmp(input, "?", 1) == 0)
 	{
 		value_return = ft_itoa(sh->last_command);
 		add_galloc(value_return, 0, sh);
+		if (input[1])
+		{
+			value_return = var_return_cat(input, value_return, sh);
+		}
 		return (prepare_token_arr(value_return, sh));
 	}
 	value = get_value(var_iter, input, sh);

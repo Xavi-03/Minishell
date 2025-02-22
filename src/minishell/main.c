@@ -72,7 +72,7 @@ void	prompt_main(t_sh *sh)
 			sh->token_arr = prepare_token_arr(input, sh);
 			parser(sh);
 		}
-		free_galloc(1, sh);
+		//free_galloc(1, sh);
 	}
 }
 
