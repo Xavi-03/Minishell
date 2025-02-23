@@ -90,7 +90,7 @@ char	**remove_var_env(char *var_name, t_sh *sh)
 	int		j;
 
 	env_len = var_in_env(var_name, sh);
-	if (!env_len || env_len == 1)
+	if (!env_len)
 		return (NULL);
 	new_env = galloc(env_len * sizeof(char *), 0, sh);
 	i = -1;

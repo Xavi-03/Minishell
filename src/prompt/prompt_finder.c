@@ -57,8 +57,8 @@ char	*path_finder(t_sh *sh)
 	prompt_path = galloc((strlen(cwd) + 1) * sizeof(char), 1, sh);
 	prompt_path = ft_substr(cwd, 0, ft_strlen(cwd));
 	add_galloc(prompt_path, 1, sh);
-	if (ft_strncmp(ft_get_env("HOME", sh), prompt_path, \
-		ft_strlen(ft_get_env("HOME", sh))) == 0)
+	if (ft_get_env("HOME", sh) && ((ft_strncmp(ft_get_env("HOME", sh), \
+		prompt_path, ft_strlen(ft_get_env("HOME", sh))) == 0)))
 	{
 		home_len = ft_strlen(ft_get_env("HOME", sh));
 		prompt_path = ft_substr(cwd, home_len - 1, \
