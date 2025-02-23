@@ -1,6 +1,6 @@
 CC		:= clang
 NAME	:= minishell
-CFLAGS	:= -Wextra -Wall -Werror -g
+CFLAGS	:= -Wextra -Wall -Werror -g -fsanitize=address
 LIBFT	:= ./lib/libft
 INCLUDE	:= -I ./includes -I $(LIBFT)
 HEADERS	:= ./includes/minishell.h \
@@ -13,6 +13,7 @@ SRCS	:= ./src/built_ins/built_in.c \
 ./src/cmd_linked_list/cmd_utils.c \
 ./src/execute/execute.c \
 ./src/execute/execute_utils.c \
+./src/galloc/init_galloc.c \
 ./src/galloc/galloc.c \
 ./src/minishell/main.c \
 ./src/parser/arr_utils.c \

@@ -12,17 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void	print_env(t_sh *sh)
-{
-	char	**env_ptr;
-
-	if (!sh->env)
-		return ;
-	env_ptr = sh->env;
-	while (*env_ptr)
-		printf("%s\n", *env_ptr++);
-}
-
 void	print_export(t_sh *sh)
 {
 	char	**env_ptr;
@@ -46,49 +35,61 @@ void	print_export(t_sh *sh)
 	}
 }
 
+static void	export_extend_one(char *temp_val, int i, t_sh *sh)
+{
+	char	**cmd_arr;
+
+	cmd_arr = sh->cmd_list->cmd_arr;
+	temp_val = ft_strjoin("=", temp_val);
+	add_galloc(temp_val, 1, sh);
+	cmd_arr[i] = ft_strjoin(cmd_arr[i], temp_val);
+	add_galloc(cmd_arr[i], 0, sh);
+}
+
+static void	export_extend_two(char *temp_val, \
+	char *temp_var_name, int i, t_sh *sh)
+{
+	char	**cmd_arr;
+
+	cmd_arr = sh->cmd_list->cmd_arr;
+	temp_var_name = ft_strchr(cmd_arr[i], '=');
+	temp_var_name++;
+	temp_val = ft_strdup(temp_var_name);
+	add_galloc(temp_val, 1, sh);
+	*temp_var_name = '\0';
+	if (extract_between_chars(temp_val, '\"', sh))
+		temp_val = extract_between_chars(temp_val, '\"', sh);
+	else
+		temp_val = extract_between_chars(temp_val, '\'', sh);
+	cmd_arr[i] = ft_strjoin(cmd_arr[i], temp_val);
+	add_galloc(cmd_arr[i], 0, sh);
+}
+
 void	export(t_sh *sh)
 {
-	char	*temp;
-	char	*temp_var;
-	char	temp_char[2];
+	char	*temp_val;
+	char	*temp_var_name;
+	char	**cmd_arr;
 	int		i;
 
+	temp_var_name = NULL;
 	i = 0;
-	temp = NULL;
+	cmd_arr = sh->cmd_list->cmd_arr;
 	if (sh->cmd_list->cmd_count == 1)
-	{
 		print_export(sh);
-		return ;
-	}
-	while (sh->cmd_list->cmd_arr[++i])
+	while (cmd_arr[++i])
 	{
-		if (!ft_strchr(sh->cmd_list->cmd_arr[i], '='))
-			temp = get_value(sh->var_list, sh->cmd_list->cmd_arr[i], sh);
-		if (temp && !*temp && !ft_strchr(sh->cmd_list->cmd_arr[i], '='))
+		temp_val = NULL;
+		if (!ft_strchr(cmd_arr[i], '='))
+			temp_val = get_value(sh->var_list, cmd_arr[i], sh);
+		if (temp_val && !*temp_val && !ft_strchr(cmd_arr[i], '='))
 			continue ;
-		if (temp && *temp)
-		{
-			temp = ft_strjoin("=", temp);
-			add_galloc(temp, 1, sh);
-			sh->cmd_list->cmd_arr[1] = \
-				ft_strjoin(sh->cmd_list->cmd_arr[i], temp);
-			add_galloc(sh->cmd_list->cmd_arr[1], 0, sh);
-		}
-		else if (sh->cmd_list->cmd_arr[i][ft_strlen(sh->cmd_list->cmd_arr[i]) - 1] == '\"'
-			|| sh->cmd_list->cmd_arr[i][ft_strlen(sh->cmd_list->cmd_arr[i]) - 1] == '\'')
-		{
-			temp_var = ft_strchr(sh->cmd_list->cmd_arr[i], '=');
-			temp_var++;
-			temp = ft_strdup(temp_var);
-			add_galloc(temp, 1, sh);
-			*temp_var = '\0';
-			temp_char[0] = *temp;
-			temp_char[1] = '\0';
-			temp = ft_strtrim(temp, temp_char);
-			add_galloc(temp, 1, sh);
-			sh->cmd_list->cmd_arr[1] = ft_strjoin(sh->cmd_list->cmd_arr[i], temp);
-			add_galloc(sh->cmd_list->cmd_arr[1], 0, sh);
-		}
+		if (temp_val && *temp_val)
+			export_extend_one(temp_val, i, sh);
+		else if (cmd_arr[i][ft_strlen(cmd_arr[i]) - 1] == '\"'
+			|| cmd_arr[i][ft_strlen(cmd_arr[i]) - 1] == '\'')
+			export_extend_two(temp_val, temp_var_name, i, sh);
+		cmd_arr[1] = cmd_arr[i];
 		sh->env = add_var_env(sh);
 	}
 }
@@ -96,13 +97,18 @@ void	export(t_sh *sh)
 void	unset(t_sh *sh)
 {
 	char	**new_env;
-	char	*var_name;
+	char	**cmd_arr;
+	int		i;
 
-	var_name = sh->cmd_list->cmd_arr[1];
-	if (!var_name)
-		return ;
-	new_env = remove_var_env(var_name, sh);
-	if (new_env)
-		sh->env = new_env;
-	var_delnode(var_name, sh);
+	i = 0;
+	cmd_arr = sh->cmd_list->cmd_arr;
+	while (cmd_arr[++i])
+	{
+		if (!cmd_arr[i])
+			break ;
+		new_env = remove_var_env(cmd_arr[i], sh);
+		if (new_env)
+			sh->env = new_env;
+		var_delnode(cmd_arr[i], sh);
+	}
 }

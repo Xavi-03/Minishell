@@ -12,6 +12,28 @@
 
 #include "../../includes/minishell.h"
 
+void	var_delnode(char *var_name, t_sh *sh)
+{
+	t_var	*iter_node;
+	t_var	*prev_node;
+
+	iter_node = sh->var_list;
+	prev_node = NULL;
+	while (iter_node)
+	{
+		if (iter_node->var_name && \
+			ft_strncmp(var_name, iter_node->var_name, ft_strlen(var_name)) == 0)
+		{
+			if (prev_node)
+				prev_node->next = prev_node->next->next;
+			else
+				sh->var_list = prev_node;
+		}
+		prev_node = iter_node;
+		iter_node = iter_node->next;
+	}
+}
+
 static void	var_iterator(t_var	*var, char *var_name, char **value, t_sh *sh)
 {
 	char	*old_value;
@@ -59,37 +81,6 @@ char	*get_value(t_var *var_iter, char *input, t_sh *sh)
 	}
 	return (value);
 }
-
-/*static void	cmd_arr_realloc(t_sh *sh)
-{
-	char	**arr;
-	char	**new_arr;
-	int		count;
-	int		i;
-	int		j;
-
-	i = -1;
-	j = -1;
-	count = 0;
-	arr = sh->cmd_list->cmd_arr;
-	while (arr[++i])
-	{
-		if (ft_strncmp(arr[++i], "?", 1) == 0)
-			count += 1;
-	}
-	new_arr = galloc((i + count) * sizeof(char *), 1, sh);
-	i = -1;
-	while (arr[++i])
-	{
-		if (ft_strncmp(arr[++i], "?", 1) == 0)
-		{
-			new_arr[++j] = ft_substr(arr[i], 0, 1);
-			new_arr[++j] = ft_substr(arr[i], 1, ft_strlen(arr[i] - 1));
-		}
-		else
-			new_arr[++j] = arr[i];
-	}
-}*/
 
 static char	*var_return_cat(char *input, char *value, t_sh *sh)
 {

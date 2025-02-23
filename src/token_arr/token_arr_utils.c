@@ -55,7 +55,8 @@ t_token	**create_token_arr(t_token **token_arr, size_t n_tokens, t_sh *sh)
 
 	if (!token_arr)
 	{
-		token_arr = (t_token **)galloc((n_tokens + 1) * sizeof(t_token *), 1, sh);
+		token_arr = (t_token **)galloc((n_tokens + 1) \
+			* sizeof(t_token *), 1, sh);
 		i = 0;
 		while (i < n_tokens)
 		{
@@ -74,7 +75,6 @@ void	token_arr_args_init(t_token_arr_args *args, char *str)
 	args->str = str;
 	args->arr_len = ft_strlen(str);
 }
-
 
 void	print_token_arr(t_token **token_arr)
 {

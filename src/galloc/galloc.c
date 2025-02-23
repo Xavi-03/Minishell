@@ -83,17 +83,6 @@ void	gfree(void *ptr, t_sh *sh)
 	}
 }
 
-void	init_galloc(t_sh *sh)
-{
-	sh->l_galloc = malloc(sizeof(t_galloc));
-	if (!sh->l_galloc)
-		exit(EXIT_FAILURE);
-	sh->l_galloc->next = NULL;
-	sh->l_galloc->mem = NULL;
-	sh->l_galloc->level = 0;
-	sh->l_galloc->start = sh->l_galloc;
-}
-
 /*TODO Implement terminate and check if galloc fails*/
 
 void	*galloc(size_t size, int level, t_sh *sh)

@@ -19,27 +19,22 @@ static int	is_built_in(char *input, char *cmd)
 	return (0);
 }
 
-static void	set_main_process(t_sh *sh)
-{
-	sh->cmd_list->main_process = 1;
-}
-
 void	find_built_in(char *input, t_sh *sh)
 {
 	if (is_built_in(input, "echo"))
 		;
 	else if (is_built_in(input, "cd"))
-		set_main_process(sh);
+		sh->cmd_list->main_process = 1;
 	else if (is_built_in(input, "pwd"))
 		;
 	else if (is_built_in(input, "export"))
-		set_main_process(sh);
+		sh->cmd_list->main_process = 1;
 	else if (is_built_in(input, "unset"))
-		set_main_process(sh);
+		sh->cmd_list->main_process = 1;
 	else if (is_built_in(input, "env"))
 		;
 	else if (is_built_in(input, "exit"))
-		set_main_process(sh);
+		sh->cmd_list->main_process = 1;
 	else
 		return ;
 	sh->cmd_list->built_in = 1;
@@ -92,4 +87,15 @@ void	exit_builtin(t_sh *sh)
 		terminate(2, sh);
 	}
 	terminate(atoi(cmd_arr[1]), sh);
+}
+
+void	print_env(t_sh *sh)
+{
+	char	**env_ptr;
+
+	if (!sh->env)
+		return ;
+	env_ptr = sh->env;
+	while (*env_ptr)
+		printf("%s\n", *env_ptr++);
 }

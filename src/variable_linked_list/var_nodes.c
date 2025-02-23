@@ -12,7 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-/* TODO: check code for leaks and use galloc */
 static char	*get_var_name(char **input, t_sh *sh)
 {
 	char	*var_name;
@@ -25,6 +24,23 @@ static char	*get_var_name(char **input, t_sh *sh)
 		var_name[i++] = *(*input)++;
 	(*input)++;
 	return (var_name);
+}
+
+static void	add_var_extended(char *input, t_var *var_node, t_sh *sh)
+{
+	if (ft_strchr(input, '"') || ft_strchr(input, '\''))
+	{
+		var_node->value = extract_between_chars(sh->line, '\"', sh);
+		if (!var_node->value)
+			var_node->value = extract_between_chars(sh->line, '\'', sh);
+		if (!var_node->value)
+			var_node->value = galloc(1, 0, sh);
+	}
+	else
+	{
+		var_node->value = ft_strdup(input);
+		add_galloc(var_node->value, 0, sh);
+	}
 }
 
 void	add_var(char *input, t_sh *sh)
@@ -48,39 +64,7 @@ void	add_var(char *input, t_sh *sh)
 		var_node = var_addnode(sh);
 		var_node->var_name = var_name;
 	}
-	if (ft_strchr(input, '"') || ft_strchr(input, '\''))
-	{
-		var_node->value = extract_between_chars(sh->line, '\"', sh);
-		if (!var_node->value)
-			var_node->value = galloc(1, 0, sh);
-	}
-	else
-	{
-		var_node->value = ft_strdup(input);
-		add_galloc(var_node->value, 0, sh);
-	}
-}
-
-void	var_delnode(char *var_name, t_sh *sh)
-{
-	t_var	*iter_node;
-	t_var	*prev_node;
-
-	iter_node = sh->var_list;
-	prev_node = NULL;
-	while (iter_node)
-	{
-		if (iter_node->var_name && \
-			ft_strncmp(var_name, iter_node->var_name, ft_strlen(var_name)) == 0)
-		{
-			if (prev_node)
-				prev_node->next = prev_node->next->next;
-			else
-				sh->var_list = prev_node;
-		}
-		prev_node = iter_node;
-		iter_node = iter_node->next;
-	}
+	add_var_extended(input, var_node, sh);
 }
 
 t_var	*var_addnode(t_sh *sh)
