@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:35:55 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 18:37:05 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:39:47 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	command_builder(char *input, t_sh *sh)
 	find_built_in(input, sh);
 	if (sh->cmd_list->cmd_count == 0)
 	{
-		cmd->cmd_arr = galloc((count_tokens(sh->token_arr) + 3) \
+		cmd->cmd_arr = galloc((count_tokens(sh->token_arr, sh) + 3) \
 			* sizeof(char *), 1, sh);
 		exec_path = get_path(input, sh);
 		if (cmd->built_in || !exec_path)
