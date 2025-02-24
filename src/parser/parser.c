@@ -80,14 +80,18 @@ int	cmd_parser(t_token *token, t_sh *sh)
 
 void	find_cmd(t_token **token_arr, t_sh *sh)
 {
-	int	i;
+	int		i;
+	t_token	**new_token;
 
 	i = -1;
 	while (token_arr[++i])
 	{
 		if (token_arr[i]->is_variable)
 		{
-			recursive_expand_var(found_var(token_arr[i]->str, sh), sh);
+			new_token = found_var(token_arr[i]->str, sh);
+			if (ft_strncmp (new_token[0]->str + 1, token_arr[i]->str + 1, \
+				ft_strlen(token_arr[i]->str)) != 0)
+				recursive_expand_var(new_token, sh);
 		}
 		else
 			cmd_parser(token_arr[i], sh);

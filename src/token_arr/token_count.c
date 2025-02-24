@@ -15,13 +15,17 @@
 void	recursive_count_vars(t_token **token_arr, t_sh *sh, int *n_vars)
 {
 	int		i;
+	t_token	**new_token;
 
 	i = -1;
 	while (token_arr && token_arr[++i])
 	{
 		if (token_arr[i]->is_variable)
 		{
-			recursive_count_vars(found_var(token_arr[i]->str, sh), sh, n_vars);
+			new_token = found_var(token_arr[i]->str, sh);
+			if (ft_strncmp (new_token[0]->str + 1, token_arr[i]->str + 1, \
+				ft_strlen(token_arr[i]->str)) != 0)
+				recursive_count_vars(new_token, sh, n_vars);
 		}
 		else
 			(*n_vars)++;

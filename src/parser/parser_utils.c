@@ -108,5 +108,5 @@ int	parser_int(char *str_nbr, t_sh *sh)
 			return (1);
 		i++;
 	}
-	return(char_to_int(str_nbr, i, flag, sh));
+	return (char_to_int(str_nbr, i, flag, sh));
 }
