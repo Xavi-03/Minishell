@@ -69,7 +69,7 @@ static bool	cd_olddir(char *path, t_sh *sh)
 	return (false);
 }
 
-void	cd(t_sh *sh)
+int	cd(t_sh *sh)
 {
 	char	*home_path;
 	char	*path;
@@ -77,9 +77,9 @@ void	cd(t_sh *sh)
 	home_path = ft_get_env("HOME", sh);
 	path = sh->cmd_list->cmd_arr[1];
 	if (cd_home(home_path, sh))
-		return ;
+		return (0);
 	if (cd_olddir(path, sh))
-		return ;
+		return (0);
 	if (path[0] == '~' && home_path)
 	{
 		if (ft_strlen(path) > 1)
@@ -89,8 +89,13 @@ void	cd(t_sh *sh)
 		chdir(home_path);
 		free(home_path);
 	}
-	chdir(path);
+	if (chdir(path) != 0)
+	{
+		ft_putstr_fd("minishell: No such file or directory\n", 2);
+		return (1);
+	}
 	update_pwd_env(sh);
+	return (1);
 }
 
 void	pwd(t_sh *sh)

@@ -33,6 +33,7 @@
 
 typedef struct s_sh
 {
+	int				exit_value;
 	int				last_command;
 	char			**env;
 	struct s_var	*var_list;
@@ -121,7 +122,7 @@ int		exec_built_in(t_sh *sh);
 void	echo(t_sh *sh);
 void	exit_builtin(t_sh *sh);
 //	dir_builtins.c									FILE
-void	cd(t_sh *sh);
+int		cd(t_sh *sh);
 void	pwd(t_sh *sh);
 //	env_builtins.c									FILE
 void	print_env(t_sh *sh);
@@ -185,6 +186,7 @@ int		cmd_parser(t_token *token, t_sh *sh);
 void	find_cmd(t_token **token_arr, t_sh *sh);
 void	parser(t_sh *sh);
 //	parser_utils.c									FILE
+int		parser_int(char *str_nbr, t_sh *sh);
 void	parse_file_redir(char *input, t_sh *sh);
 void	check_in_out_file(char *input, t_sh *sh);
 int		check_std_redir(char *input, t_sh *sh);

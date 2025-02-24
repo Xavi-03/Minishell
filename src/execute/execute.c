@@ -36,7 +36,7 @@ void	main_process_executer(t_sh *sh)
 	while (temp_cmd)
 	{
 		if (temp_cmd->main_process)
-			exec_built_in(sh);
+			sh->last_command = exec_built_in(sh);
 		temp_cmd = temp_cmd->next;
 	}
 	sh->cmd_list = sh->cmd_list->start;
@@ -46,9 +46,9 @@ void	main_process_executer(t_sh *sh)
 	while (temp_cmd)
 	{
 		waitpid(temp_cmd->pid, &sh->last_command, 0);
-		if (WIFSIGNALED(sh->last_command))
+		if (WIFSIGNALED(sh->last_command) && !temp_cmd->built_in)
 			sh->last_command = 128 + WTERMSIG(sh->last_command);
-		else if (WIFEXITED(sh->last_command))
+		else if (WIFEXITED(sh->last_command) && !temp_cmd->built_in)
 			sh->last_command = WEXITSTATUS(sh->last_command);
 		if (temp_cmd->not_found)
 			sh->last_command = 127;

@@ -69,25 +69,26 @@ int	check_std_redir(char *input, t_sh *sh)
 		return (1);
 	return (0);
 }
-/*
-int	static	char_to_int(char *nbr, int i, int flag)
+
+int	static	char_to_int(char *str_nbr, int i, int flag, t_sh *sh)
 {
-	if (i > 10 || i == 0)
+	if (i > 19 || i == 0)
 		return (1);
 	if (flag)
 	{
-		if (ft_strncmp(str, "2147483648", 11) > 0 && i == 10)
+		if (ft_strncmp(str_nbr, "9223372036854775808", 20) > 0 && i == 19)
 			return (1);
-		return (*nbr = -ft_atoi(str), 0);
+		sh->exit_value = -ft_atoi(str_nbr);
+		return (0);
 	}
-	if (ft_strncmp(str, "2147483647", 11) > 0 && i == 10)
+	if (ft_strncmp(str_nbr, "9223372036854775807", 20) > 0 && i == 19)
 		return (1);
-	return (*nbr = ft_atoi(str), 0);
+	sh->exit_value = ft_atoi(str_nbr);
+	return (0);
 }
 
 int	parser_int(char *str_nbr, t_sh *sh)
 {
-	int	nbr;
 	int	i;
 	int	flag;
 
@@ -101,13 +102,11 @@ int	parser_int(char *str_nbr, t_sh *sh)
 	}
 	while (str_nbr[0] == '0' && str_nbr[1] != '\0')
 		str_nbr++;
-	while (str_nbr[++i])
+	while (str_nbr[i])
 	{
 		if (!ft_isdigit(str_nbr[i]))
-		{
 			return (1);
-		}
+		i++;
 	}
-	char_to_int();
+	return(char_to_int(str_nbr, i, flag, sh));
 }
-*/

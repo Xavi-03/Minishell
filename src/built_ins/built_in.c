@@ -48,7 +48,7 @@ int	exec_built_in(t_sh *sh)
 	if (is_built_in(cmd, "echo"))
 		echo(sh);
 	else if (is_built_in(cmd, "cd"))
-		cd(sh);
+		return (cd(sh));
 	else if (is_built_in(cmd, "pwd"))
 		pwd(sh);
 	else if (is_built_in(cmd, "export"))
@@ -72,21 +72,19 @@ void	exit_builtin(t_sh *sh)
 	cmd_arr = sh->cmd_list->cmd_arr;
 	n_cmd = sh->cmd_list->cmd_count;
 	if (n_cmd == 1)
-	{
 		terminate(0, sh);
-	}
 	if (n_cmd > 2)
 	{
-		printf("exit: too many arguments\n");
+		ft_putstr_fd("exit: too many arguments\n", 2);
 		sh->last_command = 1;
 		return ;
 	}
-	if (!is_number(cmd_arr[1]))
+	if (parser_int(cmd_arr[1], sh))
 	{
-		printf("exit: %s: numeric argument required\n", cmd_arr[1]);
+		ft_putstr_fd("exit: numeric argument required\n", 2);
 		terminate(2, sh);
 	}
-	terminate(atoi(cmd_arr[1]), sh);
+	terminate(sh->exit_value, sh);
 }
 
 void	print_env(t_sh *sh)
