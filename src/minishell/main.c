@@ -38,6 +38,7 @@ t_sh	*init_sh(char **env)
 		return (NULL);
 	sh->env = NULL;
 	sh->l_galloc = NULL;
+	sh->exit_value = 0;
 	sh->last_command = 0;
 	sh->var_list = NULL;
 	sh->cmd_list = NULL;
