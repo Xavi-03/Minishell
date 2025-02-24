@@ -69,3 +69,45 @@ int	check_std_redir(char *input, t_sh *sh)
 		return (1);
 	return (0);
 }
+/*
+int	static	char_to_int(char *nbr, int i, int flag)
+{
+	if (i > 10 || i == 0)
+		return (1);
+	if (flag)
+	{
+		if (ft_strncmp(str, "2147483648", 11) > 0 && i == 10)
+			return (1);
+		return (*nbr = -ft_atoi(str), 0);
+	}
+	if (ft_strncmp(str, "2147483647", 11) > 0 && i == 10)
+		return (1);
+	return (*nbr = ft_atoi(str), 0);
+}
+
+int	parser_int(char *str_nbr, t_sh *sh)
+{
+	int	nbr;
+	int	i;
+	int	flag;
+
+	i = 0;
+	flag = 0;
+	if (*str_nbr == '-' || *str_nbr == '+')
+	{
+		if (*str_nbr == '-')
+			flag = 1;
+		str_nbr++;
+	}
+	while (str_nbr[0] == '0' && str_nbr[1] != '\0')
+		str_nbr++;
+	while (str_nbr[++i])
+	{
+		if (!ft_isdigit(str_nbr[i]))
+		{
+			return (1);
+		}
+	}
+	char_to_int();
+}
+*/
