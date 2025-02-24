@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:04:34 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 18:37:56 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:55:04 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	token_arr_args_init(t_token_arr_args *args, char *str)
 	args->arr_len = ft_strlen(str);
 }
 
+/*
 void	print_token_arr(t_token **token_arr)
 {
 	int	i;
@@ -87,6 +88,7 @@ void	print_token_arr(t_token **token_arr)
 		i++;
 	}
 }
+*/
 
 t_token	**prepare_token_arr(char *str, t_sh *sh)
 {
@@ -113,6 +115,9 @@ t_token	**prepare_token_arr(char *str, t_sh *sh)
 		args.token_arr = create_token_arr(args.token_arr, args.n_tokens, sh);
 		args.j++;
 	}
-	print_token_arr(args.token_arr);
 	return (args.token_arr);
 }
+
+/*
+print_token_arr(args.token_arr);
+*/

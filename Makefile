@@ -21,6 +21,7 @@ SRCS	:= ./src/built_ins/built_in.c \
 ./src/parser/path_utils.c \
 ./src/parser/parser.c \
 ./src/variable_linked_list/var_nodes.c \
+./src/variable_linked_list/var_recursive.c \
 ./src/variable_linked_list/var_utils.c \
 ./src/env/env_shlvl.c \
 ./src/env/env_backup.c \
@@ -29,6 +30,7 @@ SRCS	:= ./src/built_ins/built_in.c \
 ./src/prompt/prompt_utils.c \
 ./src/heredoc/heredoc.c \
 ./src/token_arr/token_arr_utils.c \
+./src/token_arr/token_count.c \
 ./src/token_arr/token_double_quotes.c \
 ./src/token_arr/token_single_quotes.c \
 ./src/token_arr/token_everything_else.c \

@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:35:55 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/24 20:39:47 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:51:02 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,24 +78,11 @@ int	cmd_parser(t_token *token, t_sh *sh)
 	return (0);
 }
 
-void	recursive_expand_var(t_token **token_arr, t_sh *sh)
+void	find_cmd(t_token **token_arr, t_sh *sh)
 {
 	int	i;
 
 	i = -1;
-	while (token_arr[++i])
-	{
-		if (token_arr[i]->is_variable)
-			recursive_expand_var(found_var(token_arr[i]->str, sh), sh);
-		else
-			cmd_parser(token_arr[i], sh);
-	}
-}
-
-void	find_cmd(t_token **token_arr, t_sh *sh)
-{
-	int	i = -1;
-
 	while (token_arr[++i])
 	{
 		if (token_arr[i]->is_variable)

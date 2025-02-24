@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 21:04:37 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/24 19:43:30 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:53:41 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,9 @@ void	var_delnode(char *var_name, t_sh *sh);
 t_var	*var_addnode(t_sh *sh);
 t_var	*var_init(t_var *var_node, t_sh *sh);
 char	*get_value(t_var *var_iter, char *input, t_sh *sh);
+
+// var_recursive.c
+void	recursive_expand_var(t_token **token_arr, t_sh *sh);
 
 // ./cmd_arr
 //cmd_arr stuff
