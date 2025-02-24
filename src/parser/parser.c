@@ -78,27 +78,33 @@ int	cmd_parser(t_token *token, t_sh *sh)
 	return (0);
 }
 
+void	recursive_expand_var(t_token **token_arr, t_sh *sh)
+{
+	int	i;
+
+	i = -1;
+	while (token_arr[++i])
+	{
+		if (token_arr[i]->is_variable)
+			recursive_expand_var(found_var(token_arr[i]->str, sh), sh);
+		else
+			cmd_parser(token_arr[i], sh);
+	}
+}
+
 void	find_cmd(t_token **token_arr, t_sh *sh)
 {
-	static int	i = -1;
-	t_token		**var_arr;
+	int	i = -1;
 
 	while (token_arr[++i])
 	{
 		if (token_arr[i]->is_variable)
 		{
-			var_arr = found_var(token_arr[i]->str, sh);
-			while (var_arr && *var_arr)
-			{
-				cmd_parser((*var_arr), sh);
-				var_arr++;
-			}
+			recursive_expand_var(found_var(token_arr[i]->str, sh), sh);
 		}
 		else
 			cmd_parser(token_arr[i], sh);
 	}
-	if (!token_arr[i])
-		i = -1;
 }
 
 void	parser(t_sh *sh)
