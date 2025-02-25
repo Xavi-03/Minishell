@@ -36,6 +36,7 @@ SRCS	:= ./src/built_ins/built_in.c \
 ./src/token_arr/token_everything_else.c \
 ./src/token_arr/token_redirs.c \
 ./src/misc/misc_utils.c \
+./src/misc/export_utils.c \
 ./src/redir_linked_list/redir_prepare.c \
 ./src/redir_linked_list/redir_utils.c
 

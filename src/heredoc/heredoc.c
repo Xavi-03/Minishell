@@ -12,6 +12,20 @@
 
 #include "../../includes/minishell.h"
 
+void	sig_subprocess(int signum)
+{
+	if (signum == SIGINT)
+	{
+		exit (130);
+		g_global = 1;
+	}
+	if (SIGQUIT == signum)
+	{
+		rl_on_new_line();
+		rl_redisplay();
+	}
+}
+
 void	heredoc(t_redir *redir, t_sh *sh)
 {
 	char	*line;
@@ -21,10 +35,12 @@ void	heredoc(t_redir *redir, t_sh *sh)
 	(void)sh;
 	filename = "/tmp/heredoc";
 	remove(filename);
+	signal(SIGINT, sig_subprocess);
+	signal(SIGQUIT, sig_subprocess);
 	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	line = readline("> ");
 	add_galloc(line, 1, sh);
-	while (!strlen(line) || ft_strncmp(line, redir->infile, strlen(line)))
+	while (ft_strncmp(line, redir->infile, strlen(line)))
 	{
 		ft_putstr_fd(line, fd);
 		ft_putchar_fd('\n', fd);

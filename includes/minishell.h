@@ -247,6 +247,7 @@ bool	is_number(char *str);
 size_t	count_chars(char *str, char c);
 int		count_tokens(t_token **token_arr, t_sh *sh);
 
+int		check_export(t_sh *sh);
 void	increase_shlvl(char **env, t_sh *sh);
 #endif
 //valgrind --track-origins=yes --trace-children=yes --leak-check=full

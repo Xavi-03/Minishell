@@ -47,17 +47,6 @@ bool	is_in_set(char c, char *set)
 	}
 	return (false);
 }
-/*
-int	count_tokens(t_token **token_arr)
-{
-	int	i;
-
-	i = -1;
-	while (token_arr[++i])
-		;
-	return (i);
-}
-*/
 
 char	*arr_to_str(char **arr, t_sh *sh)
 {
