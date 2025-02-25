@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:33:57 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/24 21:53:57 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:28:22 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ static void	var_iterator(t_var	*var, char *var_name, char **value, t_sh *sh)
 {
 	char	*old_value;
 
-	old_value = ft_strdup("");
-	add_galloc(old_value, 0, sh);
 	while (var)
 	{
 		if (var->var_name)
@@ -47,8 +45,9 @@ static void	var_iterator(t_var	*var, char *var_name, char **value, t_sh *sh)
 			if (ft_strncmp(var_name, var->var_name, \
 				ft_strlen(var_name) + ft_strlen(var->var_name)) == 0)
 			{
+				old_value = *value;
 				*value = ft_strjoin(old_value, var->value);
-				add_galloc(*value, 0, sh);
+				add_galloc(value, 0, sh);
 				return ;
 			}
 		}
@@ -63,16 +62,14 @@ char	*get_value(t_var *var_iter, char *input, t_sh *sh)
 	char	**var_names;
 
 	var_names = ft_split(input, '$');
-	old_value = ft_strdup("");
-	add_galloc(old_value, 0, sh);
 	add_galloc(var_names, 0, sh);
-	value = ft_strdup("");
-	add_galloc(value, 0, sh);
+	value = add_galloc(ft_strdup(""), 0, sh);
 	while (*var_names)
 	{
 		add_galloc(*var_names, 0, sh);
 		if (ft_get_env(*var_names, sh))
 		{
+			old_value = value;
 			value = ft_strjoin(old_value, ft_get_env(*var_names, sh));
 			add_galloc(value, 0, sh);
 		}
@@ -114,6 +111,7 @@ t_token	**found_var(char *input, t_sh *sh)
 		return (prepare_token_arr(value_return, sh));
 	}
 	value = get_value(var_iter, input, sh);
+	printf("inside found var: %s\n", input);
 	if (value)
 		return (prepare_token_arr(value, sh));
 	return (NULL);

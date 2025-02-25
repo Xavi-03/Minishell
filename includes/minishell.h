@@ -31,6 +31,8 @@
 # define NO_REDIR 0
 # define RESET_COLOR "\033[0m"
 
+static int	g_global;
+
 typedef struct s_sh
 {
 	int				exit_value;
