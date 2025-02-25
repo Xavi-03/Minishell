@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:38:53 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 18:36:19 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/25 19:37:14 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static int	echo_flag(t_cmd	*cmd, int *i)
 	int	flag;
 
 	flag = 0;
-	while (ft_strncmp(cmd->cmd_arr[++(*i)], "-n", 2) == 0)
+	while (cmd->cmd_arr[*i + 1] && \
+		ft_strncmp(cmd->cmd_arr[++(*i)], "-n", 2) == 0)
 	{
 		j = 0;
 		while (cmd->cmd_arr[*i][++j])
