@@ -6,7 +6,7 @@
 /*   By: pohernan <pohernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 18:44:30 by pohernan          #+#    #+#             */
-/*   Updated: 2025/02/18 18:36:50 by pohernan         ###   ########.fr       */
+/*   Updated: 2025/02/25 19:43:57 by pohernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	heredoc(t_redir *redir, t_sh *sh)
 	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	line = readline("> ");
 	add_galloc(line, 1, sh);
-	while (ft_strncmp(line, redir->infile, strlen(line)))
+	while (!strlen(line) || ft_strncmp(line, redir->infile, strlen(line)))
 	{
 		ft_putstr_fd(line, fd);
 		ft_putchar_fd('\n', fd);
