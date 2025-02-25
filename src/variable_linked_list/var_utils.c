@@ -38,6 +38,7 @@ static void	var_iterator(t_var	*var, char *var_name, char **value, t_sh *sh)
 {
 	char	*old_value;
 
+	(void)sh;
 	while (var)
 	{
 		if (var->var_name)
@@ -47,7 +48,7 @@ static void	var_iterator(t_var	*var, char *var_name, char **value, t_sh *sh)
 			{
 				old_value = *value;
 				*value = ft_strjoin(old_value, var->value);
-				add_galloc(value, 0, sh);
+				add_galloc(*value, 0, sh);
 				return ;
 			}
 		}
@@ -111,7 +112,6 @@ t_token	**found_var(char *input, t_sh *sh)
 		return (prepare_token_arr(value_return, sh));
 	}
 	value = get_value(var_iter, input, sh);
-	printf("inside found var: %s\n", input);
 	if (value)
 		return (prepare_token_arr(value, sh));
 	return (NULL);

@@ -52,7 +52,11 @@ int	exec_built_in(t_sh *sh)
 	else if (is_built_in(cmd, "pwd"))
 		pwd(sh);
 	else if (is_built_in(cmd, "export"))
+	{
+		if (check_export(sh))
+			return (1);
 		export(sh);
+	}
 	else if (is_built_in(cmd, "unset"))
 		unset(sh);
 	else if (is_built_in(cmd, "env"))
