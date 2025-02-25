@@ -23,8 +23,8 @@ void	recursive_count_vars(t_token **token_arr, t_sh *sh, int *n_vars)
 		if (token_arr[i]->is_variable)
 		{
 			new_token = found_var(token_arr[i]->str, sh);
-			if (ft_strncmp (new_token[0]->str + 1, token_arr[i]->str + 1, \
-				ft_strlen(token_arr[i]->str)) != 0)
+			if (*new_token && (ft_strncmp (new_token[0]->str + 1, \
+				token_arr[i]->str + 1, ft_strlen(token_arr[i]->str)) != 0))
 				recursive_count_vars(new_token, sh, n_vars);
 		}
 		else

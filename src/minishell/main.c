@@ -20,11 +20,11 @@ void	sig_handler(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_global = 1;
 	}
 	if (SIGQUIT == signum)
 	{
 		rl_on_new_line();
-		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -63,10 +63,15 @@ void	prompt_main(t_sh *sh)
 		prompt = prompt_finder(sh);
 		input = readline(prompt);
 		if (!input)
-			terminate(EXIT_FAILURE, sh);
+			terminate(EXIT_SUCCESS, sh);
 		else
 			add_history(input);
 		add_galloc(input, 1, sh);
+		if (g_global)
+		{
+			sh->last_command = 130;
+			g_global = 0;
+		}
 		sh->line = input;
 		if (input[0] != '\0')
 		{
@@ -83,6 +88,7 @@ int	main(int argc, char **argv, char **env)
 	char		*input;
 
 	sh = init_sh(env);
+	g_global = 0;
 	if (argc != 1)
 	{
 		input = arr_to_str(&argv[1], sh);
