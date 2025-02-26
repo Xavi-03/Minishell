@@ -74,7 +74,8 @@ char	*get_value(t_var *var_iter, char *input, t_sh *sh)
 			value = ft_strjoin(old_value, ft_get_env(*var_names, sh));
 			add_galloc(value, 0, sh);
 		}
-		var_iterator(var_iter, *var_names, &value, sh);
+		else
+			var_iterator(var_iter, *var_names, &value, sh);
 		var_names++;
 	}
 	return (value);

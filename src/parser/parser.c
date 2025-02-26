@@ -62,11 +62,15 @@ int	manage_cmd_pipes(t_sh *sh)
 
 int	cmd_parser(t_token *token, t_sh *sh)
 {
-	if (ft_strchr(token->str, '='))
+	char	**cmd_arr;
+
+	cmd_arr = sh->cmd_list->cmd_arr;
+	if (ft_strchr(token->str, '=') && ((!cmd_arr) || (cmd_arr \
+		&& ft_strncmp(cmd_arr[0], "export", ft_strlen(cmd_arr[0])) == 0)))
 	{
 		add_var(token->str, sh);
-		if (sh->cmd_list->cmd_arr && ft_strncmp(sh->cmd_list->cmd_arr[0], \
-			"export", ft_strlen(sh->cmd_list->cmd_arr[0])) == 0)
+		if (cmd_arr && ft_strncmp(cmd_arr[0], \
+			"export", ft_strlen(cmd_arr[0])) == 0)
 			command_builder(token->str, sh);
 	}
 	else if (check_std_redir(token->str, sh) && !token->is_in_quotes)
@@ -81,12 +85,17 @@ int	cmd_parser(t_token *token, t_sh *sh)
 void	find_cmd(t_token **token_arr, t_sh *sh)
 {
 	int		i;
+	int		flag_redir;
 	t_token	**new_token;
 
 	i = -1;
 	while (token_arr[++i])
 	{
-		if (token_arr[i]->is_variable)
+		flag_redir = 0;
+		if (sh->cmd_list->redir_list->f_next_infile \
+			|| sh->cmd_list->redir_list->f_next_outfile)
+			flag_redir = 1;
+		if (token_arr[i]->is_variable && !flag_redir)
 		{
 			new_token = found_var(token_arr[i]->str, sh);
 			if (*new_token && (ft_strncmp (new_token[0]->str + 1, \

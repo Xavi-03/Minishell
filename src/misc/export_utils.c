@@ -29,3 +29,13 @@ int	check_export(t_sh *sh)
 	}
 	return (0);
 }
+
+int	strlen_toc(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] != c)
+		i++;
+	return (i);
+}

@@ -40,7 +40,8 @@ void	heredoc(t_redir *redir, t_sh *sh)
 	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	line = readline("> ");
 	add_galloc(line, 1, sh);
-	while (line && (!*line || ft_strncmp(line, redir->infile, strlen(line))))
+	while (line && (!*line || ft_strncmp(line, redir->infile, \
+		strlen(redir->infile) + 1)))
 	{
 		ft_putstr_fd(line, fd);
 		ft_putchar_fd('\n', fd);

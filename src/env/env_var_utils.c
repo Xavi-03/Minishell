@@ -74,12 +74,13 @@ static int	var_in_env(char *var_name, t_sh *sh)
 	flag_var = 0;
 	while (sh->env[++env_len])
 	{
-		if (ft_strncmp(var_name, sh->env[env_len], ft_strlen(var_name)) == 0)
-			flag_var = 1;
+		if (sh->env[env_len][0] && ft_strncmp(var_name, sh->env[env_len], \
+			strlen_toc(sh->env[env_len], '=')) == 0)
+			flag_var += 1;
 	}
 	if (!flag_var)
 		return (0);
-	return (env_len);
+	return (env_len + flag_var);
 }
 
 char	**remove_var_env(char *var_name, t_sh *sh)
@@ -97,7 +98,7 @@ char	**remove_var_env(char *var_name, t_sh *sh)
 	j = -1;
 	while (sh->env[++i])
 	{
-		if (ft_strncmp(var_name, sh->env[i], ft_strlen(var_name)) == 0)
+		if (ft_strncmp(var_name, sh->env[i], strlen_toc(var_name, '=')) == 0)
 			continue ;
 		new_env[++j] = ft_strdup(sh->env[i]);
 		add_galloc(new_env[j], 0, sh);

@@ -18,8 +18,8 @@ static int	echo_flag(t_cmd	*cmd, int *i)
 	int	flag;
 
 	flag = 0;
-	while (cmd->cmd_arr[*i + 1] && \
-		ft_strncmp(cmd->cmd_arr[++(*i)], "-n", 2) == 0)
+	(*i)++;
+	while (cmd->cmd_arr[*i] && ft_strncmp(cmd->cmd_arr[*i], "-n", 2) == 0)
 	{
 		j = 0;
 		while (cmd->cmd_arr[*i][++j])
@@ -28,6 +28,7 @@ static int	echo_flag(t_cmd	*cmd, int *i)
 				return (flag);
 		}
 		flag = 1;
+		(*i)++;
 	}
 	return (flag);
 }
@@ -43,6 +44,8 @@ void	echo(t_sh *sh)
 	if (cmd->cmd_count == 1)
 		return ((void)printf("\n"));
 	flag = echo_flag(cmd, &i);
+	if (flag && !cmd->cmd_arr[i])
+		return ((void)printf(""));
 	while (cmd->cmd_arr[i] && cmd->cmd_arr[i + 1])
 	{
 		if (cmd->cmd_arr[i + 1][0] == ' ')
