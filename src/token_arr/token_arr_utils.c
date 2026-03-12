@@ -76,20 +76,6 @@ void	token_arr_args_init(t_token_arr_args *args, char *str)
 	args->arr_len = ft_strlen(str);
 }
 
-/*
-void	print_token_arr(t_token **token_arr)
-{
-	int	i;
-
-	i = 0;
-	while (token_arr[i])
-	{
-		printf("token_arr[%d] = %s\n", i, token_arr[i]->str);
-		i++;
-	}
-}
-*/
-
 t_token	**prepare_token_arr(char *str, t_sh *sh)
 {
 	t_token_arr_args	args;
@@ -117,7 +103,3 @@ t_token	**prepare_token_arr(char *str, t_sh *sh)
 	}
 	return (args.token_arr);
 }
-
-/*
-print_token_arr(args.token_arr);
-*/

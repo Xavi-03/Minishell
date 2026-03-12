@@ -55,8 +55,8 @@ void	pipe_cleaner(t_sh *sh)
 	{
 		if (cmd_node->fd_pipe)
 		{
-			close(cmd_node->fd_pipe[0]);
-			close(cmd_node->fd_pipe[1]);
+			;//close(cmd_node->fd_pipe[0]);
+			;//close(cmd_node->fd_pipe[1]);
 		}
 		cmd_node = cmd_node->next;
 	}

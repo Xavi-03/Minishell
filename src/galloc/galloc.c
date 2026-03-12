@@ -39,8 +39,6 @@ void	free_galloc(int level, t_sh *sh)
 	}
 }
 
-/*TODO Implement terminate and check if galloc fails*/
-
 void	*add_galloc(void *mem, int level, t_sh *sh)
 {
 	t_galloc	*new_node;
@@ -96,7 +94,10 @@ void	*galloc(size_t size, int level, t_sh *sh)
 		terminate(EXIT_FAILURE, sh);
 	mem = ft_calloc(1, size);
 	if (!mem)
+	{
+		free(new_node);
 		terminate(EXIT_FAILURE, sh);
+	}
 	new_node->mem = mem;
 	new_node->level = level;
 	new_node->next = NULL;

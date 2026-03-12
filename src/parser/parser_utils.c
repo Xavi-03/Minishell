@@ -39,7 +39,6 @@ void	check_in_out_file(char *input, t_sh *sh)
 {
 	t_redir	*redir;
 
-	printf("input: %s\n", input);
 	redir = sh->cmd_list->redir_list;
 	if ((*input == '<' || *input == '>') \
 		&& (redir->f_next_infile || redir->f_next_outfile))
